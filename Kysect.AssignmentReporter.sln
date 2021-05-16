@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31220.234
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kysect.AssignmentReporter", "Kysect.AssignmentReporter\Kysect.AssignmentReporter.csproj", "{163E8146-C1F5-4959-9DF1-7EF4FEC2F0AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kysect.AssignmentReporter.Polygon", "Kysect.AssignmentReporter.Polygon\Kysect.AssignmentReporter.Polygon.csproj", "{F5FD6D08-101A-4566-A3B8-A9602C0F169F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{163E8146-C1F5-4959-9DF1-7EF4FEC2F0AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{163E8146-C1F5-4959-9DF1-7EF4FEC2F0AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{163E8146-C1F5-4959-9DF1-7EF4FEC2F0AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{163E8146-C1F5-4959-9DF1-7EF4FEC2F0AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5FD6D08-101A-4566-A3B8-A9602C0F169F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5FD6D08-101A-4566-A3B8-A9602C0F169F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5FD6D08-101A-4566-A3B8-A9602C0F169F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5FD6D08-101A-4566-A3B8-A9602C0F169F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {91149FF2-74CE-429E-9EE9-F5DAED9756B0}
+	EndGlobalSection
+EndGlobal
