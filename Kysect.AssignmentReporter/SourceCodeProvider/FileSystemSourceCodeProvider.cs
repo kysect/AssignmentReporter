@@ -28,19 +28,16 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
             {
                 foreach (var file in folder.GetFiles())
                 {
-                    if (file.Name.EndsWith(".cs"))
+                    var newFile = new FileDescriptor(file.Name, file.Directory.Name);
+                    using (StreamReader sr = new StreamReader(file.FullName))
                     {
-                        var newFile = new FileDescriptor(file.Name, file.Directory.Name);
-                        using (StreamReader sr = new StreamReader(file.FullName))
+                        string line;
+                        while ((line = sr.ReadLine()) != null)
                         {
-                            string line;
-                            while ((line = sr.ReadLine()) != null)
-                            {
-                                newFile.AddLine(line);
-                            }
+                            newFile.AddLine(line);
                         }
-                        files.Add(newFile);
                     }
+                    files.Add(newFile);
                 }
             }
             return files;

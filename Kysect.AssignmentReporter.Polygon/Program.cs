@@ -20,16 +20,11 @@ namespace Kysect.AssignmentReporter.Polygon
 
 
             List<FileDescriptor> fileDescriptors = sourceCodeProvider.GetFiles();
-           // var directorySearchMask = new DirectorySearchMask();
-           // var fileSearchFilter = new FileSearchFilter();
-           // var reportExtendedInfo = new ReportExtendedInfo();
+            //var directorySearchMask = new DirectorySearchMask();
+            //var fileSearchFilter = new FileSearchFilter();
+            //var reportExtendedInfo = new ReportExtendedInfo();
 
-          //  object result = reportGenerator.Generate(fileDescriptors, directorySearchMask, fileSearchFilter, reportExtendedInfo);
-          foreach (var item in fileDescriptors)
-          {
-              Console.WriteLine(item.Name + "::" + item.Directory);
-              Console.WriteLine(item.Content);
-          }
+            //object result = reportGenerator.Generate(fileDescriptors, directorySearchMask, fileSearchFilter, reportExtendedInfo);
         }
     }
 }
