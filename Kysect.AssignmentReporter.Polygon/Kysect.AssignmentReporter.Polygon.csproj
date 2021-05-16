@@ -5,4 +5,8 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Kysect.AssignmentReporter\Kysect.AssignmentReporter.csproj" />
+  </ItemGroup>
+
 </Project>

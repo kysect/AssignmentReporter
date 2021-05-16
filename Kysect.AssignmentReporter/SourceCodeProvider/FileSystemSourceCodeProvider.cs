@@ -3,7 +3,7 @@ using Kysect.AssignmentReporter.Models;
 
 namespace Kysect.AssignmentReporter.SourceCodeProvider
 {
-    public class FileSystemSourceCodeProvider
+    public class FileSystemSourceCodeProvider : ISourceCodeProvider
     {
         private string _rootDirectoryPath;
 
