@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Kysect.AssignmentReporter.Models;
 using Kysect.AssignmentReporter.ReportGenerator;
 using Kysect.AssignmentReporter.SourceCodeProvider;
@@ -14,16 +15,21 @@ namespace Kysect.AssignmentReporter.Polygon
 
         public static void GenerateSimpleReport()
         {
-            ISourceCodeProvider sourceCodeProvider = new FileSystemSourceCodeProvider();
+            ISourceCodeProvider sourceCodeProvider = new FileSystemSourceCodeProvider(@"C:\Users\andri\source\repos\ITMO_OOP_2020");
             IReportGenerator reportGenerator = new SimpleTextReportGenerator();
 
 
             List<FileDescriptor> fileDescriptors = sourceCodeProvider.GetFiles();
-            var directorySearchMask = new DirectorySearchMask();
-            var fileSearchFilter = new FileSearchFilter();
-            var reportExtendedInfo = new ReportExtendedInfo();
+           // var directorySearchMask = new DirectorySearchMask();
+           // var fileSearchFilter = new FileSearchFilter();
+           // var reportExtendedInfo = new ReportExtendedInfo();
 
-            object result = reportGenerator.Generate(fileDescriptors, directorySearchMask, fileSearchFilter, reportExtendedInfo);
+          //  object result = reportGenerator.Generate(fileDescriptors, directorySearchMask, fileSearchFilter, reportExtendedInfo);
+          foreach (var item in fileDescriptors)
+          {
+              Console.WriteLine(item.Name + "::" + item.Directory);
+              Console.WriteLine(item.Content);
+          }
         }
     }
 }
