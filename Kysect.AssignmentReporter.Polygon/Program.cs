@@ -15,11 +15,11 @@ namespace Kysect.AssignmentReporter.Polygon
 
         public static void GenerateSimpleReport()
         {
-            ISourceCodeProvider sourceCodeProvider = new FileSystemSourceCodeProvider(@"C:\Users\andri\source\repos\ITMO_OOP_2020");
-            IReportGenerator reportGenerator = new SimpleTextReportGenerator();
+            //ISourceCodeProvider sourceCodeProvider = new FileSystemSourceCodeProvider(@"C:\Users\andri\source\repos\ITMO_OOP_2020");
+            // IReportGenerator reportGenerator = new SimpleTextReportGenerator();
 
 
-            List<FileDescriptor> fileDescriptors = sourceCodeProvider.GetFiles();
+            // List<FileDescriptor> fileDescriptors = sourceCodeProvider.GetFiles();
             //var directorySearchMask = new DirectorySearchMask();
             //var fileSearchFilter = new FileSearchFilter();
             //var reportExtendedInfo = new ReportExtendedInfo();
@@ -27,7 +27,6 @@ namespace Kysect.AssignmentReporter.Polygon
             //object result = reportGenerator.Generate(fileDescriptors, directorySearchMask, fileSearchFilter, reportExtendedInfo);
             //ISourceCodeProvider sourceCodeProvider1 = new GithubSourceCodeProvider("TomGnill", "ITMO_OOP_2020");
             //var result = sourceCodeProvider1.GetFiles();
-            
         }
     }
 }

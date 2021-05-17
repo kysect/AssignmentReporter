@@ -4,6 +4,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Kysect.AssignmentReporter.Models;
+using LibGit2Sharp;
 
 namespace Kysect.AssignmentReporter.SourceCodeProvider
 {
@@ -29,9 +30,11 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
             }
 
             dirInfo.CreateSubdirectory($"{ _repositoryOwner}\\{ _repositoryName}");
-            Process.Start(@"cmd", @"/c " + $"git clone https://github.com/{_repositoryOwner}/{_repositoryName}.git {_localStoragePath}");
+            if (!Repository.IsValid(_localStoragePath))
+            {
+                Repository.Clone($"https://github.com/{_repositoryOwner}/{_repositoryName}.git", _localStoragePath);
+            }
 
-            Thread.Sleep(5000);//переработать...
             return new FileSystemSourceCodeProvider(_localStoragePath).GetFiles();//считывание файлов через другой класс. Надеюсь так можно.
         }
     }

@@ -9,16 +9,11 @@ namespace Kysect.AssignmentReporter.Models
 
         public string Directory { get; set; }
 
-        public FileDescriptor(string name, string directory)
+        public FileDescriptor(string name,string content, string directory)
         {
             Name = name;
             Directory = directory;
-            Content = String.Empty;
-        }
-
-        public void AddLine(string text)
-        {
-            Content += $"\n{text}";
+            Content = content;
         }
     }
 }

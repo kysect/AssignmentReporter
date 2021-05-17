@@ -14,46 +14,19 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
         {
             _rootDirectoryPath = rootDirectoryPath;
         }
+
         public List<FileDescriptor> GetFiles()
         {
-            DirectoryInfo directoryInfo = new DirectoryInfo(_rootDirectoryPath);
-            var folders = GetDirectoryInfos(directoryInfo);
-            return getFileDescriptors(folders);
-        }
-
-        private List<FileDescriptor> getFileDescriptors(List<DirectoryInfo> infos)
-        {
             var files = new List<FileDescriptor>();
-            foreach (var folder in infos)
+            foreach (var file in Directory.EnumerateFiles(_rootDirectoryPath, "*", SearchOption.AllDirectories))
             {
-                foreach (var file in folder.GetFiles())
-                {
-                    var newFile = new FileDescriptor(file.Name, file.Directory.Name);
-                    using (StreamReader sr = new StreamReader(file.FullName))
-                    {
-                        string line;
-                        while ((line = sr.ReadLine()) != null)
-                        {
-                            newFile.AddLine(line);
-                        }
-                    }
-                    files.Add(newFile);
-                }
+                string[] filename = file.Split(new[] { "\\" }, StringSplitOptions.None);
+                files
+                    .Add(new FileDescriptor(filename[filename.Length - 1], File.ReadAllText(file),
+                        file));
             }
+
             return files;
-        }
-        public List<DirectoryInfo> GetDirectoryInfos(DirectoryInfo info)
-        {
-           var folders = new List<DirectoryInfo>();
-           if (info.GetDirectories() != null)
-           {
-               foreach (var folder in info.GetDirectories())
-               {
-                   folders.AddRange(GetDirectoryInfos(folder));
-               }
-           }
-           folders.AddRange(info.GetDirectories());
-           return folders;
         }
     }
 }
