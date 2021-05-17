@@ -25,6 +25,9 @@ namespace Kysect.AssignmentReporter.Polygon
             //var reportExtendedInfo = new ReportExtendedInfo();
 
             //object result = reportGenerator.Generate(fileDescriptors, directorySearchMask, fileSearchFilter, reportExtendedInfo);
+            //ISourceCodeProvider sourceCodeProvider1 = new GithubSourceCodeProvider("TomGnill", "ITMO_OOP_2020");
+            //var result = sourceCodeProvider1.GetFiles();
+            
         }
     }
 }
