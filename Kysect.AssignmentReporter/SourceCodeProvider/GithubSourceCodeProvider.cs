@@ -34,16 +34,16 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
             {
                 dirInfo.Create();
             }
+            GetRepository();
             dirInfo.CreateSubdirectory($"{ _repositoryOwner}\\{ _repositoryName}");
             return new FileSystemSourceCodeProvider(_localStoragePath).GetFiles();
         }
 
-        public async void GetRepository()
+        public void GetRepository()
         {
-           
             if (!Repository.IsValid(_localStoragePath))
             {
-                await Task.Run(() =>  Repository.Clone(_url, _localStoragePath));
+              Repository.Clone(_url, _localStoragePath);
             }
             else
             { 
@@ -53,7 +53,7 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
                 options.FetchOptions.CredentialsProvider = new CredentialsHandler(
                     (_url, usernameFromUrl, types) => new UsernamePasswordCredentials());
                 var signature = new Signature(new Identity($"{_data.Username}", $"{_data.Email}"), DateTimeOffset.Now);
-                await Task.Run(() => Commands.Pull(repository, signature, options));
+                Commands.Pull(repository, signature, options);
             }
         }
     }

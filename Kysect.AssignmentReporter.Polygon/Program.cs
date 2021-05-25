@@ -22,8 +22,8 @@ namespace Kysect.AssignmentReporter.Polygon
             //var fileSearchFilter = new FileSearchFilter();
             //var reportExtendedInfo = new ReportExtendedInfo();
             //object result = reportGenerator.Generate(fileDescriptors, directorySearchMask, fileSearchFilter, reportExtendedInfo);
-            //ISourceCodeProvider sourceCodeProvider1 = new GithubSourceCodeProvider("TomGnill", "NYSS", data);
-            //var result = sourceCodeProvider1.GetFiles();
+           // ISourceCodeProvider sourceCodeProvider1 = new GithubSourceCodeProvider("TomGnill", "NYSS", data);
+           // var result = sourceCodeProvider1.GetFiles();
         }
     }
 }
