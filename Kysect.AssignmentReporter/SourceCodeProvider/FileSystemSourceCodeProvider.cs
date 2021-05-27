@@ -19,12 +19,11 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
             var files = new List<FileDescriptor>();
             foreach (var file in Directory.EnumerateFiles(_rootDirectoryPath, "*", SearchOption.AllDirectories))
             {
-                string[] filename = file.Split(new[] { "\\" }, StringSplitOptions.None);
+                FileInfo info = new FileInfo(file);
                 files
-                    .Add(new FileDescriptor(filename[filename.Length - 1], File.ReadAllText(file),
-                        file));
+                    .Add(new FileDescriptor(info.Name, File.ReadAllText(info.FullName),
+                        info.DirectoryName));
             }
-
             return files;
         }
     }
