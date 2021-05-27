@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using Kysect.AssignmentReporter.Models;
 
 namespace Kysect.AssignmentReporter.SourceCodeProvider

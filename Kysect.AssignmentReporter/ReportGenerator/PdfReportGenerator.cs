@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Kysect.AssignmentReporter.Models;
 
 namespace Kysect.AssignmentReporter.ReportGenerator

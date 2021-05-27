@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Kysect.AssignmentReporter.Models
+﻿namespace Kysect.AssignmentReporter.Models
 {
     public class FileDescriptor
     {

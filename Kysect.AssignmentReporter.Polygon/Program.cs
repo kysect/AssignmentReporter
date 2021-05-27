@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Kysect.AssignmentReporter.Models;
-using Kysect.AssignmentReporter.ReportGenerator;
+﻿using Kysect.AssignmentReporter.Models;
 using Kysect.AssignmentReporter.SourceCodeProvider;
 
 namespace Kysect.AssignmentReporter.Polygon
@@ -22,8 +19,9 @@ namespace Kysect.AssignmentReporter.Polygon
             //var fileSearchFilter = new FileSearchFilter();
             //var reportExtendedInfo = new ReportExtendedInfo();
             //object result = reportGenerator.Generate(fileDescriptors, directorySearchMask, fileSearchFilter, reportExtendedInfo);
-           // ISourceCodeProvider sourceCodeProvider1 = new GithubSourceCodeProvider("TomGnill", "NYSS", data);
-           // var result = sourceCodeProvider1.GetFiles();
+            GitUserData data = new GitUserData("TomGnill", "s.drun@yandex.ru");
+            ISourceCodeProvider sourceCodeProvider1 = new GithubSourceCodeProvider("TomGnill", "NYSS", data);
+            var result = sourceCodeProvider1.GetFiles();
         }
     }
 }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using Kysect.AssignmentReporter.Models;
-using System.Linq;
 
 namespace Kysect.AssignmentReporter.SourceCodeProvider
 {
