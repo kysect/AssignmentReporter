@@ -9,24 +9,24 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
 {
     public class GithubSourceCodeProvider : ISourceCodeProvider
     {
-        private string _pathToTmpDir = $@"C:\Users\{Environment.UserName}\AppData\Local\AssignmentReporterTmp";
         private string _localStoragePath;
         private string _repositoryOwner;
         private string _repositoryName;
         private string _url;
         private GitUserData _data;
 
-        public GithubSourceCodeProvider(string owner, string name, GitUserData data)
+        public GithubSourceCodeProvider(string owner, string name,string rootPath, GitUserData data)
         {
             _repositoryOwner = owner;
             _repositoryName = name;
+            _localStoragePath = rootPath;
             _url = $"https://github.com/{_repositoryOwner}/{_repositoryName}.git";
             _data = data;
         }
         public List<FileDescriptor> GetFiles()
         {
-            EnsureParentDirectoryExist(_pathToTmpDir).CreateSubdirectory($"{ _repositoryOwner}\\{ _repositoryName}");
-            _localStoragePath = _pathToTmpDir + $@"\{_repositoryOwner}\{_repositoryName}";
+            EnsureParentDirectoryExist(_localStoragePath).CreateSubdirectory($"{ _repositoryOwner}\\{ _repositoryName}");
+            _localStoragePath +=$@"\{_repositoryOwner}\{_repositoryName}";
             DownloadRepositoryFromGit();
             return new FileSystemSourceCodeProvider(_localStoragePath).GetFiles();
         }
