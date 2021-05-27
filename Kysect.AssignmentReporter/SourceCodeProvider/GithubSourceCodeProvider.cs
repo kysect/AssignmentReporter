@@ -16,7 +16,7 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
         private string _url;
         private GitUserData _data;
 
-        public GithubSourceCodeProvider(string owner, string name,string rootPath, GitUserData data)
+        public GithubSourceCodeProvider(string owner, string name, string rootPath, GitUserData data)
         {
             _repositoryOwner = owner;
             _repositoryName = name;
@@ -26,8 +26,9 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
         }
         public List<FileDescriptor> GetFiles()
         {
-            EnsureParentDirectoryExist(_localStoragePath).CreateSubdirectory($"{ _repositoryOwner}\\{ _repositoryName}");
-            _localStoragePath +=$@"\{_repositoryOwner}\{_repositoryName}";
+            char separator = Path.DirectorySeparatorChar;
+            EnsureParentDirectoryExist(_localStoragePath).CreateSubdirectory($"{ _repositoryOwner}{separator}{ _repositoryName}");
+            _localStoragePath += $"{_repositoryOwner}{separator}{_repositoryName}";
             DownloadRepositoryFromGit();
             return new FileSystemSourceCodeProvider(_localStoragePath).GetFiles();
         }
@@ -62,7 +63,7 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
                     });
 
                 var signature = new Signature(
-                    new Identity($"{_data.Username}", $"{_data.Email}"), DateTimeOffset.Now);
+                    new Identity($"{CredentialsInfo.Username}", $"{_data.Email}"), DateTimeOffset.Now);
 
                 Commands.Pull(repository, signature, options);
             }
