@@ -20,12 +20,12 @@ namespace Kysect.AssignmentReporter.Polygon
             //var fileSearchFilter = new FileSearchFilter();
             //var reportExtendedInfo = new ReportExtendedInfo();
             //object result = reportGenerator.Generate(fileDescriptors, directorySearchMask, fileSearchFilter, reportExtendedInfo);
-            //ISourceCodeProvider sourceCodeProvider1 = new GithubSourceCodeProvider("TomGnill", "NYSS", @"C:\test", data);
+            //ISourceCodeProvider sourceCodeProvider1 = new GithubSourceCodeProvider("TomGnill", "ITMO_SDevTools", @"C:\test", data);
             //var result = sourceCodeProvider1.GetFiles();
             //foreach (var file in result)
             //{
-            //    Console.WriteLine($"{file.Name}-{file.Directory}");
-            //    Console.WriteLine($"{file.Content}");
+            //   Console.WriteLine($"{file.Name}-{file.Directory}");
+            //   Console.WriteLine($"{file.Content}");
             //}
         }
     }

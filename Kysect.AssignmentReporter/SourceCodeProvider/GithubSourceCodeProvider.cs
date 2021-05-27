@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Microsoft.Alm.Authentication;
 using Kysect.AssignmentReporter.Models;
 using LibGit2Sharp;
 using LibGit2Sharp.Handlers;
@@ -33,9 +34,17 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
 
         public string DownloadRepositoryFromGit()
         {
+            var CredentialsInfo = new BasicAuthentication(new SecretStore("git")).GetCredentials(new TargetUri("https://github.com"));
+
             if (!Repository.IsValid(_localStoragePath))
             {
-              Repository.Clone(_url, _localStoragePath);
+                CloneOptions options = new CloneOptions();
+                options.CredentialsProvider = (_url, usernameFromUrl, types) => new UsernamePasswordCredentials()
+                {
+                    Username = CredentialsInfo.Username,
+                    Password = CredentialsInfo.Password
+                };
+                Repository.Clone(_url, _localStoragePath, options);
             }
             else
             { 
@@ -43,11 +52,14 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
                 PullOptions options = new PullOptions();
 
                 options.FetchOptions = new FetchOptions();
-
                 options
                     .FetchOptions
                     .CredentialsProvider = new CredentialsHandler(
-                    (_url, usernameFromUrl, types) => new UsernamePasswordCredentials());
+                    (_url, usernameFromUrl, types) => new UsernamePasswordCredentials()
+                    {
+                        Username = CredentialsInfo.Username,
+                        Password = CredentialsInfo.Password
+                    });
 
                 var signature = new Signature(
                     new Identity($"{_data.Username}", $"{_data.Email}"), DateTimeOffset.Now);
