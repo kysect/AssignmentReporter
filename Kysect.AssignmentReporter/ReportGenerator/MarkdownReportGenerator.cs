@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using Kysect.AssignmentReporter.Models;
@@ -13,7 +12,7 @@ namespace Kysect.AssignmentReporter.ReportGenerator
             {"hpp", "cpp"},
             {"h", "cpp"}
         };
-        
+
         public FileContainer Generate(FileDescriptor descriptor, List<FileContainer> files,
             DirectorySearchFilter directorySearchFilter, FileSearchFilter fileSearchFilter,
             ReportExtendedInfo reportExtendedInfo)
@@ -29,7 +28,7 @@ namespace Kysect.AssignmentReporter.ReportGenerator
                 builder.Append("\n#");
                 builder.Append(file.NameWithExtension);
                 builder.Append("\n");
-                
+
                 builder.Append("```");
                 builder.Append(extension);
                 builder.Append("\n");

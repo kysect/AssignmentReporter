@@ -7,7 +7,7 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
 {
     public class FileSystemSourceCodeProvider : ISourceCodeProvider
     {
-        private string _rootDirectoryPath;
+        private readonly string _rootDirectoryPath;
 
         public FileSystemSourceCodeProvider(string rootDirectoryPath)
         {

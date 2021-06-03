@@ -6,9 +6,6 @@ namespace Kysect.AssignmentReporter.Models
 {
     public class DirectorySearchFilter
     {
-        public List<string> UnacceptableDirectoryNames { get; set; }
-        public string RegularExpression { get; set; } = string.Empty;
-
         public DirectorySearchFilter(string regularExpression) : this()
         {
             RegularExpression = regularExpression;
@@ -23,6 +20,9 @@ namespace Kysect.AssignmentReporter.Models
         {
             UnacceptableDirectoryNames = new List<string>();
         }
+
+        public List<string> UnacceptableDirectoryNames { get; set; }
+        public string RegularExpression { get; set; } = string.Empty;
 
         public bool IsAcceptable(FileDescriptor descriptor)
         {

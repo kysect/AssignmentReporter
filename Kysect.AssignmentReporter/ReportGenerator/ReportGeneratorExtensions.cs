@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Kysect.AssignmentReporter.Models;
 
@@ -8,12 +7,12 @@ namespace Kysect.AssignmentReporter.ReportGenerator
     public static class ReportGeneratorExtensions
     {
         public static List<object> GeneratePerFolder(this IReportGenerator reportGenerator, FileDescriptor destination,
-            List<FileContainer> files, DirectorySearchFilter directorySearchFilter, 
+            List<FileContainer> files, DirectorySearchFilter directorySearchFilter,
             FileSearchFilter fileSearchFilter, ReportExtendedInfo reportExtendedInfo)
         {
             //TODO: here we need to group by folder
             ILookup<string, FileDescriptor> fileGroups = null;
-            List<object> result = new List<object>();
+            var result = new List<object>();
 
             foreach (IGrouping<string, FileContainer> fileGroup in fileGroups)
             {

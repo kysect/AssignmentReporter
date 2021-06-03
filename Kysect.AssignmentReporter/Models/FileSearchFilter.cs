@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace Kysect.AssignmentReporter.Models
 {
     public class FileSearchFilter
     {
-        public List<string> UnacceptableNames { get; set; }
-        public List<string> UnacceptableExtensions { get; set; }
-
-        public string RegularExpression { get; set; } = string.Empty;
-
         public FileSearchFilter(string regularExpression) : this()
         {
             RegularExpression = regularExpression;
@@ -32,6 +25,11 @@ namespace Kysect.AssignmentReporter.Models
             UnacceptableNames = new List<string>();
             UnacceptableExtensions = new List<string>();
         }
+
+        public List<string> UnacceptableNames { get; set; }
+        public List<string> UnacceptableExtensions { get; set; }
+
+        public string RegularExpression { get; set; } = string.Empty;
 
         public bool IsAcceptable(FileDescriptor descriptor)
         {

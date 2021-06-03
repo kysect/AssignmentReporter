@@ -4,7 +4,7 @@ using Kysect.AssignmentReporter.Models;
 namespace Kysect.AssignmentReporter.SourceCodeProvider
 {
     public interface ISourceCodeProvider
-    { 
-         List<FileContainer> GetFiles();
+    {
+        List<FileContainer> GetFiles();
     }
 }
