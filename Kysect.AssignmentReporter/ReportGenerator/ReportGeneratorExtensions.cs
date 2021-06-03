@@ -16,7 +16,7 @@ namespace Kysect.AssignmentReporter.ReportGenerator
 
             foreach (IGrouping<string, FileContainer> fileGroup in fileGroups)
             {
-                var report = new FileContainer(fileGroup.Key, destination.Directory, "");
+                var report = new FileContainer(fileGroup.Key, destination.Directory);
                 report = reportGenerator.Generate(report, fileGroup.ToList(), directorySearchFilter, fileSearchFilter,
                     reportExtendedInfo);
                 result.Add(report);

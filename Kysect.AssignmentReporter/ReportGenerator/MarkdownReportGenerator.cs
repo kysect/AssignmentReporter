@@ -27,11 +27,11 @@ namespace Kysect.AssignmentReporter.ReportGenerator
 
                 builder.Append("\n#");
                 builder.Append(file.NameWithExtension);
-                builder.Append("\n");
+                builder.AppendLine();
 
                 builder.Append("```");
                 builder.Append(extension);
-                builder.Append("\n");
+                builder.AppendLine();
 
                 builder.Append(file.Content);
 
