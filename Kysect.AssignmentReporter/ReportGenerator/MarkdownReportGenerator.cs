@@ -25,7 +25,7 @@ namespace Kysect.AssignmentReporter.ReportGenerator
                 string extension = file.Extension.Remove(0, 1);
                 extension = Extensions.ContainsKey(extension) ? Extensions[extension] : extension;
 
-                builder.Append("\n#");
+                builder.Append("\n## ");
                 builder.Append(file.NameWithExtension);
                 builder.AppendLine();
 
