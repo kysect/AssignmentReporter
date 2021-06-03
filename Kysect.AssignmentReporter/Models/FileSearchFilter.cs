@@ -10,7 +10,7 @@ namespace Kysect.AssignmentReporter.Models
         public List<string> UnacceptableNames { get; set; }
         public List<string> UnacceptableExtensions { get; set; }
 
-        public string RegularExpression { get; set; } = "";
+        public string RegularExpression { get; set; } = string.Empty;
 
         public FileSearchFilter(string regularExpression) : this()
         {

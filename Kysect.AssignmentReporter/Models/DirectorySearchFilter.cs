@@ -7,7 +7,7 @@ namespace Kysect.AssignmentReporter.Models
     public class DirectorySearchFilter
     {
         public List<string> UnacceptableDirectoryNames { get; set; }
-        public string RegularExpression { get; set; } = "";
+        public string RegularExpression { get; set; } = string.Empty;
 
         public DirectorySearchFilter(string regularExpression) : this()
         {
