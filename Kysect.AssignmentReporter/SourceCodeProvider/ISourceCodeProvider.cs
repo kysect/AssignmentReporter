@@ -5,6 +5,6 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
 {
     public interface ISourceCodeProvider
     { 
-         List<FileDescriptor> GetFiles();
+         List<FileContainer> GetFiles();
     }
 }

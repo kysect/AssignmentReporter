@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Kysect.AssignmentReporter.Models;
 
 namespace Kysect.AssignmentReporter.SourceCodeProvider
@@ -13,17 +14,11 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
             _rootDirectoryPath = rootDirectoryPath;
         }
 
-        public List<FileDescriptor> GetFiles()
+        public List<FileContainer> GetFiles()
         {
-            var files = new List<FileDescriptor>();
-            foreach (var file in Directory.EnumerateFiles(_rootDirectoryPath, "*", SearchOption.AllDirectories))
-            {
-                FileInfo info = new FileInfo(file);
-                files
-                    .Add(new FileDescriptor(info.Name, File.ReadAllText(info.FullName),
-                        info.DirectoryName));
-            }
-            return files;
+            return Directory.EnumerateFiles(_rootDirectoryPath, "*", SearchOption.AllDirectories)
+                .Select(file => new FileInfo(file)).Select(info =>
+                    new FileContainer(info.Name, info.DirectoryName, File.ReadAllText(info.FullName))).ToList();
         }
     }
 }

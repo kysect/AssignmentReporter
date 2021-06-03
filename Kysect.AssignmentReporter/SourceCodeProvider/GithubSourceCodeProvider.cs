@@ -24,7 +24,7 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
             _url = $"https://github.com/{_repositoryOwner}/{_repositoryName}.git";
             _data = data;
         }
-        public List<FileDescriptor> GetFiles()
+        public List<FileContainer> GetFiles()
         {
             char separator = Path.DirectorySeparatorChar;
             EnsureParentDirectoryExist(_localStoragePath).CreateSubdirectory($"{ _repositoryOwner}{separator}{ _repositoryName}");

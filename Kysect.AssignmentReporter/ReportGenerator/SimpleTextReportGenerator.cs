@@ -5,7 +5,8 @@ namespace Kysect.AssignmentReporter.ReportGenerator
 {
     public class SimpleTextReportGenerator : IReportGenerator
     {
-        public object Generate(List<FileDescriptor> files, DirectorySearchMask directorySearchMask, FileSearchFilter fileSearchFilter, ReportExtendedInfo reportExtendedInfo)
+        public FileContainer Generate(FileDescriptor result,List<FileContainer> files, DirectorySearchFilter directorySearchFilter,
+            FileSearchFilter fileSearchFilter, ReportExtendedInfo reportExtendedInfo)
         {
             throw new System.NotImplementedException();
         }
