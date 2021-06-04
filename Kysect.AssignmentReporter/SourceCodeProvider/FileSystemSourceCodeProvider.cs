@@ -17,8 +17,9 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
         public List<FileContainer> GetFiles()
         {
             return Directory.EnumerateFiles(_rootDirectoryPath, "*", SearchOption.AllDirectories)
-                .Select(file => new FileInfo(file)).Select(info =>
-                    new FileContainer(info.Name, info.DirectoryName, File.ReadAllText(info.FullName))).ToList();
+                .Select(file => new FileInfo(file))
+                .Select(info => new FileContainer(info.Name, info.DirectoryName, File.ReadAllText(info.FullName)))
+                .ToList();
         }
     }
 }
