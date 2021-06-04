@@ -5,7 +5,8 @@ namespace Kysect.AssignmentReporter.ReportGenerator
 {
     public interface IReportGenerator
     {
-        //TODO: not sure about return type
+        string Extension { get; }
+        
         FileContainer Generate(FileDescriptor result, List<FileContainer> files,
             DirectorySearchFilter directorySearchFilter,
             FileSearchFilter fileSearchFilter, ReportExtendedInfo reportExtendedInfo);

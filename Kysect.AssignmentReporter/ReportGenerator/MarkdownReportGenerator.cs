@@ -13,6 +13,8 @@ namespace Kysect.AssignmentReporter.ReportGenerator
             {"h", "cpp"}
         };
 
+        public string Extension => "md";
+
         public FileContainer Generate(FileDescriptor descriptor, List<FileContainer> files,
             DirectorySearchFilter directorySearchFilter, FileSearchFilter fileSearchFilter,
             ReportExtendedInfo reportExtendedInfo)
@@ -22,20 +24,16 @@ namespace Kysect.AssignmentReporter.ReportGenerator
             foreach (FileContainer file in files.Where(file =>
                 fileSearchFilter.IsAcceptable(file) && directorySearchFilter.IsAcceptable(file)))
             {
-                string extension = file.Extension.Remove(0, 1);
-                extension = Extensions.ContainsKey(extension) ? Extensions[extension] : extension;
+                string extension = Extensions.ContainsKey(file.Extension) ? Extensions[file.Extension] : file.Extension;
 
-                builder.Append("\n## ");
-                builder.Append(file.NameWithExtension);
-                builder.AppendLine();
+                builder.AppendLine("## " + file.NameWithExtension);
 
                 builder.Append("```");
-                builder.Append(extension);
-                builder.AppendLine();
+                builder.AppendLine(extension);
 
                 builder.Append(file.Content);
 
-                builder.Append("\n```\n\n");
+                builder.AppendLine("\n```\n");
             }
 
             var result = new FileContainer(descriptor, builder.ToString());

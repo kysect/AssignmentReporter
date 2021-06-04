@@ -36,7 +36,7 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
 
         public string DownloadRepositoryFromGit()
         {
-            Credential CredentialsInfo =
+            Credential credentialsInfo = 
                 new BasicAuthentication(new SecretStore("git")).GetCredentials(new TargetUri("https://github.com"));
 
             if (!Repository.IsValid(_localStoragePath))
@@ -44,8 +44,8 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
                 var options = new CloneOptions();
                 options.CredentialsProvider = (_url, usernameFromUrl, types) => new UsernamePasswordCredentials
                 {
-                    Username = CredentialsInfo.Username,
-                    Password = CredentialsInfo.Password
+                    Username = credentialsInfo.Username,
+                    Password = credentialsInfo.Password
                 };
                 Repository.Clone(_url, _localStoragePath, options);
             }
@@ -59,12 +59,12 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
                     .FetchOptions
                     .CredentialsProvider = (_url, usernameFromUrl, types) => new UsernamePasswordCredentials
                 {
-                    Username = CredentialsInfo.Username,
-                    Password = CredentialsInfo.Password
+                    Username = credentialsInfo.Username,
+                    Password = credentialsInfo.Password
                 };
 
                 var signature = new Signature(
-                    new Identity($"{CredentialsInfo.Username}", $"{_data.Email}"), DateTimeOffset.Now);
+                    new Identity($"{credentialsInfo.Username}", $"{_data.Email}"), DateTimeOffset.Now);
 
                 Commands.Pull(repository, signature, options);
             }

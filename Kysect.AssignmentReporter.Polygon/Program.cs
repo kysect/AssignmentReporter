@@ -12,11 +12,11 @@ namespace Kysect.AssignmentReporter.Polygon
         {
             GenerateSimpleReport();
 
-            string path = @"";
+            string path = @"/Users/george/Documents/Programming2Sem/Lab2/";
 
             var sourceProvider = new FileSystemSourceCodeProvider(path);
-            var source = new FileContainer("source.md", path);
-            var fileFilter = new FileSearchFilter(new List<string> {".DS_Store", ".md"},
+            var source = new FileContainer("source", "md", path);
+            var fileFilter = new FileSearchFilter(new List<string> {"DS_Store", "md"},
                 new List<string> {"CMakeLists"});
             var directoryFilter = new DirectorySearchFilter(new List<string> {".idea", "cmake-build-debug"});
 

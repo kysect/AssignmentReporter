@@ -6,6 +6,8 @@ namespace Kysect.AssignmentReporter.ReportGenerator
 {
     public class SimpleTextReportGenerator : IReportGenerator
     {
+        public string Extension => "txt";
+
         public FileContainer Generate(FileDescriptor result, List<FileContainer> files,
             DirectorySearchFilter directorySearchFilter,
             FileSearchFilter fileSearchFilter, ReportExtendedInfo reportExtendedInfo)
