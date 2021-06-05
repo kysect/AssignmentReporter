@@ -9,13 +9,12 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
     {
         private readonly string _rootDirectoryPath;
 
-        private readonly DirectorySearchMask _directorySearchMask;
+        
         private readonly FileSearchFilter _fileSearchFilter;
 
-        public FileSystemSourceCodeProvider(string rootDirectoryPath, DirectorySearchMask directorySearchMask, FileSearchFilter fileSearchFilter)
+        public FileSystemSourceCodeProvider(string rootDirectoryPath, FileSearchFilter fileSearchFilter)
         {
             _rootDirectoryPath = rootDirectoryPath;
-            _directorySearchMask = directorySearchMask;
             _fileSearchFilter = fileSearchFilter;
         }
 
@@ -27,7 +26,7 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
                 FileInfo info = new FileInfo(file);
                 if (_fileSearchFilter.FileIsAcceptable(info.Name) && 
                     _fileSearchFilter.FormatIsAcceptable(info.Name) &&
-                    _directorySearchMask.DirectoryIsAcceptable(info.DirectoryName))
+                    _fileSearchFilter.DirectoryIsAcceptable(info.DirectoryName))
                 {
                     files
                         .Add(new FileDescriptor(info.Name, File.ReadAllText(info.FullName), info.DirectoryName));

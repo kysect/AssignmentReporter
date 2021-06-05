@@ -6,15 +6,16 @@ namespace Kysect.AssignmentReporter.Models.FileLists
     {
         public List<string> FileNames { get; set; }
         public List<string> FileFormats { get; set; }
-        public List<string> Directory { get; set; }
+        public List<string> Directories { get; set; }
 
-        public BlackList(List<string> fileNames, List<string> fileFormats, List<string> directories)
+        public BlackList(List<string> fileNames, List<string> fileFormats, List<string> directorieses)
         {
             FileNames = fileNames;
             FileFormats = fileFormats;
-            Directory = directories;
+            Directories = directorieses;
         }
 
+        public BlackList() { }
         public bool FileIsNotAcceptable(string fileName)
         {
             bool fileIsAllowed = FileNames?.Contains(fileName) ?? true;
