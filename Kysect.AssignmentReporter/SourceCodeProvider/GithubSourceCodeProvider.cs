@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Microsoft.Alm.Authentication;
 using Kysect.AssignmentReporter.Models;
 using LibGit2Sharp;
-using LibGit2Sharp.Handlers;
+using Microsoft.Alm.Authentication;
 
 namespace Kysect.AssignmentReporter.SourceCodeProvider
 {
     public class GithubSourceCodeProvider : ISourceCodeProvider
     {
+        private readonly GitUserData _data;
         private string _localStoragePath;
-        private string _repositoryOwner;
-        private string _repositoryName;
-        private string _url;
-        private GitUserData _data;
+        private readonly string _repositoryName;
+        private readonly string _repositoryOwner;
+        private readonly string _url;
 
         public GithubSourceCodeProvider(string owner, string name, string rootPath, GitUserData data)
         {
@@ -24,10 +23,12 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
             _url = $"https://github.com/{_repositoryOwner}/{_repositoryName}.git";
             _data = data;
         }
-        public List<FileDescriptor> GetFiles()
+
+        public List<FileContainer> GetFiles()
         {
             char separator = Path.DirectorySeparatorChar;
-            EnsureParentDirectoryExist(_localStoragePath).CreateSubdirectory($"{ _repositoryOwner}{separator}{ _repositoryName}");
+            EnsureParentDirectoryExist(_localStoragePath)
+                .CreateSubdirectory($"{_repositoryOwner}{separator}{_repositoryName}");
             _localStoragePath += $"{_repositoryOwner}{separator}{_repositoryName}";
             DownloadRepositoryFromGit();
             return new FileSystemSourceCodeProvider(_localStoragePath).GetFiles();
@@ -35,48 +36,46 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
 
         public string DownloadRepositoryFromGit()
         {
-            var CredentialsInfo = new BasicAuthentication(new SecretStore("git")).GetCredentials(new TargetUri("https://github.com"));
+            Credential credentialsInfo = 
+                new BasicAuthentication(new SecretStore("git")).GetCredentials(new TargetUri("https://github.com"));
 
             if (!Repository.IsValid(_localStoragePath))
             {
-                CloneOptions options = new CloneOptions();
-                options.CredentialsProvider = (_url, usernameFromUrl, types) => new UsernamePasswordCredentials()
+                var options = new CloneOptions();
+                options.CredentialsProvider = (_url, usernameFromUrl, types) => new UsernamePasswordCredentials
                 {
-                    Username = CredentialsInfo.Username,
-                    Password = CredentialsInfo.Password
+                    Username = credentialsInfo.Username,
+                    Password = credentialsInfo.Password
                 };
                 Repository.Clone(_url, _localStoragePath, options);
             }
             else
-            { 
+            {
                 var repository = new Repository(_localStoragePath);
-                PullOptions options = new PullOptions();
+                var options = new PullOptions();
 
                 options.FetchOptions = new FetchOptions();
                 options
                     .FetchOptions
-                    .CredentialsProvider = new CredentialsHandler(
-                    (_url, usernameFromUrl, types) => new UsernamePasswordCredentials()
-                    {
-                        Username = CredentialsInfo.Username,
-                        Password = CredentialsInfo.Password
-                    });
+                    .CredentialsProvider = (_url, usernameFromUrl, types) => new UsernamePasswordCredentials
+                {
+                    Username = credentialsInfo.Username,
+                    Password = credentialsInfo.Password
+                };
 
                 var signature = new Signature(
-                    new Identity($"{CredentialsInfo.Username}", $"{_data.Email}"), DateTimeOffset.Now);
+                    new Identity($"{credentialsInfo.Username}", $"{_data.Email}"), DateTimeOffset.Now);
 
                 Commands.Pull(repository, signature, options);
             }
 
             return _localStoragePath;
         }
+
         public DirectoryInfo EnsureParentDirectoryExist(string _path)
         {
-            DirectoryInfo dirInfo = new DirectoryInfo(_path);
-            if (!dirInfo.Exists)
-            {
-                dirInfo.Create();
-            }
+            var dirInfo = new DirectoryInfo(_path);
+            if (!dirInfo.Exists) dirInfo.Create();
             return dirInfo;
         }
     }
