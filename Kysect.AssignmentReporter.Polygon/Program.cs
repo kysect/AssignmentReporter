@@ -1,4 +1,11 @@
-﻿namespace Kysect.AssignmentReporter.Polygon
+﻿using System;
+using System.Collections.Generic;
+using Kysect.AssignmentReporter.Models;
+using Kysect.AssignmentReporter.Models.FileLists;
+using Kysect.AssignmentReporter.ReportGenerator;
+using Kysect.AssignmentReporter.SourceCodeProvider;
+
+namespace Kysect.AssignmentReporter.Polygon
 {
     class Program
     {
@@ -9,16 +16,15 @@
 
         public static void GenerateSimpleReport()
         {
-            //ISourceCodeProvider sourceCodeProvider = new FileSystemSourceCodeProvider(@"C:\Users\andri\source\repos\ITMO_OOP_2020"); IReportGenerator reportGenerator = new SimpleTextReportGenerator();
+            //BlackList bl = new BlackList(new List<string>() { "starter.cs" }, null, new List<string>() {"Exam_Pattern", "obj", "bin"});
+            //WhiteList wl = new WhiteList(null,new List<string>(){".cs"}, null);
+            //var directorySearchMask = new DirectorySearchMask(bl, wl);
+            //var fileSearchFilter = new FileSearchFilter(bl, wl);
 
+            //ISourceCodeProvider sourceCodeProvider = new FileSystemSourceCodeProvider(@"C:\Users\andri\source\repos\ITMO_OOP_2020", directorySearchMask, fileSearchFilter);
+            //IReportGenerator reportGenerator = new SimpleTextReportGenerator();
             //List<FileDescriptor> fileDescriptors = sourceCodeProvider.GetFiles();
-            //var directorySearchMask = new DirectorySearchMask();
-            //var fileSearchFilter = new FileSearchFilter();
-            //var reportExtendedInfo = new ReportExtendedInfo();
-            //object result = reportGenerator.Generate(fileDescriptors, directorySearchMask, fileSearchFilter, reportExtendedInfo);
-           
-            //ISourceCodeProvider sourceCodeProvider1 = new GithubSourceCodeProvider("TomGnill", "ITMO_SDevTools", @"C:\test", data);
-            //var result = sourceCodeProvider1.GetFiles();
+            //var result = sourceCodeProvider.GetFiles();
             //foreach (var file in result)
             //{
             //    Console.WriteLine($"{file.Name}-{file.Directory}");
