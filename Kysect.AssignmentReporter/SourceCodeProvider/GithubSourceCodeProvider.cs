@@ -26,7 +26,7 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
             _data = data;
             _fileSearchFilter = fileSearchFilter;
         }
-        public List<FileDescriptor> GetFiles()
+        public List<FileContainer> GetFiles()
         {
             char separator = Path.DirectorySeparatorChar;
             EnsureParentDirectoryExist(_localStoragePath).CreateSubdirectory($"{ _repositoryOwner}{separator}{ _repositoryName}");

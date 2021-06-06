@@ -1,13 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Kysect.AssignmentReporter.Models;
 
 namespace Kysect.AssignmentReporter.ReportGenerator
 {
     public class DocxReportGenerator : IReportGenerator
     {
-        public object Generate(List<FileDescriptor> files, DirectorySearchMask directorySearchMask, FileSearchFilter fileSearchFilter, ReportExtendedInfo reportExtendedInfo)
+        public string Extension => "docx";
+
+        public FileContainer Generate(FileDescriptor result, List<FileContainer> files, ReportExtendedInfo reportExtendedInfo)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

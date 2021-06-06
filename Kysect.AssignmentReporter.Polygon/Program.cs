@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Kysect.AssignmentReporter.Models;
-using Kysect.AssignmentReporter.Models.FileLists;
 using Kysect.AssignmentReporter.ReportGenerator;
 using Kysect.AssignmentReporter.SourceCodeProvider;
 
@@ -16,17 +15,22 @@ namespace Kysect.AssignmentReporter.Polygon
 
         public static void GenerateSimpleReport()
         {
-            BlackList bl = new BlackList(new List<string>() { "starter.cs" }, null, new List<string>() { "Exam_Pattern", "obj", "bin" });
-            WhiteList wl = new WhiteList(null, new List<string>() { ".cs" }, null);
-            var fileSearchFilter = new FileSearchFilter(bl, wl);
+            var bl = new FileMask(
+                new List<string> { "CMakeLists" }, 
+                new List<string> {"md", "DS_Store"}, 
+                new List<string> { "cmake-build-debug", ".idea" });
+            var ex = new FileMask(
+                new List<string>(), 
+                new List<string>(), 
+                new List<string>());
+            var fileSearchFilter = new FileSearchFilter(bl, ex);
 
-            ISourceCodeProvider sourceCodeProvider = new FileSystemSourceCodeProvider(@"C:\Users\andri\source\repos\ITMO_OOP_2020", fileSearchFilter);
-            IReportGenerator reportGenerator = new SimpleTextReportGenerator();
-            List<FileDescriptor> fileDescriptors = sourceCodeProvider.GetFiles();
-            var result = sourceCodeProvider.GetFiles();
-            foreach (var file in result)
+            ISourceCodeProvider sourceCodeProvider = new FileSystemSourceCodeProvider(@"/Users/george/Documents/Programming2Sem/Lab3", fileSearchFilter);
+            var reportGenerator = new SimpleTextReportGenerator();
+            List<FileContainer> result = sourceCodeProvider.GetFiles();
+            foreach (FileContainer file in result)
             {
-                Console.WriteLine(file.Name.Substring(file.Name.IndexOf(".")));
+                Console.WriteLine(file.NameWithExtension);
             }
         }
     }
