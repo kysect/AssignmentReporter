@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Kysect.AssignmentReporter.Models;
@@ -9,17 +10,21 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
     {
         private readonly string _rootDirectoryPath;
 
-        public FileSystemSourceCodeProvider(string rootDirectoryPath)
+        private readonly FileSearchFilter _fileSearchFilter;
+
+
+        public FileSystemSourceCodeProvider(string rootDirectoryPath, FileSearchFilter fileSearchFilter)
         {
             _rootDirectoryPath = rootDirectoryPath;
+            _fileSearchFilter = fileSearchFilter;
         }
 
         public List<FileContainer> GetFiles()
-        {
-            return Directory.EnumerateFiles(_rootDirectoryPath, "*", SearchOption.AllDirectories)
-                .Select(file => new FileInfo(file))
-                .Select(info => new FileContainer(info))
-                .ToList();
-        }
+            => Directory
+                .EnumerateFiles(_rootDirectoryPath, "*", SearchOption.AllDirectories)
+                .Select(f => new FileInfo(f))
+                .Select(i => new FileDescriptor(i))
+                .Where(d => _fileSearchFilter.FileIsAcceptable(d))
+                .Select(d => new FileContainer(d, File.ReadAllText(d.FileInfo.FullName))).ToList();
     }
 }

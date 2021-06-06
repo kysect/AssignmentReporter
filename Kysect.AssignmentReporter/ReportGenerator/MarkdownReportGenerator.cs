@@ -15,14 +15,11 @@ namespace Kysect.AssignmentReporter.ReportGenerator
 
         public string Extension => "md";
 
-        public FileContainer Generate(FileDescriptor descriptor, List<FileContainer> files,
-            DirectorySearchFilter directorySearchFilter, FileSearchFilter fileSearchFilter,
-            ReportExtendedInfo reportExtendedInfo)
+        public FileContainer Generate(FileDescriptor descriptor, List<FileContainer> files, ReportExtendedInfo reportExtendedInfo)
         {
             var builder = new StringBuilder();
 
-            foreach (FileContainer file in files.Where(file =>
-                fileSearchFilter.IsAcceptable(file) && directorySearchFilter.IsAcceptable(file)))
+            foreach (FileContainer file in files)
             {
                 string extension = Extensions.ContainsKey(file.Extension) ? Extensions[file.Extension] : file.Extension;
 

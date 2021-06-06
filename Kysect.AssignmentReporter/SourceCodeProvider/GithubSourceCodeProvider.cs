@@ -11,19 +11,22 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
     {
         private readonly GitUserData _data;
         private string _localStoragePath;
-        private readonly string _repositoryName;
         private readonly string _repositoryOwner;
+        private readonly string _repositoryName;
         private readonly string _url;
+        private readonly GitUserData _data;
+        private readonly FileSearchFilter _fileSearchFilter;
 
-        public GithubSourceCodeProvider(string owner, string name, string rootPath, GitUserData data)
+        public GithubSourceCodeProvider(string owner, string name, string rootPath, GitUserData data, FileSearchFilter fileSearchFilter)
         {
             _repositoryOwner = owner;
             _repositoryName = name;
             _localStoragePath = rootPath;
             _url = $"https://github.com/{_repositoryOwner}/{_repositoryName}.git";
             _data = data;
+            _fileSearchFilter = fileSearchFilter;
         }
-
+        
         public List<FileContainer> GetFiles()
         {
             char separator = Path.DirectorySeparatorChar;
@@ -31,7 +34,7 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
                 .CreateSubdirectory($"{_repositoryOwner}{separator}{_repositoryName}");
             _localStoragePath += $"{_repositoryOwner}{separator}{_repositoryName}";
             DownloadRepositoryFromGit();
-            return new FileSystemSourceCodeProvider(_localStoragePath).GetFiles();
+            return new FileSystemSourceCodeProvider(_localStoragePath, _fileSearchFilter).GetFiles();
         }
 
         public string DownloadRepositoryFromGit()

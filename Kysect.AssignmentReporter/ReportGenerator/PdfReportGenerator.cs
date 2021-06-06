@@ -8,9 +8,7 @@ namespace Kysect.AssignmentReporter.ReportGenerator
     {
         public string Extension => "pdf";
 
-        public FileContainer Generate(FileDescriptor result, List<FileContainer> files,
-            DirectorySearchFilter directorySearchFilter,
-            FileSearchFilter fileSearchFilter, ReportExtendedInfo reportExtendedInfo)
+        public FileContainer Generate(FileDescriptor result, List<FileContainer> files, ReportExtendedInfo reportExtendedInfo)
         {
             throw new NotImplementedException();
         }

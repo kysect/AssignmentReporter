@@ -7,8 +7,6 @@ namespace Kysect.AssignmentReporter.ReportGenerator
     {
         string Extension { get; }
         
-        FileContainer Generate(FileDescriptor result, List<FileContainer> files,
-            DirectorySearchFilter directorySearchFilter,
-            FileSearchFilter fileSearchFilter, ReportExtendedInfo reportExtendedInfo);
+        FileContainer Generate(FileDescriptor result, List<FileContainer> files, ReportExtendedInfo reportExtendedInfo);
     }
 }

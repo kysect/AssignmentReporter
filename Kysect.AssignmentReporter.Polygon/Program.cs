@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.IO;
+using System;
+using System.Collections.Generic;
 using Kysect.AssignmentReporter.Models;
 using Kysect.AssignmentReporter.ReportGenerator;
 using Kysect.AssignmentReporter.SourceCodeProvider;
@@ -30,21 +30,23 @@ namespace Kysect.AssignmentReporter.Polygon
 
         public static void GenerateSimpleReport()
         {
-            //ISourceCodeProvider sourceCodeProvider = new FileSystemSourceCodeProvider(@"C:\Users\andri\source\repos\ITMO_OOP_2020"); IReportGenerator reportGenerator = new SimpleTextReportGenerator();
+            var bl = new FileMask(
+                new List<string> { "CMakeLists" }, 
+                new List<string> {"md", "DS_Store"}, 
+                new List<string> { "cmake-build-debug", ".idea" });
+            var ex = new FileMask(
+                new List<string>(), 
+                new List<string>(), 
+                new List<string>());
+            var fileSearchFilter = new FileSearchFilter(bl, ex);
 
-            //List<FileDescriptor> fileDescriptors = sourceCodeProvider.GetFiles();
-            //var directorySearchMask = new DirectorySearchMask();
-            //var fileSearchFilter = new FileSearchFilter();
-            //var reportExtendedInfo = new ReportExtendedInfo();
-            //object result = reportGenerator.Generate(fileDescriptors, directorySearchMask, fileSearchFilter, reportExtendedInfo);
-
-            //ISourceCodeProvider sourceCodeProvider1 = new GithubSourceCodeProvider("TomGnill", "ITMO_SDevTools", @"C:\test", data);
-            //var result = sourceCodeProvider1.GetFiles();
-            //foreach (var file in result)
-            //{
-            //    Console.WriteLine($"{file.Name}-{file.Directory}");
-            //    Console.WriteLine($"{file.Content}");
-            //}
+            ISourceCodeProvider sourceCodeProvider = new FileSystemSourceCodeProvider(@"/Users/george/Documents/Programming2Sem/Lab3", fileSearchFilter);
+            var reportGenerator = new MarkdownReportGenerator();
+            List<FileContainer> result = sourceCodeProvider.GetFiles();
+            foreach (FileContainer file in result)
+            {
+                Console.WriteLine(file.NameWithExtension);
+            }
         }
     }
 }

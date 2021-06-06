@@ -1,41 +1,38 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Kysect.AssignmentReporter.Models
 {
     public class FileSearchFilter
     {
-        public FileSearchFilter(string regularExpression) : this()
-        {
-            RegularExpression = regularExpression;
-        }
+        public FileMask BlackList { get; set; }
+        public FileMask Exceptions { get; set; }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="unacceptableExtensions"> File extensions with period </param>
-        /// <param name="unacceptableNames"></param>
-        public FileSearchFilter(List<string> unacceptableExtensions, List<string> unacceptableNames)
+        public FileSearchFilter(FileMask blackList, FileMask exceptions)
         {
-            UnacceptableNames = unacceptableNames;
-            UnacceptableExtensions = unacceptableExtensions;
+            BlackList = blackList;
+            Exceptions = exceptions;
         }
 
         public FileSearchFilter()
         {
-            UnacceptableNames = new List<string>();
-            UnacceptableExtensions = new List<string>();
+            Exceptions = new FileMask();
+            BlackList = new FileMask();
         }
 
-        public List<string> UnacceptableNames { get; set; }
-        public List<string> UnacceptableExtensions { get; set; }
+        private bool NameIsAcceptable(FileDescriptor descriptor)
+            => !BlackList.NameIntersection(descriptor.Name) || Exceptions.NameIntersection(descriptor.Name);
 
-        public string RegularExpression { get; set; } = string.Empty;
+        private bool ExtensionsIsAcceptable(FileDescriptor descriptor)
+            => !BlackList.ExtensionIntersection(descriptor.Extension) || Exceptions.ExtensionIntersection(descriptor.Extension);
 
-        public bool IsAcceptable(FileDescriptor descriptor)
-        {
-            return !UnacceptableNames.Contains(descriptor.Name) &&
-                   !UnacceptableExtensions.Contains(descriptor.Extension) &&
-                   Regex.IsMatch(descriptor.NameWithExtension, RegularExpression);
-        }
+        private bool DirectoryIsAcceptable(FileDescriptor descriptor)
+            => !BlackList.DirectoryIntersection(descriptor.Directory) || Exceptions.DirectoryIntersection(descriptor.Directory);
+
+        public bool FileIsAcceptable(FileDescriptor descriptor)
+            => NameIsAcceptable(descriptor) &&
+               ExtensionsIsAcceptable(descriptor) &&
+               DirectoryIsAcceptable(descriptor);
     }
 }
