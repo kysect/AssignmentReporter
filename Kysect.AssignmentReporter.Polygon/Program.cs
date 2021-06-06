@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Kysect.AssignmentReporter.Models;
 using Kysect.AssignmentReporter.ReportGenerator;
@@ -6,11 +6,26 @@ using Kysect.AssignmentReporter.SourceCodeProvider;
 
 namespace Kysect.AssignmentReporter.Polygon
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             GenerateSimpleReport();
+
+            string path = @"/Users/george/Documents/Programming2Sem/Lab2/";
+
+            var sourceProvider = new FileSystemSourceCodeProvider(path);
+            var source = new FileContainer("source", "md", path);
+            var fileFilter = new FileSearchFilter(new List<string> {"DS_Store", "md"},
+                new List<string> {"CMakeLists"});
+            var directoryFilter = new DirectorySearchFilter(new List<string> {".idea", "cmake-build-debug"});
+
+            var generator = new MarkdownReportGenerator();
+
+            source = generator.Generate(source, sourceProvider.GetFiles(), directoryFilter, fileFilter,
+                new ReportExtendedInfo());
+
+            File.WriteAllText(Path.Combine(source.Directory, source.NameWithExtension), source.Content);
         }
 
         public static void GenerateSimpleReport()
@@ -26,7 +41,7 @@ namespace Kysect.AssignmentReporter.Polygon
             var fileSearchFilter = new FileSearchFilter(bl, ex);
 
             ISourceCodeProvider sourceCodeProvider = new FileSystemSourceCodeProvider(@"/Users/george/Documents/Programming2Sem/Lab3", fileSearchFilter);
-            var reportGenerator = new SimpleTextReportGenerator();
+            var reportGenerator = new MarkdownReportGenerator();
             List<FileContainer> result = sourceCodeProvider.GetFiles();
             foreach (FileContainer file in result)
             {
