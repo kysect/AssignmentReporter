@@ -9,7 +9,6 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
 {
     public class GithubSourceCodeProvider : ISourceCodeProvider
     {
-        private readonly GitUserData _data;
         private string _localStoragePath;
         private readonly string _repositoryOwner;
         private readonly string _repositoryName;
