@@ -5,8 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="DocX" Version="1.8.0" />
     <PackageReference Include="LibGit2Sharp" Version="0.26.2" />
     <PackageReference Include="Microsoft.Alm.Authentication" Version="4.3.0" />
+    <PackageReference Include="System.IO.Packaging" Version="5.0.0" />
   </ItemGroup>
 
 </Project>
