@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Kysect.AssignmentReporter.Models;
 using Xceed.Document.NET;
 using Xceed.Words.NET;
-using System.Xml;
 
 namespace Kysect.AssignmentReporter.ReportGenerator
 {
@@ -14,25 +12,30 @@ namespace Kysect.AssignmentReporter.ReportGenerator
         public string Extension => "docx";
 
         public ReportExtendedInfo ReportInfo { get; set; }
-        public List<FileContainer> Files { get; set; }
+        public List<FileDescriptor> Files { get; set; }
 
-        public DocxReportGenerator(ReportExtendedInfo reportInfo, List<FileContainer> files)
+        public DocxReportGenerator(ReportExtendedInfo reportInfo, List<FileDescriptor> files)
         {
             Files = files;
             ReportInfo = reportInfo;
         }
         public string GenerateDocx(TitlePageInfo titlePage)
         {
-            Document document;
+            var document = DocX.Create(ReportInfo.Path, DocumentTypes.Document);
             if (titlePage != null)
             {
-                document = AddTitleList(titlePage);
-            }
-            else
-            {
-                document = DocX.Create(ReportInfo.Path, DocumentTypes.Document);
-            }
+                var titleList = AddTitleList(titlePage).Paragraphs;
+                foreach (var paragraph in titleList)
+                {
+                    document.InsertParagraph(paragraph);
+                }
 
+                for (int i = 0; i < 22; i++)
+                {
+                    document.InsertParagraph(String.Empty);
+                }
+
+            }
 
             document.InsertParagraph("introduction:")
                 .FontSize(15)
@@ -67,6 +70,7 @@ namespace Kysect.AssignmentReporter.ReportGenerator
             document.InsertParagraph($"{ReportInfo.Conclusion}")
                 .FontSize(12)
                 .Alignment = Alignment.left;
+           
             document.Save(ReportInfo.Path);
 
             return ReportInfo.Path;
@@ -101,7 +105,7 @@ namespace Kysect.AssignmentReporter.ReportGenerator
             return titleList;
         }
 
-        public FileContainer Generate(FileDescriptor result, List<FileContainer> files, ReportExtendedInfo reportExtendedInfo)
+        public FileDescriptor Generate(FileDescriptor result, List<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
         {
             throw new NotImplementedException();
         }

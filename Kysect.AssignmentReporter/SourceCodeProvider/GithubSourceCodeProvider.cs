@@ -26,7 +26,7 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
             _fileSearchFilter = fileSearchFilter;
         }
         
-        public List<FileContainer> GetFiles()
+        public List<FileDescriptor> GetFiles()
         {
             char separator = Path.DirectorySeparatorChar;
             EnsureParentDirectoryExist(_localStoragePath)

@@ -1,38 +1,74 @@
-using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Text.RegularExpressions;
+using Kysect.AssignmentReporter.Models.FileLists;
 
 namespace Kysect.AssignmentReporter.Models
 {
     public class FileSearchFilter
     {
-        public FileMask BlackList { get; set; }
-        public FileMask Exceptions { get; set; }
+        public BlackList BlackList { get; set; }
+        public WhiteList WhiteList { get; set; }
 
-        public FileSearchFilter(FileMask blackList, FileMask exceptions)
+        public FileSearchFilter(BlackList blackList, WhiteList whiteList)
         {
             BlackList = blackList;
-            Exceptions = exceptions;
+            WhiteList = whiteList;
+        } 
+        public FileSearchFilter(BlackList blackList)
+        {
+            BlackList = blackList;
+            WhiteList = null;
+        } 
+        public FileSearchFilter (WhiteList whiteList)
+        { 
+            WhiteList = whiteList;
+            BlackList = null;
         }
 
         public FileSearchFilter()
         {
-            Exceptions = new FileMask();
-            BlackList = new FileMask();
+            WhiteList = null;
+            BlackList = null;
+        }
+        public bool FileIsAcceptable(string fileName)
+        {
+            bool blackListAllowed = BlackList?.FileIsNotAcceptable(fileName) ?? true;
+            bool whiteListAllowed = WhiteList?.FileIsAcceptable(fileName) ?? true;
+            return blackListAllowed & whiteListAllowed;
+        }
+        public bool FormatIsAcceptable(string fileName)
+        {
+            bool blackListAllowed = BlackList?.FormatIsNotAcceptable(CheckFormat(fileName)) ?? true;
+            bool whiteListAllowed = WhiteList?.FormatIsAcceptable(CheckFormat(fileName)) ?? true;
+            return whiteListAllowed & blackListAllowed;
         }
 
-        private bool NameIsAcceptable(FileDescriptor descriptor)
-            => !BlackList.NameIntersection(descriptor.Name) || Exceptions.NameIntersection(descriptor.Name);
-
-        private bool ExtensionsIsAcceptable(FileDescriptor descriptor)
-            => !BlackList.ExtensionIntersection(descriptor.Extension) || Exceptions.ExtensionIntersection(descriptor.Extension);
-
-        private bool DirectoryIsAcceptable(FileDescriptor descriptor)
-            => !BlackList.DirectoryIntersection(descriptor.Directory) || Exceptions.DirectoryIntersection(descriptor.Directory);
-
-        public bool FileIsAcceptable(FileDescriptor descriptor)
-            => NameIsAcceptable(descriptor) &&
-               ExtensionsIsAcceptable(descriptor) &&
-               DirectoryIsAcceptable(descriptor);
+        public bool DirectoryIsAcceptable(string filePath)
+        {
+            bool blackListAllowed = true;
+            bool whiteListAllowed = true;
+            if (BlackList != null && BlackList.Directories != null)
+            {
+                if (BlackList.Directories
+                    .Select(dirName => new Regex(dirName))
+                    .Any(regDir => regDir.IsMatch(filePath)))
+                {
+                    blackListAllowed = false;
+                }
+            }
+            if (WhiteList != null && WhiteList.Directories != null)
+            {
+                if (WhiteList.Directories
+                    .Any(dirName => !new Regex(dirName).IsMatch(filePath)))
+                {
+                    whiteListAllowed = false;
+                }
+            }
+            return whiteListAllowed & blackListAllowed;
+        }
+        public string CheckFormat(string fileName)
+        {
+            return new Regex(".").IsMatch(fileName)? fileName.Substring(fileName.IndexOf(".")) : ".dosntHaveExtention";
+        }
     }
 }
