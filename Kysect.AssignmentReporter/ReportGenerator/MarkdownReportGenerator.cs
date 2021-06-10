@@ -15,7 +15,7 @@ namespace Kysect.AssignmentReporter.ReportGenerator
 
     //    public string Extension => "md";
 
-    //    public FileDescriptor Generate(FileDescriptor descriptor, List<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
+    //    public FileDescriptor Generate(List<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
     //    {
     //        var builder = new StringBuilder();
 
@@ -23,7 +23,7 @@ namespace Kysect.AssignmentReporter.ReportGenerator
     //        {
     //            string extension = Extensions.ContainsKey(file.Extension) ? Extensions[file.Extension] : file.Extension;
 
-    //            builder.AppendLine("## " + file.NameWithExtension);
+    //            builder.AppendLine("## " + file.Name);
 
     //            builder.Append("```");
     //            builder.AppendLine(extension);

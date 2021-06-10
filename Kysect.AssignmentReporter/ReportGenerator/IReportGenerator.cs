@@ -7,6 +7,6 @@ namespace Kysect.AssignmentReporter.ReportGenerator
     {
         string Extension { get; }
 
-        FileDescriptor Generate(FileDescriptor result, List<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo);
+        FileDescriptor Generate(List<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo);
     }
 }
