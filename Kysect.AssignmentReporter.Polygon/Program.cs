@@ -12,9 +12,17 @@ namespace Kysect.AssignmentReporter.Polygon
     {
         private static void Main(string[] args)
         {
+            //Create instance of report generator of your choice
             IReportGenerator generator = new MarkdownReportGenerator();
             //Fill the report configuration, with filter parameters 
-            var configuration = new ReportConfiguration("", "", "",
+            var configuration = new ReportConfiguration(
+                //Input path
+                @"", 
+                //Output path
+                @"", 
+                //Output file name
+                "",
+                //Ignore file mask
                 new FileMask(
                     //Names
                     new List<string> {"CMakeLists"},
@@ -22,12 +30,12 @@ namespace Kysect.AssignmentReporter.Polygon
                     new List<string> {"md", "DS_Store"},
                     //Directories
                     new List<string> {"cmake-build-debug", ".idea"}),
+                //Allow file mask
                 new FileMask(
                     new List<string>(),
                     new List<string>(),
                     new List<string>()));
 
-            //Pass to the function your generator of choice and configuration
             GenerateReport(generator, configuration);
         }
 
