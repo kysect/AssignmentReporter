@@ -12,38 +12,34 @@ namespace Kysect.AssignmentReporter.Polygon
     {
         private static void Main(string[] args)
         {
-            //Insert the needed report generator type in generic template
-            GenerateReport<MarkdownReportGenerator>();
+            IReportGenerator generator = new MarkdownReportGenerator();
+            //Fill the report configuration, with filter parameters 
+            var configuration = new ReportConfiguration("", "", "",
+                new FileMask(
+                    //Names
+                    new List<string> {"CMakeLists"},
+                    //Extentions
+                    new List<string> {"md", "DS_Store"},
+                    //Directories
+                    new List<string> {"cmake-build-debug", ".idea"}),
+                new FileMask(
+                    new List<string>(),
+                    new List<string>(),
+                    new List<string>()));
+
+            //Pass to the function your generator of choice and configuration
+            GenerateReport(generator, configuration);
         }
 
-        public static void GenerateReport<TReportGenerator>() where TReportGenerator : IReportGenerator, new()
+        public static void GenerateReport(IReportGenerator generator, ReportConfiguration configuration)
         {
-            //Assign path to your source folder
-            string inputPath = @"";
-            //Assign path to your output folder
-            string outputPath = @"";
+            var fileSearchFilter = new FileSearchFilter(configuration.Ignore, configuration.Allow);
 
-            //Assign file name 
-            string fileName = "";
-
-            //Create ignore file mask
-            var ignore = new FileMask(
-                new List<string> {"CMakeLists"},
-                new List<string> {"md", "DS_Store"},
-                new List<string> {"cmake-build-debug", ".idea"});
-            //Create file mask to except some ignored files 
-            var exceptions = new FileMask(
-                new List<string>(),
-                new List<string>(),
-                new List<string>());
-            var fileSearchFilter = new FileSearchFilter(ignore, exceptions);
-
-            ISourceCodeProvider sourceCodeProvider = new FileSystemSourceCodeProvider(inputPath, fileSearchFilter);
-            var reportGenerator = new TReportGenerator();
+            ISourceCodeProvider sourceCodeProvider = new FileSystemSourceCodeProvider(configuration.InputPath, fileSearchFilter);
             List<FileContainer> files = sourceCodeProvider.GetFiles();
 
-            var result = new FileContainer(fileName, reportGenerator.Extension, outputPath);
-            result = reportGenerator.Generate(result, files, null);
+            var result = new FileContainer(configuration.OutputFileName, generator.Extension, configuration.OutputPath);
+            result = generator.Generate(result, files, null);
 
             File.WriteAllText(Path.Combine(result.Directory, result.NameWithExtension), result.Content);
         }
