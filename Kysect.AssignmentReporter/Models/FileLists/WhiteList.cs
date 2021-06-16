@@ -8,11 +8,11 @@ namespace Kysect.AssignmentReporter.Models.FileLists
         public List<string> FileFormats { get; set; }
         public List<string> Directories { get; set; }
 
-        public WhiteList(List<string> fileNames, List<string> fileFormats, List<string> directorieses)
+        public WhiteList(List<string> fileNames, List<string> fileFormats, List<string> directories)
         {
             FileNames = fileNames;
             FileFormats = fileFormats;
-            Directories = directorieses;
+            Directories = directories;
         }
 
         public WhiteList() { }

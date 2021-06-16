@@ -24,14 +24,15 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
             foreach (var file in Directory.EnumerateFiles(_rootDirectoryPath, "*", SearchOption.AllDirectories))
             {
                 FileInfo info = new FileInfo(file);
-                if (_fileSearchFilter.FileIsAcceptable(info.Name) &&
-                    _fileSearchFilter.FormatIsAcceptable(info.Name) &&
-                    _fileSearchFilter.DirectoryIsAcceptable(info.DirectoryName))
+                if  (_fileSearchFilter.DirectoryIsAcceptable(info.DirectoryName)
+                     && _fileSearchFilter.FormatIsAcceptable(info.Name) 
+                     && _fileSearchFilter.FileIsAcceptable(info.Name))
                 {
                     files
                         .Add(new FileDescriptor(info.Name, File.ReadAllText(info.FullName), info.DirectoryName));
                 }
             }
+           
             return files;
         }
 

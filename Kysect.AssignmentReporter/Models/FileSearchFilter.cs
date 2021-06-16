@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Kysect.AssignmentReporter.Models.FileLists;
 
@@ -68,7 +69,10 @@ namespace Kysect.AssignmentReporter.Models
         }
         public string CheckFormat(string fileName)
         {
-            return new Regex(".").IsMatch(fileName)? fileName.Substring(fileName.IndexOf(".")) : ".dosntHaveExtention";
+            
+            return fileName.Contains(".")
+                 ? fileName.Substring(fileName.IndexOf(".", StringComparison.Ordinal))
+                 : ".dosntHaveExtention";
         }
     }
 }

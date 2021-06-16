@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Aspose.Words.Saving;
 using Kysect.AssignmentReporter.Models;
+using Microsoft.Office.Interop.Word;
 using Xceed.Document.NET;
 using Xceed.Words.NET;
+using Document = Xceed.Document.NET.Document;
 
 namespace Kysect.AssignmentReporter.ReportGenerator
 {
     public class DocumentReportGenerator : IReportGenerator
     {
-        public string Extension => "docx";
-
         public TitlePageInfo titlePage;
         public DocumentReportGenerator() { }
         public Document AddTitleList(TitlePageInfo info, ReportExtendedInfo reportExtendedInfo)
@@ -45,9 +46,15 @@ namespace Kysect.AssignmentReporter.ReportGenerator
 
         public FileDescriptor Generate(List<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
         {
-            var document = reportExtendedInfo.Path.EndsWith(".docx")
-                ? DocX.Create(reportExtendedInfo.Path, DocumentTypes.Document)
-                : DocX.Create(reportExtendedInfo.Path, DocumentTypes.Pdf);
+            bool isPdf = reportExtendedInfo.Path.EndsWith(".pdf");
+            string pathToCreate;
+            if (isPdf)
+            {
+                pathToCreate = reportExtendedInfo.Path.Replace(".pdf", ".docx");
+            }
+            else
+                pathToCreate = reportExtendedInfo.Path;
+            var document = DocX.Create(pathToCreate, DocumentTypes.Document);
             if (titlePage != null)
             {
                 var titleList = AddTitleList(titlePage, reportExtendedInfo).Paragraphs;
@@ -95,8 +102,16 @@ namespace Kysect.AssignmentReporter.ReportGenerator
             document.InsertParagraph($"{reportExtendedInfo.Conclusion}")
                 .FontSize(12)
                 .Alignment = Alignment.left;
-
             document.Save(reportExtendedInfo.Path);
+
+            if (isPdf)
+            {
+                Aspose.Words.Document doc = new Aspose.Words.Document(pathToCreate);
+                doc.Save(reportExtendedInfo.Path, new PdfSaveOptions()
+                {
+                    Compliance = PdfCompliance.Pdf17
+                });
+            }
 
             FileInfo documentInfo = new FileInfo(reportExtendedInfo.Path);
             return new FileDescriptor(documentInfo.Name, string.Empty, documentInfo.DirectoryName);
