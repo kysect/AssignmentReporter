@@ -1,78 +1,55 @@
-﻿using System;
+﻿using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Kysect.AssignmentReporter.Models.FileLists;
 
 namespace Kysect.AssignmentReporter.Models
 {
     public class FileSearchFilter
     {
-        public BlackList BlackList { get; set; }
-        public WhiteList WhiteList { get; set; }
+        public ListOfRules BlackList { get; set; }
+        public ListOfRules WhiteList { get; set; }
 
-        public FileSearchFilter(BlackList blackList, WhiteList whiteList)
+        public FileSearchFilter(ListOfRules blackList, ListOfRules whiteList)
         {
             BlackList = blackList;
             WhiteList = whiteList;
         } 
-        public FileSearchFilter(BlackList blackList)
+        public FileSearchFilter(ListOfRules blackList)
         {
             BlackList = blackList;
             WhiteList = null;
-        } 
-        public FileSearchFilter (WhiteList whiteList)
-        { 
-            WhiteList = whiteList;
-            BlackList = null;
         }
-
         public FileSearchFilter()
         {
             WhiteList = null;
             BlackList = null;
         }
-        public bool FileIsAcceptable(string fileName)
+        public bool FileIsAcceptable(FileInfo file)
         {
-            bool blackListAllowed = BlackList?.FileIsNotAcceptable(fileName) ?? true;
-            bool whiteListAllowed = WhiteList?.FileIsAcceptable(fileName) ?? true;
-            return blackListAllowed & whiteListAllowed;
+            return BlackList?.FileIsNotAcceptable(file.Name) ?? (WhiteList?.FileIsAcceptable(file.Name) ?? true);
         }
-        public bool FormatIsAcceptable(string fileName)
+        public bool FormatIsAcceptable(FileInfo file)
         {
-            bool blackListAllowed = BlackList?.FormatIsNotAcceptable(CheckFormat(fileName)) ?? true;
-            bool whiteListAllowed = WhiteList?.FormatIsAcceptable(CheckFormat(fileName)) ?? true;
-            return whiteListAllowed & blackListAllowed;
+            return WhiteList?.FormatIsAcceptable(file.Extension) ?? (BlackList?.FormatIsNotAcceptable(file.Extension) ?? true);
         }
 
-        public bool DirectoryIsAcceptable(string filePath)
+        public bool DirectoryIsAcceptable(FileInfo file)
         {
             bool blackListAllowed = true;
             bool whiteListAllowed = true;
-            if (BlackList != null && BlackList.Directories != null)
+            if (BlackList?.Directories != null)
             {
-                if (BlackList.Directories
-                    .Select(dirName => new Regex(dirName))
-                    .Any(regDir => regDir.IsMatch(filePath)))
-                {
-                    blackListAllowed = false;
-                }
+                blackListAllowed = !BlackList.Directories
+                        .Select(dirName => new Regex(dirName))
+                        .Any(regDir => regDir.IsMatch(file.FullName));
             }
-            if (WhiteList != null && WhiteList.Directories != null)
+            if (WhiteList?.Directories != null)
             {
-                if (WhiteList.Directories
-                    .Any(dirName => !new Regex(dirName).IsMatch(filePath)))
-                {
-                    whiteListAllowed = false;
-                }
+                whiteListAllowed = WhiteList.Directories
+                    .All(dirName => new Regex(dirName)
+                        .IsMatch(file.FullName));
             }
-            return whiteListAllowed & blackListAllowed;
-        }
-        public string CheckFormat(string fileName)
-        {
-            
-            return fileName.Contains(".")
-                 ? fileName.Substring(fileName.IndexOf(".", StringComparison.Ordinal))
-                 : ".dosntHaveExtention";
+            return whiteListAllowed && blackListAllowed;
         }
     }
 }

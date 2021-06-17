@@ -24,9 +24,9 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
             foreach (var file in Directory.EnumerateFiles(_rootDirectoryPath, "*", SearchOption.AllDirectories))
             {
                 FileInfo info = new FileInfo(file);
-                if  (_fileSearchFilter.DirectoryIsAcceptable(info.DirectoryName)
-                     && _fileSearchFilter.FormatIsAcceptable(info.Name) 
-                     && _fileSearchFilter.FileIsAcceptable(info.Name))
+                if  (_fileSearchFilter.DirectoryIsAcceptable(info)
+                     && _fileSearchFilter.FormatIsAcceptable(info) 
+                     && _fileSearchFilter.FileIsAcceptable(info))
                 {
                     files
                         .Add(new FileDescriptor(info.Name, File.ReadAllText(info.FullName), info.DirectoryName));

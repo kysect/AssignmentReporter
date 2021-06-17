@@ -16,7 +16,7 @@ namespace Kysect.AssignmentReporter.ReportGenerator
             {
                 builder.AppendLine("## " + file.Name);
 
-                builder.Append("```");
+                builder.AppendLine("```");
 
                 builder.Append(file.Content);
 

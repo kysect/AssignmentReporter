@@ -13,9 +13,10 @@ namespace Kysect.AssignmentReporter.ReportGenerator
 {
     public class DocumentReportGenerator : IReportGenerator
     {
-        public TitlePageInfo titlePage;
+        public CoverPageInfo CoverPage;
+        private Document document;
         public DocumentReportGenerator() { }
-        public Document AddTitleList(TitlePageInfo info, ReportExtendedInfo reportExtendedInfo)
+        public Document WriteInCoverList(CoverPageInfo info, ReportExtendedInfo reportExtendedInfo)
         {
             var titleList = DocX.Load(info.PathToTitlePage).Copy();
             var par = titleList.Paragraphs.ToList();
@@ -44,39 +45,57 @@ namespace Kysect.AssignmentReporter.ReportGenerator
             return titleList;
         }
 
-        public FileDescriptor Generate(List<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
+        public DocX AddCoverPage(Document coverPage)
         {
-            bool isPdf = reportExtendedInfo.Path.EndsWith(".pdf");
-            string pathToCreate;
-            if (isPdf)
+            var titleList = coverPage.Paragraphs;
+            foreach (var paragraph in titleList)
             {
-                pathToCreate = reportExtendedInfo.Path.Replace(".pdf", ".docx");
+                document.InsertParagraph(paragraph);
             }
-            else
-                pathToCreate = reportExtendedInfo.Path;
-            var document = DocX.Create(pathToCreate, DocumentTypes.Document);
-            if (titlePage != null)
+            for (int i = 0; i < 22; i++)
             {
-                var titleList = AddTitleList(titlePage, reportExtendedInfo).Paragraphs;
-                foreach (var paragraph in titleList)
-                {
-                    document.InsertParagraph(paragraph);
-                }
-
-                for (int i = 0; i < 22; i++)
-                {
-                    document.InsertParagraph(String.Empty);
-                }
-
+                document.InsertParagraph(String.Empty);
             }
+            return document as DocX;
+        }
+
+        public void ConvertToPdf()
+        {
+            throw new NotImplementedException();
+        }
+
+        public DocX InsertIntroduction(string introduction)
+        {
             document.InsertParagraph("introduction:")
                 .FontSize(15)
                 .Alignment = Alignment.left;
 
-            document.InsertParagraph($"{reportExtendedInfo.Intro}")
+            document.InsertParagraph($"{introduction}")
                 .FontSize(12)
                 .Alignment = Alignment.left;
+            return document as DocX;
+        }
 
+        public DocX InsertConclusion(string conclusion)
+        {
+            document.InsertParagraph("Conclusion:")
+                .FontSize(15)
+                .Alignment = Alignment.left;
+
+            document.InsertParagraph($"{conclusion}")
+                .FontSize(12)
+                .Alignment = Alignment.left;
+            return document as DocX;
+        }
+        public FileDescriptor Generate(List<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
+        { 
+            document = DocX.Create(reportExtendedInfo.Path, DocumentTypes.Document);
+            if (CoverPage != null)
+            {
+               AddCoverPage(WriteInCoverList(CoverPage, reportExtendedInfo));
+            }
+
+            InsertIntroduction(reportExtendedInfo.Intro);
             foreach (var fileContent in files)
             {
                 document.InsertParagraph(fileContent.Name + ":")
@@ -93,25 +112,10 @@ namespace Kysect.AssignmentReporter.ReportGenerator
                     .Font("Consolas");
 
                 document.InsertTable(table);
-
             }
-            document.InsertParagraph("Conclusion:")
-                .FontSize(15)
-                .Alignment = Alignment.left;
 
-            document.InsertParagraph($"{reportExtendedInfo.Conclusion}")
-                .FontSize(12)
-                .Alignment = Alignment.left;
+            InsertConclusion(reportExtendedInfo.Conclusion);
             document.Save(reportExtendedInfo.Path);
-
-            if (isPdf)
-            {
-                Aspose.Words.Document doc = new Aspose.Words.Document(pathToCreate);
-                doc.Save(reportExtendedInfo.Path, new PdfSaveOptions()
-                {
-                    Compliance = PdfCompliance.Pdf17
-                });
-            }
 
             FileInfo documentInfo = new FileInfo(reportExtendedInfo.Path);
             return new FileDescriptor(documentInfo.Name, string.Empty, documentInfo.DirectoryName);

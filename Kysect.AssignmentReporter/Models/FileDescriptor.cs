@@ -4,13 +4,12 @@
     {
         public string Name { get; set; }
         public string Content { get; set; }
+        public string RootDirectory { get; set; }
 
-        public string Directory { get; set; }
-
-        public FileDescriptor(string name,string content, string directory)
+        public FileDescriptor(string name, string content, string rootDirectory)
         {
             Name = name;
-            Directory = directory;
+            RootDirectory = rootDirectory;
             Content = content;
         }
     }
