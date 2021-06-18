@@ -44,16 +44,16 @@ namespace Kysect.AssignmentReporter.Models
         }
         public bool NameIsAcceptable(FileInfo file)
         {
-            return BlackList?.FileIsNotAcceptable(file.Name) ?? (WhiteList?.FileIsAcceptable(file.Name) ?? true);
+            return BlackList.FileIsAcceptable(file.Name) && WhiteList.FileIsAcceptable(file.Name);
         }
         public bool FormatIsAcceptable(FileInfo file)
         {
-            return WhiteList?.FormatIsAcceptable(file.Extension) ?? (BlackList?.FormatIsNotAcceptable(file.Extension) ?? true);
+            return WhiteList.FormatIsAcceptable(file.Extension) && BlackList.FormatIsAcceptable(file.Extension);
         }
 
         public bool DirectoryIsAcceptable(FileInfo file)
         {
-            return WhiteList.DirectoryIsAcceptable(file.FullName) && BlackList.DirectoryIsNotAcceptable(file.FullName);
+            return WhiteList.DirectoryIsAcceptable(file.FullName) && BlackList.DirectoryIsAcceptable(file.FullName);
         }
     }
 }

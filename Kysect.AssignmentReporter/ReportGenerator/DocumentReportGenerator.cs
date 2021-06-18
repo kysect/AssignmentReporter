@@ -13,29 +13,34 @@ namespace Kysect.AssignmentReporter.ReportGenerator
     public class DocumentReportGenerator : IReportGenerator
     {
         public CoverPageInfo CoverPage;
-        private Document document;
+        private Document _document;
         public DocumentReportGenerator() { }
         public Document WriteInCoverList(CoverPageInfo info, ReportExtendedInfo reportExtendedInfo)
         {
+            const int parWithWorkNumber = 6;
+            const int parWithDiscipline = 7;
+            const int parWithFullName = 11;
+            const int parWithTeacherName = 12;
+
             var titleList = DocX.Load(info.PathToTitlePage).Copy();
             var par = titleList.Paragraphs.ToList();
 
-            par[6]
+            par[parWithWorkNumber]
                 .Append(info.WorkNumber)
                 .FontSize(14)
                 .Font("Times New Roman");
 
-            par[7]
+            par[parWithDiscipline]
                 .Append(info.Discipline)
                 .FontSize(12)
                 .Font("Times New Roman");
 
-            par[11]
+            par[parWithFullName]
                 .Append(info.GroupNumber + " " + info.FullName)
                 .FontSize(12)
                 .Font("Times New Roman");
 
-            par[12]
+            par[parWithTeacherName]
                 .Append(info.TeacherName)
                 .FontSize(12)
                 .Font("Times New Roman");
@@ -46,16 +51,17 @@ namespace Kysect.AssignmentReporter.ReportGenerator
 
         public DocX AddCoverPage(Document coverPage)
         {
+            const int indentationAmount = 22;
             var titleList = coverPage.Paragraphs;
             foreach (var paragraph in titleList)
             {
-                document.InsertParagraph(paragraph);
+                _document.InsertParagraph(paragraph);
             }
-            for (int i = 0; i < 22; i++)
+            for (int i = 0; i < indentationAmount; i++)
             {
-                document.InsertParagraph(String.Empty);
+                _document.InsertParagraph(String.Empty);
             }
-            return document as DocX;
+            return (DocX)_document;
         }
 
         public void ConvertToPdf(ReportExtendedInfo info)
@@ -68,30 +74,30 @@ namespace Kysect.AssignmentReporter.ReportGenerator
 
         public DocX InsertIntroduction(string introduction)
         {
-            document.InsertParagraph("introduction:")
+            _document.InsertParagraph("introduction:")
                 .FontSize(15)
                 .Alignment = Alignment.left;
 
-            document.InsertParagraph($"{introduction}")
+            _document.InsertParagraph($"{introduction}")
                 .FontSize(12)
                 .Alignment = Alignment.left;
-            return document as DocX;
+            return (DocX)_document;
         }
 
         public DocX InsertConclusion(string conclusion)
         {
-            document.InsertParagraph("Conclusion:")
+            _document.InsertParagraph("Conclusion:")
                 .FontSize(15)
                 .Alignment = Alignment.left;
 
-            document.InsertParagraph($"{conclusion}")
+            _document.InsertParagraph($"{conclusion}")
                 .FontSize(12)
                 .Alignment = Alignment.left;
-            return document as DocX;
+            return (DocX)_document;
         }
         public FileDescriptor Generate(List<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
         { 
-            document = DocX.Create(reportExtendedInfo.Path, DocumentTypes.Document);
+            _document = DocX.Create(reportExtendedInfo.Path, DocumentTypes.Document);
             if (CoverPage != null)
             {
                AddCoverPage(WriteInCoverList(CoverPage, reportExtendedInfo));
@@ -100,12 +106,12 @@ namespace Kysect.AssignmentReporter.ReportGenerator
             InsertIntroduction(reportExtendedInfo.Intro);
             foreach (var fileContent in files)
             {
-                document.InsertParagraph(fileContent.Name + ":")
+                _document.InsertParagraph(fileContent.Name + ":")
                     .Font("Consolas")
                     .FontSize(14)
                     .Alignment = Alignment.center;
 
-                var table = document.AddTable(1, 1);
+                var table = _document.AddTable(1, 1);
 
                 table.Alignment = Alignment.center;
                 table.Rows[0].Cells[0].Paragraphs[0]
@@ -113,14 +119,14 @@ namespace Kysect.AssignmentReporter.ReportGenerator
                     .FontSize(10.5)
                     .Font("Consolas");
 
-                document.InsertTable(table);
+                _document.InsertTable(table);
             }
 
             InsertConclusion(reportExtendedInfo.Conclusion);
-            document.Save();
+            _document.Save();
             FileInfo documentInfo = new FileInfo(reportExtendedInfo.Path);
             return new FileDescriptor(documentInfo.Name, 
-                document.Text,
+                _document.Text,
                 documentInfo.DirectoryName);
         }
     }
