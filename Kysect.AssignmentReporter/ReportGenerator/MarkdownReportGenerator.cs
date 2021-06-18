@@ -16,7 +16,9 @@ namespace Kysect.AssignmentReporter.ReportGenerator
             {
                 builder.AppendLine("## " + file.Name);
 
-                builder.AppendLine("```");
+                builder.Append("```");
+
+                builder.AppendLine(new FileInfo(file.RootDirectory).Extension);
 
                 builder.Append(file.Content);
 

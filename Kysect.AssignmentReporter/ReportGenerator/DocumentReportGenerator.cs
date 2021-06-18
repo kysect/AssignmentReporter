@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Aspose.Words.Saving;
 using Kysect.AssignmentReporter.Models;
-using Microsoft.Office.Interop.Word;
+using SautinSoft;
 using Xceed.Document.NET;
 using Xceed.Words.NET;
 using Document = Xceed.Document.NET.Document;
@@ -59,9 +58,12 @@ namespace Kysect.AssignmentReporter.ReportGenerator
             return document as DocX;
         }
 
-        public void ConvertToPdf()
+        public void ConvertToPdf(ReportExtendedInfo info)
         {
-            throw new NotImplementedException();
+            new PdfMetamorphosis()
+                .DocxToPdfConvertFile(info.Path,
+                    info.Path
+                        .Replace(".docx", ".pdf"));
         }
 
         public DocX InsertIntroduction(string introduction)
@@ -115,10 +117,11 @@ namespace Kysect.AssignmentReporter.ReportGenerator
             }
 
             InsertConclusion(reportExtendedInfo.Conclusion);
-            document.Save(reportExtendedInfo.Path);
-
+            document.Save();
             FileInfo documentInfo = new FileInfo(reportExtendedInfo.Path);
-            return new FileDescriptor(documentInfo.Name, string.Empty, documentInfo.DirectoryName);
+            return new FileDescriptor(documentInfo.Name, 
+                document.Text,
+                documentInfo.DirectoryName);
         }
     }
 }

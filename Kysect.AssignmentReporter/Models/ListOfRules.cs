@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Kysect.AssignmentReporter.Models
 {
-    public class ListOfRules
+    public abstract class ListOfRules
     {
         public List<string> FileNames { get; set; }
         public List<string> FileFormats { get; set; }

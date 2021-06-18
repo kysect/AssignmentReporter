@@ -17,7 +17,6 @@ namespace Kysect.AssignmentReporter.Polygon
 
         public static void GenerateSimpleReport()
         {
-           
         }
     }
 }

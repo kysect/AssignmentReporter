@@ -43,27 +43,29 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
 
             if (!Repository.IsValid(_localStoragePath))
             {
-                var options = new CloneOptions();
-                options.CredentialsProvider = (_url, usernameFromUrl, types) => new UsernamePasswordCredentials
+                var options = new CloneOptions
                 {
-                    Username = credentialsInfo.Username,
-                    Password = credentialsInfo.Password
+                    CredentialsProvider = (_url, usernameFromUrl, types) => new UsernamePasswordCredentials
+                    {
+                        Username = credentialsInfo.Username, Password = credentialsInfo.Password
+                    }
                 };
                 Repository.Clone(_url, _localStoragePath, options);
             }
             else
             {
                 var repository = new Repository(_localStoragePath);
-                var options = new PullOptions();
-
-                options.FetchOptions = new FetchOptions();
-                options
-                    .FetchOptions
-                    .CredentialsProvider = (_url, usernameFromUrl, types) => new UsernamePasswordCredentials
+                var options = new PullOptions
                 {
-                    Username = credentialsInfo.Username,
-                    Password = credentialsInfo.Password
+                    FetchOptions = new FetchOptions
+                    {
+                        CredentialsProvider = (_url, usernameFromUrl, types) => new UsernamePasswordCredentials
+                        {
+                            Username = credentialsInfo.Username, Password = credentialsInfo.Password
+                        }
+                    }
                 };
+
 
                 var signature = new Signature(
                     new Identity($"{credentialsInfo.Username}", $"{_data.Email}"), DateTimeOffset.Now);
