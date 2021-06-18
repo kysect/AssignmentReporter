@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Kysect.AssignmentReporter.Models
 {
@@ -33,6 +35,19 @@ namespace Kysect.AssignmentReporter.Models
         public bool FormatIsNotAcceptable(string fileFormat)
         {
             return FileFormats == null || (FileFormats?.Contains(fileFormat) ?? true);
+        }
+
+        public bool DirectoryIsAcceptable(string directory)
+        {
+          return Directories
+                .All(dirName => new Regex(dirName)
+                    .IsMatch(directory));
+        }
+        public bool DirectoryIsNotAcceptable(string directory)
+        {
+            return !Directories
+                .Select(dirName => new Regex(dirName))
+                .Any(regDir => regDir.IsMatch(directory));
         }
     }
 }

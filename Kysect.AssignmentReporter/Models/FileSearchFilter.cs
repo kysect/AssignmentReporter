@@ -53,21 +53,7 @@ namespace Kysect.AssignmentReporter.Models
 
         public bool DirectoryIsAcceptable(FileInfo file)
         {
-            bool blackListAllowed = true;
-            bool whiteListAllowed = true;
-            if (BlackList?.Directories != null)
-            {
-                blackListAllowed = !BlackList.Directories
-                        .Select(dirName => new Regex(dirName))
-                        .Any(regDir => regDir.IsMatch(file.FullName));
-            }
-            if (WhiteList?.Directories != null)
-            {
-                whiteListAllowed = WhiteList.Directories
-                    .All(dirName => new Regex(dirName)
-                        .IsMatch(file.FullName));
-            }
-            return whiteListAllowed && blackListAllowed;
+            return WhiteList.DirectoryIsAcceptable(file.FullName) && BlackList.DirectoryIsNotAcceptable(file.FullName);
         }
     }
 }
