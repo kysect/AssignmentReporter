@@ -6,11 +6,11 @@ namespace Kysect.AssignmentReporter.Models
 {
    public class CoverPageInfo
    { 
-        public string GroupNumber { get; set; } = string.Empty;
-        public string WorkNumber { get; set; } = string.Empty;
-        public string Discipline { get; set; } = string.Empty;
-        public string FullName { get; set; } = string.Empty;
-        public string TeacherName { get; set; } = string.Empty;
+        public string GroupNumber { get; set; }
+        public string WorkNumber { get; set; } 
+        public string Discipline { get; set; } 
+        public string FullName { get; set; } 
+        public string TeacherName { get; set; }
         public string PathToTitlePage { get; set; }
         public CoverPageInfo(string teacherName, string groupNumber, string fullName, string discipline, string workNumber, string pathToTitlePage)
         {
@@ -21,9 +21,5 @@ namespace Kysect.AssignmentReporter.Models
             PathToTitlePage = pathToTitlePage;
             GroupNumber = groupNumber;
         }
-        public CoverPageInfo(string pathToTitlePage)
-        {
-            PathToTitlePage = pathToTitlePage;
-        }
-    }
+   }
 }
