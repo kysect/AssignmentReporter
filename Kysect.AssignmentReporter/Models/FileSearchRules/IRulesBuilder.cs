@@ -5,12 +5,13 @@ using System.Text;
 namespace Kysect.AssignmentReporter.Models.FileSearchRules
 {
    public interface IRulesBuilder
-   {
-       void AddListOfBlockedFiles(List<string> files);
-       void AddListOfBlockedDirectories(List<string> directories);
-       void AddListOfBlockedExtensions(List<string> extensions);
-       void AddListOfAllowedFiles(List<string> files);
-       void AddListOfAllowedDirectories(List<string> directories);
-       void AddListOfAllowedExtensions(List<string> extensions);
+   { 
+       RulesBuilder AddBlockedFiles(List<string> files);
+       RulesBuilder AddBlockedDirectories(List<string> directories);
+       RulesBuilder AddBlockedExtensions(List<string> extensions);
+       RulesBuilder AddAllowedFiles(List<string> files);
+       RulesBuilder AddAllowedDirectories(List<string> directories);
+       RulesBuilder AddAllowedExtensions(List<string> extensions);
+       RulesBuilder SetDefaultList();
    }
 }

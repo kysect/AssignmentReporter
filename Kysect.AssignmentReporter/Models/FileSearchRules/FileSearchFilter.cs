@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
 
-namespace Kysect.AssignmentReporter.Models
+namespace Kysect.AssignmentReporter.Models.FileSearchRules
 {
     public class FileSearchFilter
     {
@@ -12,11 +10,11 @@ namespace Kysect.AssignmentReporter.Models
         public FileSearchFilter(ListOfRules listOfRules)
         {
             ListOfRules = listOfRules;
-        } 
-      
-        public FileSearchFilter()
-        { }
-
+            if (listOfRules == null)
+            {
+                throw new Exception("listOfRules can't be null");
+            }
+        }
         public bool FileIsAcceptable(FileInfo file)
         {
             return NameIsAcceptable(file)

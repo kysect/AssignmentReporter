@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Kysect.AssignmentReporter.Models;
+using Kysect.AssignmentReporter.Models.FileSearchRules;
 
 namespace Kysect.AssignmentReporter.ReportGenerator
 {

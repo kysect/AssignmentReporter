@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Kysect.AssignmentReporter.Models.FileSearchRules
 {
@@ -13,41 +11,47 @@ namespace Kysect.AssignmentReporter.Models.FileSearchRules
             _listOfRules = new ListOfRules();
         }
 
-        public void AddListOfBlockedFiles(List<string> files)
+        public RulesBuilder AddBlockedFiles(List<string> files)
         {
             _listOfRules.BlackFileNames = files;
+            return this;
         }
 
-        public void AddListOfBlockedDirectories(List<string> directories)
+        public RulesBuilder AddBlockedDirectories(List<string> directories)
         {
             _listOfRules.BlackDirectories = directories;
+            return this;
         }
 
-        public void AddListOfBlockedExtensions(List<string> extensions)
+        public RulesBuilder AddBlockedExtensions(List<string> extensions)
         {
             _listOfRules.BlackFileFormats = extensions;
+            return this;
         }
 
-        public void AddListOfAllowedFiles(List<string> files)
+        public RulesBuilder AddAllowedFiles(List<string> files)
         {
             _listOfRules.WhiteFileNames = files;
+            return this;
         }
 
-        public void AddListOfAllowedDirectories(List<string> directories)
+        public RulesBuilder AddAllowedDirectories(List<string> directories)
         {
             _listOfRules.WhiteDirectories = directories;
+            return this;
         }
 
-        public void AddListOfAllowedExtensions(List<string> extensions)
+        public RulesBuilder AddAllowedExtensions(List<string> extensions)
         {
             _listOfRules.WhiteFileFormats = extensions;
+            return this;
         }
 
-        public ListOfRules GetDefaultList()
+        public RulesBuilder SetDefaultList()
         {
             _listOfRules.BlackDirectories = new List<string> { "obj", "bin", ".git" };
             _listOfRules.WhiteFileFormats = new List<string> {".cs"};
-            return _listOfRules;
+            return this;
         }
 
         public ListOfRules Get()

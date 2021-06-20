@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Kysect.AssignmentReporter.Models;
+using Kysect.AssignmentReporter.Models.FileSearchRules;
 using LibGit2Sharp;
 using Microsoft.Alm.Authentication;
 
