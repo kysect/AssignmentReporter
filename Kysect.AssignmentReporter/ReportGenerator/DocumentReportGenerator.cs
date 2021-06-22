@@ -12,17 +12,41 @@ namespace Kysect.AssignmentReporter.ReportGenerator
 {
     public class DocumentReportGenerator : IReportGenerator
     {
-        public CoverPageInfo CoverPage;
-        private Document _document;
+        private CoverPageInfo _coverPage;
+        private DocX _document;
+
         public DocumentReportGenerator() { }
-        public Document WriteInCoverList(CoverPageInfo info, ReportExtendedInfo reportExtendedInfo)
+
+        public FileDescriptor Generate(List<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
+        {
+            _document = DocX.Create(reportExtendedInfo.Path);
+
+            if (_coverPage != null)
+            {
+                AddCoverPage(WriteInCoverList(_coverPage, reportExtendedInfo));
+            }
+
+            InsertIntroduction(reportExtendedInfo.Intro);
+
+            InsertContent(files);
+
+            InsertConclusion(reportExtendedInfo.Conclusion);
+
+            _document.Save();
+            FileInfo documentInfo = new FileInfo(reportExtendedInfo.Path);
+            return new FileDescriptor(documentInfo.Name,
+                _document.Text,
+                documentInfo.DirectoryName);
+        }
+
+        private Document WriteInCoverList(CoverPageInfo info, ReportExtendedInfo reportExtendedInfo)
         {
             const int parWithWorkNumber = 6;
             const int parWithDiscipline = 7;
             const int parWithFullName = 11;
             const int parWithTeacherName = 12;
 
-            var titleList = DocX.Load(info.PathToTitlePage).Copy();
+            var titleList = DocX.Load(info.PathToCoverPage).Copy();
             var par = titleList.Paragraphs.ToList();
 
             par[parWithWorkNumber]
@@ -49,7 +73,15 @@ namespace Kysect.AssignmentReporter.ReportGenerator
             return titleList;
         }
 
-        public DocX AddCoverPage(Document coverPage)
+        public void ConvertToPdf(ReportExtendedInfo info)
+        {
+            new PdfMetamorphosis()
+                .DocxToPdfConvertFile(info.Path,
+                    info.Path
+                        .Replace(".docx", ".pdf"));
+        }
+
+        private DocX AddCoverPage(Document coverPage)
         {
             const int indentationAmount = 22;
             var titleList = coverPage.Paragraphs;
@@ -61,18 +93,12 @@ namespace Kysect.AssignmentReporter.ReportGenerator
             {
                 _document.InsertParagraph(String.Empty);
             }
-            return (DocX)_document;
+            return _document;
         }
 
-        public void ConvertToPdf(ReportExtendedInfo info)
-        {
-            new PdfMetamorphosis()
-                .DocxToPdfConvertFile(info.Path,
-                    info.Path
-                        .Replace(".docx", ".pdf"));
-        }
+       
 
-        public DocX InsertIntroduction(string introduction)
+        private DocX InsertIntroduction(string introduction)
         {
             _document.InsertParagraph("introduction:")
                 .FontSize(15)
@@ -81,10 +107,10 @@ namespace Kysect.AssignmentReporter.ReportGenerator
             _document.InsertParagraph($"{introduction}")
                 .FontSize(12)
                 .Alignment = Alignment.left;
-            return (DocX)_document;
+            return _document;
         }
 
-        public DocX InsertConclusion(string conclusion)
+        private DocX InsertConclusion(string conclusion)
         {
             _document.InsertParagraph("Conclusion:")
                 .FontSize(15)
@@ -93,17 +119,11 @@ namespace Kysect.AssignmentReporter.ReportGenerator
             _document.InsertParagraph($"{conclusion}")
                 .FontSize(12)
                 .Alignment = Alignment.left;
-            return (DocX)_document;
+            return _document;
         }
-        public FileDescriptor Generate(List<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
-        { 
-            _document = DocX.Create(reportExtendedInfo.Path, DocumentTypes.Document);
-            if (CoverPage != null)
-            {
-               AddCoverPage(WriteInCoverList(CoverPage, reportExtendedInfo));
-            }
 
-            InsertIntroduction(reportExtendedInfo.Intro);
+        private DocX InsertContent(List<FileDescriptor> files)
+        {
             foreach (var fileContent in files)
             {
                 _document.InsertParagraph(fileContent.Name + ":")
@@ -122,12 +142,8 @@ namespace Kysect.AssignmentReporter.ReportGenerator
                 _document.InsertTable(table);
             }
 
-            InsertConclusion(reportExtendedInfo.Conclusion);
-            _document.Save();
-            FileInfo documentInfo = new FileInfo(reportExtendedInfo.Path);
-            return new FileDescriptor(documentInfo.Name, 
-                _document.Text,
-                documentInfo.DirectoryName);
+            return _document;
         }
+        
     }
 }

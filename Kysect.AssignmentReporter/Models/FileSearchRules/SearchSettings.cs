@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace Kysect.AssignmentReporter.Models.FileSearchRules
 {
-    public class ListOfRules
+    public class SearchSettings
     {
         public List<string> WhiteFileNames { get; set; } = new List<string>();
         public List<string> WhiteFileFormats { get; set; } = new List<string>();
@@ -13,7 +13,7 @@ namespace Kysect.AssignmentReporter.Models.FileSearchRules
         public List<string> BlackFileNames { get; set; } = new List<string>();
         public List<string> BlackFileFormats { get; set; } = new List<string>();
         public List<string> BlackDirectories { get; set; } = new List<string>();
-        public ListOfRules() { }
+        public SearchSettings() { }
         public bool FileIsAcceptable(string fileName)
         {
             return WhiteFileNames.Contains(fileName) && !BlackFileNames.Contains(fileName);
@@ -21,13 +21,13 @@ namespace Kysect.AssignmentReporter.Models.FileSearchRules
 
         public bool FormatIsAcceptable(string fileFormat)
         {
-            return !BlackDirectories.Contains(fileFormat) && WhiteFileFormats.Contains(fileFormat);
+            return !BlackFileFormats.Contains(fileFormat) && WhiteFileFormats.Contains(fileFormat);
         }
         public bool DirectoryIsAcceptable(string directory)
         {
-            return (!BlackDirectories
+            return !BlackDirectories
                 .Select(dirName => new Regex(dirName))
-                .Any(regDir => regDir.IsMatch(directory)))
+                .Any(regDir => regDir.IsMatch(directory))
                    &&
                    WhiteDirectories
                        .All(dirName => new Regex(dirName)

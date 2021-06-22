@@ -11,14 +11,15 @@ namespace Kysect.AssignmentReporter.Models
         public string Discipline { get; set; } 
         public string FullName { get; set; } 
         public string TeacherName { get; set; }
-        public string PathToTitlePage { get; set; }
-        public CoverPageInfo(string teacherName, string groupNumber, string fullName, string discipline, string workNumber, string pathToTitlePage)
+        public string PathToCoverPage { get; set; }
+
+        public CoverPageInfo(string teacherName, string groupNumber, string fullName, string discipline, string workNumber, string pathToCoverPage)
         {
             TeacherName = teacherName;
             FullName = fullName;
             Discipline = discipline;
             WorkNumber = workNumber;
-            PathToTitlePage = pathToTitlePage;
+            PathToCoverPage = pathToCoverPage;
             GroupNumber = groupNumber;
         }
    }
