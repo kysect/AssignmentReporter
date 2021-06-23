@@ -8,11 +8,10 @@ namespace Kysect.AssignmentReporter.Models.FileSearchRules
     {
         public List<string> WhiteFileNames { get; set; } = new List<string>();
         public List<string> WhiteFileFormats { get; set; } = new List<string>();
-        public List<string> WhiteDirectories { get; set; } = new List<string>();
-
+        public List<Regex> WhiteDirectories { get; set; } = new List<Regex>();
         public List<string> BlackFileNames { get; set; } = new List<string>();
         public List<string> BlackFileFormats { get; set; } = new List<string>();
-        public List<string> BlackDirectories { get; set; } = new List<string>();
+        public List<Regex> BlackDirectories { get; set; } = new List<Regex>();
         public SearchSettings() { }
         public bool FileIsAcceptable(string fileName)
         {
@@ -26,11 +25,11 @@ namespace Kysect.AssignmentReporter.Models.FileSearchRules
         public bool DirectoryIsAcceptable(string directory)
         {
             return !BlackDirectories
-                .Select(dirName => new Regex(dirName))
-                .Any(regDir => regDir.IsMatch(directory))
+                       .Any(dirName => dirName
+                           .IsMatch(directory))
                    &&
                    WhiteDirectories
-                       .All(dirName => new Regex(dirName)
+                       .Any(dirName => new Regex(directory)
                            .IsMatch(directory));
         }
     }

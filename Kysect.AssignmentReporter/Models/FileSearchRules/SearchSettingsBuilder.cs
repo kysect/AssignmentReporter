@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Kysect.AssignmentReporter.Models.FileSearchRules
@@ -20,7 +21,9 @@ namespace Kysect.AssignmentReporter.Models.FileSearchRules
 
         public SearchSettingsBuilder AddBlockedDirectories(List<string> directories)
         {
-            _searchSettings.BlackDirectories = directories;
+            _searchSettings.BlackDirectories = directories
+                .Select(dir => new Regex(dir))
+                .ToList();
             return this;
         }
 
@@ -38,7 +41,9 @@ namespace Kysect.AssignmentReporter.Models.FileSearchRules
 
         public SearchSettingsBuilder AddAllowedDirectories(List<string> directories)
         {
-            _searchSettings.WhiteDirectories = directories;
+            _searchSettings.WhiteDirectories = directories
+                .Select(dir => new Regex(dir))
+                .ToList();
             return this;
         }
 
@@ -50,8 +55,8 @@ namespace Kysect.AssignmentReporter.Models.FileSearchRules
 
         public SearchSettingsBuilder SetDefaultList()
         {
-            _searchSettings.BlackDirectories = new List<string> { "obj", "bin", ".git" };
-            _searchSettings.WhiteFileFormats = new List<string> {".cs"};
+            AddBlockedDirectories(new List<string>{"obj", "bin", ".git"});
+            AddAllowedExtensions(new List<string> { ".cs" });
             return this;
         }
 
