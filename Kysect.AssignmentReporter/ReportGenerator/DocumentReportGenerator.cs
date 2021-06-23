@@ -12,7 +12,7 @@ namespace Kysect.AssignmentReporter.ReportGenerator
 {
     public class DocumentReportGenerator : IReportGenerator
     {
-        private CoverPageInfo _coverPage;
+        public  CoverPageInfo CoverPage;
         private DocX _document;
 
         public DocumentReportGenerator() { }
@@ -21,9 +21,9 @@ namespace Kysect.AssignmentReporter.ReportGenerator
         {
             _document = DocX.Create(reportExtendedInfo.Path);
 
-            if (_coverPage != null)
+            if (CoverPage != null)
             {
-                AddCoverPage(WriteInCoverList(_coverPage, reportExtendedInfo));
+                AddCoverPage(WriteInCoverList(CoverPage, reportExtendedInfo));
             }
 
             InsertIntroduction(reportExtendedInfo.Intro);
