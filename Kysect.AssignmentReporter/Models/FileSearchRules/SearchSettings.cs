@@ -29,7 +29,7 @@ namespace Kysect.AssignmentReporter.Models.FileSearchRules
                            .IsMatch(directory))
                    &&
                    WhiteDirectories
-                       .Any(dirName => new Regex(directory)
+                       .Any(dirName => dirName
                            .IsMatch(directory));
         }
     }
