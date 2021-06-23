@@ -15,6 +15,10 @@ namespace Kysect.AssignmentReporter.ReportGenerator
         public  CoverPageInfo CoverPage;
         private DocX _document;
 
+        public DocumentReportGenerator(CoverPageInfo coverPage)
+        {
+            CoverPage = coverPage;
+        }
         public DocumentReportGenerator() { }
 
         public FileDescriptor Generate(List<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
