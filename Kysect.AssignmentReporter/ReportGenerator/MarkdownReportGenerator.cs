@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Text;
 using Kysect.AssignmentReporter.Models;
 
@@ -7,34 +7,26 @@ namespace Kysect.AssignmentReporter.ReportGenerator
 {
     public class MarkdownReportGenerator : IReportGenerator
     {
-        private static readonly IReadOnlyDictionary<string, string> Extensions = new Dictionary<string, string>
+        public FileDescriptor Generate(List<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
         {
-            {"hpp", "cpp"},
-            {"h", "cpp"}
-        };
-
-        public string Extension => "md";
-
-        public FileContainer Generate(FileDescriptor descriptor, List<FileContainer> files, ReportExtendedInfo reportExtendedInfo)
-        {
+            var reportFile = File.Create(reportExtendedInfo.Path);
+            reportFile.Close();
             var builder = new StringBuilder();
-
-            foreach (FileContainer file in files)
+            foreach (FileDescriptor file in files)
             {
-                string extension = Extensions.ContainsKey(file.Extension) ? Extensions[file.Extension] : file.Extension;
-
-                builder.AppendLine("## " + file.NameWithExtension);
+                builder.AppendLine("## " + file.Name);
 
                 builder.Append("```");
-                builder.AppendLine(extension);
+
+                builder.AppendLine(new FileInfo(file.RootDirectory).Extension);
 
                 builder.Append(file.Content);
 
                 builder.AppendLine("\n```\n");
             }
-
-            var result = new FileContainer(descriptor, builder.ToString());
-            return result;
+            File.WriteAllText(reportExtendedInfo.Path, builder.ToString());
+            FileInfo info = new FileInfo(reportExtendedInfo.Path);
+            return new FileDescriptor(info.Name, File.ReadAllText(info.FullName), info.DirectoryName);
         }
     }
 }

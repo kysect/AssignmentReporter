@@ -1,31 +1,16 @@
-﻿using System.IO;
-using System.Linq;
-
-namespace Kysect.AssignmentReporter.Models
+﻿namespace Kysect.AssignmentReporter.Models
 {
     public class FileDescriptor
     {
-        public FileDescriptor(FileInfo info)
-        {
-            Name = Path.GetFileNameWithoutExtension(info.Name);
-            Extension = info.Extension.Replace(".", "");
-            Directory = info.DirectoryName;
-            FileInfo = info;
-        }
+        public string Name { get; }
+        public string Content { get; }
+        public string RootDirectory { get; }
 
-        public FileDescriptor(string name, string extension, string directory)
+        public FileDescriptor(string name, string content, string rootDirectory)
         {
             Name = name;
-            Extension = extension;
-            Directory = directory;
-            FileInfo = new FileInfo(Path.Combine(directory, NameWithExtension));
+            RootDirectory = rootDirectory;
+            Content = content;
         }
-        
-        
-        public string Name { get; }
-        public string Extension { get; }
-        public string NameWithExtension => Name + '.' + Extension;
-        public string Directory { get; }
-        public FileInfo FileInfo { get; }
     }
 }

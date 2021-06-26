@@ -5,8 +5,6 @@ namespace Kysect.AssignmentReporter.ReportGenerator
 {
     public interface IReportGenerator
     {
-        string Extension { get; }
-        
-        FileContainer Generate(FileDescriptor result, List<FileContainer> files, ReportExtendedInfo reportExtendedInfo);
+        FileDescriptor Generate(List<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo);
     }
 }

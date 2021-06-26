@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Kysect.AssignmentReporter.Models;
+using Kysect.AssignmentReporter.Models.FileSearchRules;
 
 namespace Kysect.AssignmentReporter.SourceCodeProvider
 {
@@ -10,8 +9,8 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
     {
         private readonly string _rootDirectoryPath;
 
-        private readonly FileSearchFilter _fileSearchFilter;
 
+        private readonly FileSearchFilter _fileSearchFilter;
 
         public FileSystemSourceCodeProvider(string rootDirectoryPath, FileSearchFilter fileSearchFilter)
         {
@@ -19,12 +18,22 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
             _fileSearchFilter = fileSearchFilter;
         }
 
-        public List<FileContainer> GetFiles()
-            => Directory
-                .EnumerateFiles(_rootDirectoryPath, "*", SearchOption.AllDirectories)
-                .Select(f => new FileInfo(f))
-                .Select(i => new FileDescriptor(i))
-                .Where(d => _fileSearchFilter.FileIsAcceptable(d))
-                .Select(d => new FileContainer(d, File.ReadAllText(d.FileInfo.FullName))).ToList();
+        public List<FileDescriptor> GetFiles()
+        {
+            var files = new List<FileDescriptor>();
+            foreach (var file in Directory.EnumerateFiles(_rootDirectoryPath, "*", SearchOption.AllDirectories))
+            {
+                FileInfo info = new FileInfo(file);
+                if (_fileSearchFilter.FileIsAcceptable(info))
+                {
+                    files
+                        .Add(new FileDescriptor(info.Name,
+                            File.ReadAllText(info.FullName),
+                            info.DirectoryName));
+                }
+            }
+
+            return files;
+        }
     }
 }

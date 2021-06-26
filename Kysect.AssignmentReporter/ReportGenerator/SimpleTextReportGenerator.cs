@@ -6,9 +6,7 @@ namespace Kysect.AssignmentReporter.ReportGenerator
 {
     public class SimpleTextReportGenerator : IReportGenerator
     {
-        public string Extension => "txt";
-
-        public FileContainer Generate(FileDescriptor result, List<FileContainer> files, ReportExtendedInfo reportExtendedInfo)
+        public FileDescriptor Generate(List<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
         {
             throw new NotImplementedException();
         }
