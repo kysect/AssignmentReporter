@@ -55,7 +55,7 @@ namespace Kysect.AssignmentReporter.Models.FileSearchRules
 
         public SearchSettingsBuilder SetDefaultList()
         {
-            AddBlockedDirectories(new List<string>{"obj", "bin", ".git"});
+            AddBlockedDirectories(new List<string> { "obj", "bin", ".git" });
             AddAllowedExtensions(new List<string> { ".cs" });
             return this;
         }
@@ -64,5 +64,5 @@ namespace Kysect.AssignmentReporter.Models.FileSearchRules
         {
             return _searchSettings;
         }
-    }   
+    }
 }

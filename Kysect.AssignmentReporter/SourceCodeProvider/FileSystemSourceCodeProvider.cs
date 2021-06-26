@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using Kysect.AssignmentReporter.Models;
 using Kysect.AssignmentReporter.Models.FileSearchRules;
@@ -25,7 +24,7 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
             foreach (var file in Directory.EnumerateFiles(_rootDirectoryPath, "*", SearchOption.AllDirectories))
             {
                 FileInfo info = new FileInfo(file);
-                if  (_fileSearchFilter.FileIsAcceptable(info))
+                if (_fileSearchFilter.FileIsAcceptable(info))
                 {
                     files
                         .Add(new FileDescriptor(info.Name,
@@ -33,9 +32,8 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
                             info.DirectoryName));
                 }
             }
-           
+
             return files;
         }
-
     }
 }
