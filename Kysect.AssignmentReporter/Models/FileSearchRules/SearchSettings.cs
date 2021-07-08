@@ -15,7 +15,7 @@ namespace Kysect.AssignmentReporter.Models.FileSearchRules
         public SearchSettings() { }
         public bool FileIsAcceptable(string fileName)
         {
-            return WhiteFileNames.Contains(fileName) && !BlackFileNames.Contains(fileName);
+            return WhiteFileNames.Contains(fileName) || !BlackFileNames.Contains(fileName);
         }
 
         public bool FormatIsAcceptable(string fileFormat)
@@ -27,7 +27,7 @@ namespace Kysect.AssignmentReporter.Models.FileSearchRules
             return !BlackDirectories
                        .Any(dirName => dirName
                            .IsMatch(directory))
-                   &&
+                   ||
                    WhiteDirectories
                        .Any(dirName => dirName
                            .IsMatch(directory));

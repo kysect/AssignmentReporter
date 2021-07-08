@@ -9,6 +9,10 @@ namespace Kysect.AssignmentReporter.ReportGenerator
     {
         public FileDescriptor Generate(List<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
         {
+            if (!reportExtendedInfo.Path.EndsWith(".md"))
+            {
+                reportExtendedInfo.Path += ".md";
+            }
             var reportFile = File.Create(reportExtendedInfo.Path);
             reportFile.Close();
             var builder = new StringBuilder();

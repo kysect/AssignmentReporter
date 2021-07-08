@@ -23,6 +23,10 @@ namespace Kysect.AssignmentReporter.ReportGenerator
 
         public FileDescriptor Generate(List<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
         {
+            if (!reportExtendedInfo.Path.EndsWith(".docx"))
+            {
+                reportExtendedInfo.Path += ".docx";
+            }
             _document = DocX.Create(reportExtendedInfo.Path);
 
             if (CoverPage != null)
