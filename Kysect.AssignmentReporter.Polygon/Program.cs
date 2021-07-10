@@ -15,12 +15,12 @@ namespace Kysect.AssignmentReporter.Polygon
 
         public static void GenerateSimpleReport()
         {
-            FileSearchFilter filter = new FileSearchFilter(new SearchSettings()
+            FileSearchFilter filter = new(new SearchSettings()
             {
                 WhiteFileFormats = {".cs"},
                 BlackDirectories = {new Regex("bin"), new Regex("obj")}
             });
-            MultiGenerator mg = new MultiGenerator(@"C:\test\repos", @"C:\test\reports", new MarkdownReportGenerator(), filter);
+            MultiGenerator mg = new(@"C:\test\repos", @"C:\test\reports", new MarkdownReportGenerator(), filter);
             mg.Generate();
         }
     }

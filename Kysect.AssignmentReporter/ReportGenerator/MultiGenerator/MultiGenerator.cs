@@ -37,12 +37,9 @@ namespace Kysect.AssignmentReporter.ReportGenerator.MultiGenerator
             return GetRepositories().
                 Select(repository
                     => Generator.Generate(new FileSystemSourceCodeProvider(repository, Filter).GetFiles()
-                    , new ReportExtendedInfo()
-                    {
-                        Conclusion = string.Empty,
-                        Intro = string.Empty,
-                        Path = $@"{ReportsPath}/{new DirectoryInfo(repository).Name}"
-                    }))
+                    , new ReportExtendedInfo($@"{ReportsPath}/{new DirectoryInfo(repository).Name}",
+                        string.Empty, 
+                        string.Empty)))
                 .ToList();
         }
    }
