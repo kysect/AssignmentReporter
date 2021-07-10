@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Kysect.AssignmentReporter.Models
+﻿namespace Kysect.AssignmentReporter.Models
 {
-   public class CoverPageInfo
-   { 
+    public class CoverPageInfo
+    {
         public string GroupNumber { get; set; }
-        public string WorkNumber { get; set; } 
-        public string Discipline { get; set; } 
-        public string FullName { get; set; } 
+        public string WorkNumber { get; set; }
+        public string Discipline { get; set; }
+        public string FullName { get; set; }
         public string TeacherName { get; set; }
         public string PathToCoverPage { get; set; }
 
@@ -22,5 +18,5 @@ namespace Kysect.AssignmentReporter.Models
             PathToCoverPage = pathToCoverPage;
             GroupNumber = groupNumber;
         }
-   }
+    }
 }
