@@ -6,19 +6,21 @@ using Kysect.AssignmentReporter.Models;
 using SautinSoft;
 using Xceed.Document.NET;
 using Xceed.Words.NET;
+
 using Document = Xceed.Document.NET.Document;
 
 namespace Kysect.AssignmentReporter.ReportGenerator
 {
     public class DocumentReportGenerator : IReportGenerator
     {
-        public  CoverPageInfo CoverPage;
+        public CoverPageInfo CoverPage;
         private DocX _document;
 
-        public DocumentReportGenerator(CoverPageInfo coverPage)
+        public DocumentReportGenerator(CoverPageInfo coverPage) : this()
         {
             CoverPage = coverPage;
         }
+
         public DocumentReportGenerator() { }
 
         public FileDescriptor Generate(List<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
@@ -89,24 +91,23 @@ namespace Kysect.AssignmentReporter.ReportGenerator
                         .Replace(".docx", ".pdf"));
         }
 
-        private DocX AddCoverPage(Document coverPage)
+        private void AddCoverPage(Document coverPage)
         {
             const int indentationAmount = 22;
             var titleList = coverPage.Paragraphs;
+
             foreach (var paragraph in titleList)
             {
                 _document.InsertParagraph(paragraph);
             }
+
             for (int i = 0; i < indentationAmount; i++)
             {
                 _document.InsertParagraph(String.Empty);
             }
-            return _document;
         }
 
-       
-
-        private DocX InsertIntroduction(string introduction)
+        private void InsertIntroduction(string introduction)
         {
             _document.InsertParagraph("introduction:")
                 .FontSize(15)
@@ -115,10 +116,9 @@ namespace Kysect.AssignmentReporter.ReportGenerator
             _document.InsertParagraph($"{introduction}")
                 .FontSize(12)
                 .Alignment = Alignment.left;
-            return _document;
         }
 
-        private DocX InsertConclusion(string conclusion)
+        private void InsertConclusion(string conclusion)
         {
             _document.InsertParagraph("Conclusion:")
                 .FontSize(15)
@@ -127,10 +127,9 @@ namespace Kysect.AssignmentReporter.ReportGenerator
             _document.InsertParagraph($"{conclusion}")
                 .FontSize(12)
                 .Alignment = Alignment.left;
-            return _document;
         }
 
-        private DocX InsertContent(List<FileDescriptor> files)
+        private void InsertContent(List<FileDescriptor> files)
         {
             foreach (var fileContent in files)
             {
@@ -149,9 +148,6 @@ namespace Kysect.AssignmentReporter.ReportGenerator
 
                 _document.InsertTable(table);
             }
-
-            return _document;
         }
-        
     }
 }

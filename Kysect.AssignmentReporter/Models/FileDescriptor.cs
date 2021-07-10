@@ -2,9 +2,9 @@
 {
     public class FileDescriptor
     {
-        public string Name { get; set; }
-        public string Content { get; set; }
-        public string RootDirectory { get; set; }
+        public string Name { get; }
+        public string Content { get; }
+        public string RootDirectory { get; }
 
         public FileDescriptor(string name, string content, string rootDirectory)
         {

@@ -11,16 +11,19 @@ namespace Kysect.AssignmentReporter.Models.FileSearchRules
         {
             SearchSettings = searchSettings ?? throw new Exception("Search settings can't be null");
         }
+
         public bool FileIsAcceptable(FileInfo file)
         {
             return NameIsAcceptable(file)
                    && FormatIsAcceptable(file)
                    && DirectoryIsAcceptable(file);
         }
+
         public bool NameIsAcceptable(FileInfo file)
         {
             return SearchSettings.FileIsAcceptable(file.Name);
         }
+
         public bool FormatIsAcceptable(FileInfo file)
         {
             return SearchSettings.FormatIsAcceptable(file.Extension);

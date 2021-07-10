@@ -2,8 +2,8 @@
 {
     public class GitUserData
     {
-        public string Username { get; set; }
-        public string Email { get; set; }
+        public string Username { get; }
+        public string Email { get; }
 
         public GitUserData(string username, string email)
         {

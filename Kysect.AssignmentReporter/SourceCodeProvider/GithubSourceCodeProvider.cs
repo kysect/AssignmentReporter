@@ -26,7 +26,7 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
             _data = data;
             _fileSearchFilter = fileSearchFilter;
         }
-        
+
         public List<FileDescriptor> GetFiles()
         {
             char separator = Path.DirectorySeparatorChar;
@@ -39,7 +39,7 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
 
         public string DownloadRepositoryFromGit()
         {
-            Credential credentialsInfo = 
+            Credential credentialsInfo =
                 new BasicAuthentication(new SecretStore("git")).GetCredentials(new TargetUri("https://github.com"));
 
             if (!Repository.IsValid(_localStoragePath))
@@ -48,7 +48,8 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
                 {
                     CredentialsProvider = (_url, usernameFromUrl, types) => new UsernamePasswordCredentials
                     {
-                        Username = credentialsInfo.Username, Password = credentialsInfo.Password
+                        Username = credentialsInfo.Username,
+                        Password = credentialsInfo.Password
                     }
                 };
                 Repository.Clone(_url, _localStoragePath, options);
@@ -62,7 +63,8 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
                     {
                         CredentialsProvider = (_url, usernameFromUrl, types) => new UsernamePasswordCredentials
                         {
-                            Username = credentialsInfo.Username, Password = credentialsInfo.Password
+                            Username = credentialsInfo.Username,
+                            Password = credentialsInfo.Password
                         }
                     }
                 };
