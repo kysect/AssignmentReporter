@@ -20,18 +20,20 @@ namespace Kysect.AssignmentReporter.ReportGenerator
             if (!string.IsNullOrEmpty(reportExtendedInfo.Intro))
             {
                 builder.AppendLine("Introduction:" + reportExtendedInfo.Intro);
+
+                builder.AppendLine("\n\n");
             }
             foreach (FileDescriptor file in files)
             {
                 builder.AppendLine("File name:" + file.Name);
 
-                builder.Append("```");
+                builder.AppendLine("\n");
 
                 builder.AppendLine(new FileInfo(file.RootDirectory).Extension);
 
                 builder.Append(file.Content);
 
-                builder.AppendLine("\n```\n");
+                builder.AppendLine("\n\n");
             }
             if (!string.IsNullOrEmpty(reportExtendedInfo.Conclusion))
             {
