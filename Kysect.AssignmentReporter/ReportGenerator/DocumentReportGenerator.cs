@@ -15,6 +15,7 @@ namespace Kysect.AssignmentReporter.ReportGenerator
     {
         public CoverPageInfo CoverPage;
         private DocX _document;
+        public string Extension { get; } = ".docx";
 
         public DocumentReportGenerator(CoverPageInfo coverPage) : this()
         {
@@ -25,10 +26,7 @@ namespace Kysect.AssignmentReporter.ReportGenerator
 
         public FileDescriptor Generate(List<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
         {
-            if (!reportExtendedInfo.Path.EndsWith(".docx"))
-            {
-                reportExtendedInfo.Path += ".docx";
-            }
+            reportExtendedInfo.Path = CheckExtension(reportExtendedInfo.Path);
             _document = DocX.Create(reportExtendedInfo.Path);
 
             if (CoverPage != null)
@@ -148,6 +146,13 @@ namespace Kysect.AssignmentReporter.ReportGenerator
 
                 _document.InsertTable(table);
             }
+        }
+
+        public string CheckExtension(string path)
+        {
+            return path.EndsWith(Extension)
+                ? path
+                : path + Extension;
         }
     }
 }

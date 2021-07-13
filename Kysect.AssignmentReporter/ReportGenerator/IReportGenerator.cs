@@ -6,5 +6,6 @@ namespace Kysect.AssignmentReporter.ReportGenerator
     public interface IReportGenerator
     {
         FileDescriptor Generate(List<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo);
+        string CheckExtension(string path);
     }
 }
