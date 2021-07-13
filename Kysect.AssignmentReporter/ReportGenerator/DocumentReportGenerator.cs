@@ -15,6 +15,7 @@ namespace Kysect.AssignmentReporter.ReportGenerator
     {
         public CoverPageInfo CoverPage;
         private DocX _document;
+        public string Extension { get; } = ".docx";
 
         public DocumentReportGenerator(CoverPageInfo coverPage) : this()
         {
@@ -25,6 +26,7 @@ namespace Kysect.AssignmentReporter.ReportGenerator
 
         public FileDescriptor Generate(List<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
         {
+            reportExtendedInfo.Path = reportExtendedInfo.Path.CheckExtension(Extension);
             _document = DocX.Create(reportExtendedInfo.Path);
 
             if (CoverPage != null)

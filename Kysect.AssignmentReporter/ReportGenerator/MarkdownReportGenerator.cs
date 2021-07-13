@@ -7,8 +7,11 @@ namespace Kysect.AssignmentReporter.ReportGenerator
 {
     public class MarkdownReportGenerator : IReportGenerator
     {
+        public string Extension { get; } = ".md";
+
         public FileDescriptor Generate(List<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
         {
+            reportExtendedInfo.Path = reportExtendedInfo.Path.CheckExtension(Extension);
             var reportFile = File.Create(reportExtendedInfo.Path);
             reportFile.Close();
             var builder = new StringBuilder();
