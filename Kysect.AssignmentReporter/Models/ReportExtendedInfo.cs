@@ -8,7 +8,9 @@
 
         public ReportExtendedInfo(string intro, string conclusion, string path)
         {
-            (Path, Intro, Conclusion) = (path, intro, conclusion);
+            Intro = intro;
+            Conclusion = conclusion;
+            Path = path;
         }
     }
 }
