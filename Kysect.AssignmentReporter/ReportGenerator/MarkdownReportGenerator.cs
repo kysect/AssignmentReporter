@@ -11,7 +11,7 @@ namespace Kysect.AssignmentReporter.ReportGenerator
 
         public FileDescriptor Generate(List<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
         {
-            reportExtendedInfo.Path = CheckExtension(reportExtendedInfo.Path);
+            reportExtendedInfo.Path = reportExtendedInfo.Path.CheckExtension(Extension);
             var reportFile = File.Create(reportExtendedInfo.Path);
             reportFile.Close();
             var builder = new StringBuilder();
@@ -30,13 +30,6 @@ namespace Kysect.AssignmentReporter.ReportGenerator
             File.WriteAllText(reportExtendedInfo.Path, builder.ToString());
             FileInfo info = new FileInfo(reportExtendedInfo.Path);
             return new FileDescriptor(info.Name, File.ReadAllText(info.FullName), info.DirectoryName);
-        }
-
-        public string CheckExtension(string path)
-        {
-            return path.EndsWith(Extension)
-                ? path
-                : path + Extension;
         }
     }
 }

@@ -26,7 +26,7 @@ namespace Kysect.AssignmentReporter.ReportGenerator
 
         public FileDescriptor Generate(List<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
         {
-            reportExtendedInfo.Path = CheckExtension(reportExtendedInfo.Path);
+            reportExtendedInfo.Path = reportExtendedInfo.Path.CheckExtension(Extension);
             _document = DocX.Create(reportExtendedInfo.Path);
 
             if (CoverPage != null)
@@ -146,13 +146,6 @@ namespace Kysect.AssignmentReporter.ReportGenerator
 
                 _document.InsertTable(table);
             }
-        }
-
-        public string CheckExtension(string path)
-        {
-            return path.EndsWith(Extension)
-                ? path
-                : path + Extension;
         }
     }
 }
