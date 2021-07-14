@@ -17,12 +17,12 @@ namespace Kysect.AssignmentReporter.Models.FileSearchRules
         
         public bool FileIsAcceptable(string fileName)
         {
-            return WhiteFileNames.Count == 0 || WhiteFileNames.Contains(fileName) && !BlackFileNames.Contains(fileName);
+            return (WhiteFileNames.Count == 0 || WhiteFileNames.Contains(fileName))&& !BlackFileNames.Contains(fileName);
         }
 
         public bool FormatIsAcceptable(string fileFormat)
         {
-            return WhiteFileFormats.Count == 0 || WhiteFileFormats.Contains(fileFormat) && !BlackFileFormats.Contains(fileFormat) ;
+            return (WhiteFileFormats.Count == 0 || WhiteFileFormats.Contains(fileFormat)) && !BlackFileFormats.Contains(fileFormat) ;
         }
 
         public bool DirectoryIsAcceptable(string directory)
@@ -31,11 +31,11 @@ namespace Kysect.AssignmentReporter.Models.FileSearchRules
                        .Any(dirName => dirName
                            .IsMatch(directory))
                    &&
-                   WhiteDirectories.Count == 0
+                   (WhiteDirectories.Count == 0
                    ||
                    WhiteDirectories
                        .Any(dirName => dirName
-                           .IsMatch(directory));
+                           .IsMatch(directory)));
         }
     }
 }
