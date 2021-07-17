@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kysect.AssignmentReporter",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kysect.AssignmentReporter.Polygon", "Kysect.AssignmentReporter.Polygon\Kysect.AssignmentReporter.Polygon.csproj", "{F5FD6D08-101A-4566-A3B8-A9602C0F169F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kysect.AssignmentReporter.Plugin", "Kysect.AssignmentReporter.Plugin\Kysect.AssignmentReporter.Plugin.csproj", "{FCBFD162-1E31-42FB-A081-EDFEF5BE9E45}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kysect.AssignmentReporter.Plugin", "Kysect.AssignmentReporter.Plugin\Kysect.AssignmentReporter.Plugin.csproj", "{4646A54C-D469-4BA2-B89F-DFD77CB8129E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{F5FD6D08-101A-4566-A3B8-A9602C0F169F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5FD6D08-101A-4566-A3B8-A9602C0F169F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5FD6D08-101A-4566-A3B8-A9602C0F169F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FCBFD162-1E31-42FB-A081-EDFEF5BE9E45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FCBFD162-1E31-42FB-A081-EDFEF5BE9E45}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FCBFD162-1E31-42FB-A081-EDFEF5BE9E45}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FCBFD162-1E31-42FB-A081-EDFEF5BE9E45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4646A54C-D469-4BA2-B89F-DFD77CB8129E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4646A54C-D469-4BA2-B89F-DFD77CB8129E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4646A54C-D469-4BA2-B89F-DFD77CB8129E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4646A54C-D469-4BA2-B89F-DFD77CB8129E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

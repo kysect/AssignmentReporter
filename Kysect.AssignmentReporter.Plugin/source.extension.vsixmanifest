@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="Kysect.AssignmentReporter.Plugin.11fa7026-4e5f-4a39-a975-3037be0f7afb" Version="1.0" Language="en-US" Publisher="Tom Gnill" />
+    <Identity Id="Kysect.AssignmentReporter.Plugin.9f22132f-6fb3-442b-b08e-564e9c62476b" Version="1.0" Language="en-US" Publisher="Tom Gnill" />
     <DisplayName>Kysect.AssignmentReporter.Plugin</DisplayName>
     <Description>Empty VSIX Project.</Description>
   </Metadata>

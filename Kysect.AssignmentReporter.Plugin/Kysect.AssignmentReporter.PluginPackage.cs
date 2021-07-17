@@ -24,13 +24,13 @@ namespace Kysect.AssignmentReporter.Plugin
     /// </para>
     /// </remarks>
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
-    [Guid(Kysect.AssignmentReporter.PluginPackage.PackageGuidString)]
-    public sealed class Kysect.AssignmentReporter.PluginPackage : AsyncPackage
+    [Guid(PackageGuidString)]
+    public sealed class AssignmentReporterPluginPackage : AsyncPackage
     {
          /// <summary>
         /// Kysect.AssignmentReporter.PluginPackage GUID string.
         /// </summary>
-        public const string PackageGuidString = "fa0ed8bd-e7e9-49aa-b0b7-7eb8698d9345";
+        public const string PackageGuidString = "017225f8-7e93-42cb-84cc-9aaa284c6def";
 
     #region Package Members
 
