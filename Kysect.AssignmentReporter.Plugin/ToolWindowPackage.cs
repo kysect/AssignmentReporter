@@ -39,9 +39,9 @@ namespace Kysect.AssignmentReporter.Plugin
         /// <summary>
         /// ToolWindow1Package GUID string.
         /// </summary>
-        public const string PackageGuidString = "bc9518b5-0455-45a0-aef0-92ac979ba1bd";
+        public const string PackageGuidString = "5e4741bc-8c53-4386-9088-bd25f9f3285d";
 
-        ///// <summary>
+        /// <summary>
         /// Initializes a new instance of the <see cref="ToolWindowPackage"/> class.
         /// </summary>
         public ToolWindowPackage()

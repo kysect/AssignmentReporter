@@ -22,7 +22,7 @@ namespace Kysect.AssignmentReporter.Plugin
         /// <summary>
         /// Command menu group (command set GUID).
         /// </summary>
-        public static readonly Guid CommandSet = new Guid("b473d1e6-678d-495e-ab0b-9cf5fb471ed1");
+        public static readonly Guid CommandSet = new Guid("eaab0023-00ec-4b84-af3d-99da96f93701");
 
         /// <summary>
         /// VS Package that provides this command, not null.
@@ -71,7 +71,7 @@ namespace Kysect.AssignmentReporter.Plugin
         /// <param name="package">Owner package, not null.</param>
         public static async Task InitializeAsync(AsyncPackage package)
         {
-            // Switch to the main thread - the call to AddCommand in ToolWindow1Command's constructor requires
+            // Switch to the main thread - the call to AddCommand in ToolWindowCommand's constructor requires
             // the UI thread.
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);
 

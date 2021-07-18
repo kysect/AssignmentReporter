@@ -64,10 +64,10 @@
 
 	<Symbols>
 		<!-- This is the package guid. -->
-		<GuidSymbol name="guidToolWindowPackage" value="{bc9518b5-0455-45a0-aef0-92ac979ba1bd}" />
+		<GuidSymbol name="guidToolWindowPackage" value="{5e4741bc-8c53-4386-9088-bd25f9f3285d}" />
 
 		<!-- This is the guid used to group the menu commands together -->
-		<GuidSymbol name="guidToolWindowPackageCmdSet" value="{b473d1e6-678d-495e-ab0b-9cf5fb471ed1}">
+		<GuidSymbol name="guidToolWindowPackageCmdSet" value="{eaab0023-00ec-4b84-af3d-99da96f93701}">
 			<IDSymbol name="ToolWindowCommandId" value="0x0100" />
 		</GuidSymbol>
 
