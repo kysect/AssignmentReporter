@@ -18,7 +18,7 @@ namespace Kysect.AssignmentReporter.Plugin
     /// <summary>
     /// Логика взаимодействия для SearchSettingsWindow.xaml
     /// </summary>
-    public partial class SearchSettingsWindow : ToolWindowControl
+    public partial class SearchSettingsWindow 
     {
         public string ViewModel { get; set; }
 

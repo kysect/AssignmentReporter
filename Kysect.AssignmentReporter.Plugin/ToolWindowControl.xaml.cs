@@ -106,7 +106,6 @@ namespace Kysect.AssignmentReporter.Plugin
         private void SearchSettings_Button_Click(object sender, RoutedEventArgs e)
         {
             SearchSettingsWindow taskWindow = new SearchSettingsWindow();
-            taskWindow.Show();
         }
     }
 }
