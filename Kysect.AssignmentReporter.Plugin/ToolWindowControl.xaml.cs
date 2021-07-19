@@ -22,7 +22,7 @@ namespace Kysect.AssignmentReporter.Plugin
         private bool isMultiGeneration = false;
         private IReportGenerator generator = new DocumentReportGenerator();
         private CoverPageInfo coverPageInfo;
-        private FileSearchFilter filter;
+        private static FileSearchFilter filter;
         public ToolWindowControl()
         {
             Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("ru-RU");
@@ -32,7 +32,7 @@ namespace Kysect.AssignmentReporter.Plugin
         {
             FileSystemSourceCodeProvider provider = new FileSystemSourceCodeProvider(pathToRepository.Text, filter);
             ReportExtendedInfo info = new ReportExtendedInfo(string.Empty, string.Empty, pathToSave.Text);
-            if (isMultiGeneration)
+            if (!isMultiGeneration)
             { 
                 generator.Generate(provider.GetFiles(), info);
             }
@@ -82,7 +82,7 @@ namespace Kysect.AssignmentReporter.Plugin
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
-                Filter = "pdf files (*.pdf)|*.pdf | doc files (*.docx, .doc) |*.docx *.doc | markdown files (*.md)|*.md | txt files (*.txt)|*.txt",
+                Filter = @"pdf files (*.pdf)|*.pdf | doc files (*.docx, .doc) |*.docx *.doc | markdown files (*.md)|*.md | txt files (*.txt)|*.txt",
                 FilterIndex = 4,
                 RestoreDirectory = true
             };
@@ -106,6 +106,12 @@ namespace Kysect.AssignmentReporter.Plugin
         private void SearchSettings_Button_Click(object sender, RoutedEventArgs e)
         {
             SearchSettingsWindow taskWindow = new SearchSettingsWindow();
+            taskWindow.Show();
+        }
+
+        public static void TransferFilters(Kysect.AssignmentReporter.Models.FileSearchRules.SearchSettings settings)
+        {
+            filter = new FileSearchFilter(settings);
         }
     }
 }
