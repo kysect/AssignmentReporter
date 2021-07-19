@@ -1,64 +1,46 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Kysect.AssignmentReporter.Models.FileSearchRules;
 
-namespace Kysect.AssignmentReporter.Plugin
+namespace Kysect.AssignmentReporter.Plugin.Windows
 {
     /// <summary>
     /// Логика взаимодействия для SearchSettingsWindow.xaml
     /// </summary>
     public partial class SearchSettingsWindow 
     {
-        public string ViewModel { get; set; }
-
-        public ISearchSettingsBuilder builder = new SearchSettingsBuilder();
-        public Kysect.AssignmentReporter.Models.FileSearchRules.SearchSettings settings;
+        public ISearchSettingsBuilder Builder = new SearchSettingsBuilder();
+        public Kysect.AssignmentReporter.Models.FileSearchRules.SearchSettings Settings;
 
         public SearchSettingsWindow()
         {
             InitializeComponent();
         }
 
-        public void ShowViewModel()
-        {
-            MessageBox.Show(ViewModel);
-        }
-
         private void AddWhiteFiles(List<string> files)
         {
-            builder.AddAllowedFiles(files);
+            Builder.AddAllowedFiles(files);
         }
         private void AddWhiteExtensions(List<string> extensions)
         {
-            builder.AddAllowedExtensions(extensions);
+            Builder.AddAllowedExtensions(extensions);
         }
         private void AddWhiteDirectories(List<string> directories)
         {
-            builder.AddAllowedDirectories(directories);
+            Builder.AddAllowedDirectories(directories);
         }
         private void AddBlackFiles(List<string> files)
         {
-            builder.AddBlockedFiles(files);
+            Builder.AddBlockedFiles(files);
         }
         private void AddBlackExtensions(List<string> extensions)
         {
-            builder.AddBlockedExtensions(extensions);
+            Builder.AddBlockedExtensions(extensions);
         }
         private void AddBlackDirectories(List<string> directories)
         {
-            builder.AddBlockedDirectories(directories);
+            Builder.AddBlockedDirectories(directories);
         }
         private void get_SearchSettings_Button_Click(object sender, RoutedEventArgs e)
         {
@@ -92,13 +74,13 @@ namespace Kysect.AssignmentReporter.Plugin
                 AddBlackDirectories(string_BlackDirectories.Text.Split(',').ToList());
             }
 
-            settings = builder.Build();
-            ToolWindowControl.TransferFilters(settings);
+            Settings = Builder.Build();
+            ToolWindowControl.TransferFilters(Settings);
             this.Close();
         } 
         private void get_SetDefaultSearchSettings_Button_Click(object sender, RoutedEventArgs e)
         {
-            builder.SetDefaultList();
+            Builder.SetDefaultList();
         }
     }
 }

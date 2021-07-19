@@ -54,6 +54,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Windows\CoverPageSettingsWindow.xaml.cs">
+      <DependentUpon>CoverPageSettingsWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Kysect.AssignmentReporter.PluginPackage.cs" />
     <Compile Include="Resource.Designer.cs">
@@ -61,18 +64,19 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resource.resx</DependentUpon>
     </Compile>
-    <Compile Include="SearchSettingsWindow.xaml.cs">
+    <Compile Include="Windows\SearchSettingsWindow.xaml.cs">
       <DependentUpon>SearchSettingsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ToolWindow.cs" />
     <Compile Include="ToolWindowCommand.cs" />
-    <Compile Include="ToolWindowControl.xaml.cs">
+    <Compile Include="Windows\ToolWindowControl.xaml.cs">
       <DependentUpon>ToolWindowControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ToolWindowPackage.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AssignmentReporter.snk" />
+    <None Include="Windows\Resources\titleScreen.docx" />
     <None Include="source.extension.vsixmanifest">
       <SubType>Designer</SubType>
     </None>
@@ -101,11 +105,15 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="SearchSettingsWindow.xaml">
+    <Page Include="Windows\CoverPageSettingsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ToolWindowControl.xaml">
+    <Page Include="Windows\SearchSettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\ToolWindowControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -129,6 +137,7 @@
       <LastGenOutput>Resource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

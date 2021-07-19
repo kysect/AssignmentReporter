@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using Kysect.AssignmentReporter.Plugin.Windows;
 using Microsoft.VisualStudio.Shell;
 
 namespace Kysect.AssignmentReporter.Plugin

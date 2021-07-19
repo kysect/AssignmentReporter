@@ -9,7 +9,7 @@ using Kysect.AssignmentReporter.ReportGenerator;
 using Kysect.AssignmentReporter.ReportGenerator.MultiGenerator;
 using Kysect.AssignmentReporter.SourceCodeProvider;
 
-namespace Kysect.AssignmentReporter.Plugin
+namespace Kysect.AssignmentReporter.Plugin.Windows
 {
     /// <summary>
     /// Логика взаимодействия для ToolWindowControl.xaml
@@ -19,10 +19,13 @@ namespace Kysect.AssignmentReporter.Plugin
         /// <summary>
         /// Initializes a new instance of the <see cref="ToolWindowControl"/> class.
         /// </summary>
-        private bool isMultiGeneration = false;
-        private IReportGenerator generator = new DocumentReportGenerator();
-        private CoverPageInfo coverPageInfo;
-        private static FileSearchFilter filter;
+        private bool _isMultiGeneration = false;
+        private bool _isPdf= true;
+        private IReportGenerator _generator = new DocumentReportGenerator();
+        private static CoverPageInfo _coverPageInfo;
+        private static FileSearchFilter _filter;
+        private static string _introduction = string.Empty;
+        private static string _conclusion = string.Empty;
         public ToolWindowControl()
         {
             Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("ru-RU");
@@ -30,23 +33,37 @@ namespace Kysect.AssignmentReporter.Plugin
         }
         private void Generate_Button_Click(object sender, RoutedEventArgs e)
         {
-            FileSystemSourceCodeProvider provider = new FileSystemSourceCodeProvider(pathToRepository.Text, filter);
-            ReportExtendedInfo info = new ReportExtendedInfo(string.Empty, string.Empty, pathToSave.Text);
-            if (!isMultiGeneration)
-            { 
-                generator.Generate(provider.GetFiles(), info);
+            FileSystemSourceCodeProvider provider = new FileSystemSourceCodeProvider(pathToRepository.Text, _filter);
+            ReportExtendedInfo info = new ReportExtendedInfo(_introduction, _conclusion, pathToSave.Text);
+            if (!_isMultiGeneration)
+            {
+                if (_generator is DocumentReportGenerator && _coverPageInfo != null)
+                {
+                    DocumentReportGenerator generator = new DocumentReportGenerator(_coverPageInfo);
+                    generator.Generate(provider.GetFiles(), info);
+                }
+                else if (_isPdf && _coverPageInfo != null)
+                {
+                    DocumentReportGenerator generator = new DocumentReportGenerator(_coverPageInfo);
+                    generator.Generate(provider.GetFiles(), info);
+                    generator.ConvertToPdf(info);
+                }
+                else
+                {
+                    _generator.Generate(provider.GetFiles(), info);
+                }
             }
             else
             {
                 MultiGenerator multiGenerator =
-                    new MultiGenerator(pathToRepository.Text, pathToSave.Text, generator, filter);
+                    new MultiGenerator(pathToRepository.Text, pathToSave.Text, _generator, _filter);
                 multiGenerator.Generate();
             }
            
         }
         private void Cancel_Button_Click(object sender, RoutedEventArgs e)
         {
-
+           
         }
         private void fileFormat_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -55,16 +72,20 @@ namespace Kysect.AssignmentReporter.Plugin
             switch (reportType)
             {
                 case ".pdf":
-                    generator = new DocumentReportGenerator();
+                    _generator = new DocumentReportGenerator();
+                    _isPdf = true;
                     break;
                 case ".docx":
-                    generator = new DocumentReportGenerator();
+                    _generator = new DocumentReportGenerator();
+                    _isPdf = false;
                     break;
                 case ".txt":
-                    generator = new SimpleTextReportGenerator();
+                    _generator = new SimpleTextReportGenerator();
+                    _isPdf = false;
                     break;
                 case ".md":
-                    generator = new MarkdownReportGenerator();
+                    _generator = new MarkdownReportGenerator();
+                    _isPdf = false;
                     break;
             }
         }
@@ -95,12 +116,12 @@ namespace Kysect.AssignmentReporter.Plugin
 
         private void MultiGenCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
-            isMultiGeneration = false;
+            _isMultiGeneration = false;
         }
 
         private void MultiGenCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            isMultiGeneration = true;
+            _isMultiGeneration = true;
         }
 
         private void SearchSettings_Button_Click(object sender, RoutedEventArgs e)
@@ -109,9 +130,22 @@ namespace Kysect.AssignmentReporter.Plugin
             taskWindow.Show();
         }
 
+        private void CoverPageSettings_Button_Click(object sender, RoutedEventArgs e)
+        {
+            CoverPageSettingsWindow taskWindow = new CoverPageSettingsWindow();
+            taskWindow.Show();
+        }
+
         public static void TransferFilters(Kysect.AssignmentReporter.Models.FileSearchRules.SearchSettings settings)
         {
-            filter = new FileSearchFilter(settings);
+            _filter = new FileSearchFilter(settings);
+        }
+
+        public static void TransferInfo(CoverPageInfo coverPage, string introduction, string conclution)
+        {
+            _coverPageInfo = coverPage;
+            ToolWindowControl._introduction = introduction;
+            ToolWindowControl._conclusion = conclution;
         }
     }
 }
