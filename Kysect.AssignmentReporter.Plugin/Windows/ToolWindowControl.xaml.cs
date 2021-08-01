@@ -11,14 +11,8 @@ using Kysect.AssignmentReporter.SourceCodeProvider;
 
 namespace Kysect.AssignmentReporter.Plugin.Windows
 {
-    /// <summary>
-    /// Логика взаимодействия для ToolWindowControl.xaml
-    /// </summary>
     public partial class ToolWindowControl : System.Windows.Controls.UserControl
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ToolWindowControl"/> class.
-        /// </summary>
         private bool _isMultiGeneration = false;
         private bool _isPdf= true;
         private IReportGenerator _generator = new DocumentReportGenerator();
@@ -59,10 +53,6 @@ namespace Kysect.AssignmentReporter.Plugin.Windows
                     new MultiGenerator(pathToRepository.Text, pathToSave.Text, _generator, _filter);
                 multiGenerator.Generate();
             }
-           
-        }
-        private void Cancel_Button_Click(object sender, RoutedEventArgs e)
-        {
            
         }
         private void fileFormat_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -136,7 +126,7 @@ namespace Kysect.AssignmentReporter.Plugin.Windows
             taskWindow.Show();
         }
 
-        public static void TransferFilters(Kysect.AssignmentReporter.Models.FileSearchRules.SearchSettings settings)
+        public static void TransferFilters(SearchSettings settings)
         {
             _filter = new FileSearchFilter(settings);
         }

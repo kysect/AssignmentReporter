@@ -8,7 +8,7 @@
              Foreground ="Black"
              mc:Ignorable="d" 
              Name="SettingsWindow" Height="766.77" Width="798.624">
-    <Grid Margin="65,-150,10,0" Height="450" VerticalAlignment="Bottom">
+    <Grid Margin="65,0,10,0" Height="450" VerticalAlignment="Bottom">
         <Grid.RowDefinitions>
             <RowDefinition Height="197*"/>
             <RowDefinition Height="3*"/>
@@ -21,28 +21,28 @@
             <ColumnDefinition Width="156*"/>
             <ColumnDefinition Width="71*"/>
         </Grid.ColumnDefinitions>
-        <Button Content="Ок" VerticalAlignment="Bottom" HorizontalAlignment="Right" Click="CoverPage_Button_Click" Name="get_SearchSettigs_Button" Height ="20" Width="90" Margin="0,0,10,10" Grid.Row="3" Grid.Column="2" RenderTransformOrigin="0.522,0.5" Grid.ColumnSpan="2"/>
-        <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Height="27" Width="163" Margin="-61,-277,0,664" RenderTransformOrigin="-0.037,0.407">Ф.И.О(docx/pdf)</TextBlock>
+        <Button Content="Ok" VerticalAlignment="Bottom" HorizontalAlignment="Right" Click="CoverPage_Button_Click" Name="get_SearchSettigs_Button" Height ="20" Width="90" Margin="0,0,10,10" Grid.Row="3" Grid.Column="2" RenderTransformOrigin="0.522,0.5" Grid.ColumnSpan="2"/>
+        <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Height="27" Width="163" Margin="-61,-277,0,664" RenderTransformOrigin="-0.037,0.407">Full name(docx/pdf)</TextBlock>
         <TextBox VerticalAlignment="Bottom" x:Name = "FullName"  Height="20" Margin="-61,-245,115,639" Grid.Row="0" Grid.Column="0" />
-        <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Height="27" Width="173" Margin="201,-277,0,664" Grid.ColumnSpan="3">Номер группы(docx/pdf)</TextBlock>
+        <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Height="27" Width="173" Margin="201,-277,0,664" Grid.ColumnSpan="3">Group nubmer(docx/pdf)</TextBlock>
         <TextBox VerticalAlignment="Bottom" x:Name ="GroupNumber"  Height="20" Margin="201,-245,35,639" Grid.Row="0"
                  Grid.ColumnSpan="2" Grid.Column="0" />
-        <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Height="27" Width="163" Margin="-61,-207,0,594">Имя преподователя(docx/pdf)</TextBlock>
+        <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Height="27" Width="163" Margin="-61,-207,0,594" Text="Teacher name (docx/pdf)"/>
         <TextBox VerticalAlignment="Bottom" x:Name ="TeacherName"  Height="20" Margin="-61,-180,115,574" Grid.Row="0" Grid.Column="0" />
         <TextBlock VerticalAlignment="Bottom" HorizontalAlignment="Left" Height="27" Width="163" Margin="201,-207,0,594"
-                   Grid.Column="0" Grid.ColumnSpan="3">Дисциплина(docx/pdf)</TextBlock>
+                   Grid.Column="0" Grid.ColumnSpan="3" Text="Discipline(docx/pdf)"/>
         <TextBox VerticalAlignment="Bottom" x:Name ="Discipline"  Height="20" Margin="201,-180,240,574" Grid.ColumnSpan="3"
                  Grid.Column="0" />
         <TextBlock VerticalAlignment="Bottom" HorizontalAlignment="Left" Height="27" Width="179" Margin="58,-277,0,664"
-                   Grid.Column="2">Номер работы(docx/pdf)</TextBlock>
+                   Grid.Column="2" Text="Work number(docx/pdf)"/>
         <TextBox VerticalAlignment="Bottom" x:Name ="WorkNumber"  Height="20" Margin="58,-245,154,639"
                  Grid.Column="2" />
         <TextBlock VerticalAlignment="Bottom" HorizontalAlignment="Left" Height="27" Width="163" Margin="-61,-143,0,530"
-                   Grid.Column="0">Вступление</TextBlock>
+                   Grid.Column="0" Text="Introduction"/>
         <TextBox VerticalAlignment="Bottom" x:Name ="Introduction"  Height="242" Margin="-61,-116,0,288" Grid.ColumnSpan="3"
                  Grid.Column="0" />
         <TextBlock VerticalAlignment="Bottom" HorizontalAlignment="Left" Height="27" Width="163" Margin="-61,0,0,243"
-                   Grid.Column="0">Вывод</TextBlock>
+                   Grid.Column="0" Text="Conclusion"/>
         <TextBox VerticalAlignment="Bottom" x:Name ="Conclution"  Height="197" Margin="-61,0,10,46" Grid.ColumnSpan="3"
                  Grid.Column="0" />
     </Grid>

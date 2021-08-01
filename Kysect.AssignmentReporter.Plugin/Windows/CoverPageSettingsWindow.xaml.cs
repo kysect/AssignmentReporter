@@ -3,13 +3,8 @@ using Kysect.AssignmentReporter.Models;
 
 namespace Kysect.AssignmentReporter.Plugin.Windows
 {
-    /// <summary>
-    /// Логика взаимодействия для CoverPageSettingsWindow.xaml
-    /// </summary>
     public partial class CoverPageSettingsWindow
     {
-        public CoverPageInfo CoverPageInfo;
-        public ReportExtendedInfo ReportInfo;
         public CoverPageSettingsWindow()
         {
             InitializeComponent();
