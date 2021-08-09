@@ -34,7 +34,7 @@ namespace Kysect.AssignmentReporter.Plugin.Windows
             {
                 if (_coverPageInfo != null)
                 {
-                    GetGenerator(_generatorSettings, _coverPageInfo).Generate(provider.GetFiles(), info);
+                    GetGenerator( _coverPageInfo).Generate(provider.GetFiles(), info);
                 }
                 else if (_isPdf && _coverPageInfo != null)
                 {
@@ -44,29 +44,29 @@ namespace Kysect.AssignmentReporter.Plugin.Windows
                 }
                 else
                 {
-                    GetGenerator(_generatorSettings).Generate(provider.GetFiles(), info);
+                    GetGenerator().Generate(provider.GetFiles(), info);
                 }
             }
             else
             {
                 MultiGenerator multiGenerator =
-                    new MultiGenerator(pathToRepository.Text, pathToSave.Text, GetGenerator(_generatorSettings, _coverPageInfo), _filter);
+                    new MultiGenerator(pathToRepository.Text, pathToSave.Text, GetGenerator( _coverPageInfo), _filter);
                 multiGenerator.Generate();
             }
            
         }
 
-        private IReportGenerator GetGenerator(string setting, CoverPageInfo info = null)
+        private IReportGenerator GetGenerator(CoverPageInfo info = null)
         {
-            if (setting == ".pdf" || setting == ".docx")
+            if (_generatorSettings == ".pdf" || _generatorSettings == ".docx")
             {
                 return  info == null ? new DocumentReportGenerator() : new DocumentReportGenerator(info);
             }
-            if (setting == ".txt")
+            if (_generatorSettings == ".txt")
             {
                 return new SimpleTextReportGenerator();
             }
-            if (setting == ".md")
+            if (_generatorSettings == ".md")
             {
                 return new MarkdownReportGenerator();
             }
