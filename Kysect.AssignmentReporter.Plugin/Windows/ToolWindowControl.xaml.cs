@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -15,7 +16,7 @@ namespace Kysect.AssignmentReporter.Plugin.Windows
     {
         private bool _isMultiGeneration = false;
         private bool _isPdf= true;
-        private IReportGenerator _generator = new DocumentReportGenerator();
+        private string _generatorSettings = string.Empty;
         private static CoverPageInfo _coverPageInfo;
         private static FileSearchFilter _filter;
         private static string _introduction = string.Empty;
@@ -31,10 +32,9 @@ namespace Kysect.AssignmentReporter.Plugin.Windows
             ReportExtendedInfo info = new ReportExtendedInfo(_introduction, _conclusion, pathToSave.Text);
             if (!_isMultiGeneration)
             {
-                if (_generator is DocumentReportGenerator && _coverPageInfo != null)
+                if (_coverPageInfo != null)
                 {
-                    DocumentReportGenerator generator = new DocumentReportGenerator(_coverPageInfo);
-                    generator.Generate(provider.GetFiles(), info);
+                    GetGenerator(_generatorSettings, _coverPageInfo).Generate(provider.GetFiles(), info);
                 }
                 else if (_isPdf && _coverPageInfo != null)
                 {
@@ -44,16 +44,33 @@ namespace Kysect.AssignmentReporter.Plugin.Windows
                 }
                 else
                 {
-                    _generator.Generate(provider.GetFiles(), info);
+                    GetGenerator(_generatorSettings).Generate(provider.GetFiles(), info);
                 }
             }
             else
             {
                 MultiGenerator multiGenerator =
-                    new MultiGenerator(pathToRepository.Text, pathToSave.Text, _generator, _filter);
+                    new MultiGenerator(pathToRepository.Text, pathToSave.Text, GetGenerator(_generatorSettings, _coverPageInfo), _filter);
                 multiGenerator.Generate();
             }
            
+        }
+
+        private IReportGenerator GetGenerator(string setting, CoverPageInfo info = null)
+        {
+            if (setting == ".pdf" || setting == ".docx")
+            {
+                return  info == null ? new DocumentReportGenerator() : new DocumentReportGenerator(info);
+            }
+            if (setting == ".txt")
+            {
+                return new SimpleTextReportGenerator();
+            }
+            if (setting == ".md")
+            {
+                return new MarkdownReportGenerator();
+            }
+            throw new Exception("Generator type can't be null");
         }
         private void fileFormat_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -62,19 +79,19 @@ namespace Kysect.AssignmentReporter.Plugin.Windows
             switch (reportType)
             {
                 case ".pdf":
-                    _generator = new DocumentReportGenerator();
+                   _generatorSettings = ".pdf";
                     _isPdf = true;
                     break;
                 case ".docx":
-                    _generator = new DocumentReportGenerator();
+                    _generatorSettings = ".docx";
                     _isPdf = false;
                     break;
                 case ".txt":
-                    _generator = new SimpleTextReportGenerator();
+                    _generatorSettings = ".txt";
                     _isPdf = false;
                     break;
                 case ".md":
-                    _generator = new MarkdownReportGenerator();
+                    _generatorSettings = ".md";
                     _isPdf = false;
                     break;
             }
