@@ -1,0 +1,49 @@
+﻿<Window x:Class="Kysect.AssignmentReporter.Plugin.Windows.SearchSettingsWindow"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vsshell="clr-namespace:Microsoft.VisualStudio.Shell;assembly=Microsoft.VisualStudio.Shell.15.0"
+             Background ="Beige"
+             Foreground ="Black"
+             mc:Ignorable="d" 
+             Name="SettingsWindow" Height="470.07" Width="535">
+    <Grid Margin="0,0,10,1" Height="460" VerticalAlignment="Bottom">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="186*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="25*"/>
+            <RowDefinition Height="236*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="179*"/>
+            <ColumnDefinition Width="46*"/>
+            <ColumnDefinition Width="156*"/>
+            <ColumnDefinition Width="71*"/>
+        </Grid.ColumnDefinitions>
+        <Button Content="Ok" VerticalAlignment="Bottom" HorizontalAlignment="Right" Click="get_SearchSettings_Button_Click" Name="get_SearchSettigs_Button" Height ="20" Width="90" Margin="0,0,10,10" Grid.Row="3" Grid.Column="2" RenderTransformOrigin="0.522,0.5" Grid.ColumnSpan="2"/>
+        <Button Content="Default(C#)" VerticalAlignment="Bottom" HorizontalAlignment="Right" Click="get_SetDefaultSearchSettings_Button_Click" Name="get_DefaultSearchSettigs_Button" Height ="20" Width="141" Margin="0,0,62,10" Grid.Row="3" Grid.ColumnSpan="3"
+                Grid.Column="0" />
+        <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Height="27" Width="163" Margin="26,0,0,101" RenderTransformOrigin="-0.037,0.407">Acceptable file names</TextBlock>
+        <TextBox VerticalAlignment="Bottom" x:Name ="string_WhiteFileNames"  Height="20" Margin="26,0,0,81" Grid.Row="0"
+                 Grid.ColumnSpan="3" Grid.Column="0" />
+        <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Height="27" Width="173" Margin="26,0,0,49">Acceptable file extensions</TextBlock>
+        <TextBox VerticalAlignment="Bottom" x:Name ="string_WhiteFileFormats"  Height="20" Margin="26,0,0,29" Grid.Row="0"
+                 Grid.ColumnSpan="3" Grid.Column="0" />
+        <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Bottom" HorizontalAlignment="Left" Height="27" Width="163" Margin="26,0,0,0" Grid.RowSpan="2">Acceptable directories</TextBlock>
+        <TextBox VerticalAlignment="Bottom" x:Name ="string_WhiteDirectories"  Height="20" Margin="26,0,0,9"
+                 Grid.ColumnSpan="3" Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" />
+        <TextBlock VerticalAlignment="Bottom" HorizontalAlignment="Left" Height="27" Width="163" Margin="26,0,0,209" Grid.Row="3"
+                   Grid.Column="0">Unallowable file names</TextBlock>
+        <TextBox VerticalAlignment="Bottom" x:Name ="string_BlackFileNames"  Height="20" Margin="26,0,0,189" Grid.Row="3" Grid.ColumnSpan="3"
+                 Grid.Column="0" />
+        <TextBlock VerticalAlignment="Bottom" HorizontalAlignment="Left" Height="27" Width="179" Margin="26,0,0,157" Grid.Row="3"
+                   Grid.Column="0" RenderTransformOrigin="0.44,0.45">Unallowable file extensions</TextBlock>
+        <TextBox VerticalAlignment="Bottom" x:Name ="string_BlackFileFormats"  Height="20" Margin="26,0,0,132" Grid.Row="3" Grid.ColumnSpan="3"
+                 Grid.Column="0" />
+        <TextBlock VerticalAlignment="Bottom" HorizontalAlignment="Left" Height="27" Width="163" Margin="26,0,0,100" Grid.Row="3"
+                   Grid.Column="0" RenderTransformOrigin="0.472,0.407">Unallowable directories</TextBlock>
+        <TextBox VerticalAlignment="Bottom" x:Name ="string_BlackDirectories"  Height="20" Margin="26,0,0,80" Grid.Row="3" Grid.ColumnSpan="3"
+                 Grid.Column="0" />
+    </Grid>
+</Window>
