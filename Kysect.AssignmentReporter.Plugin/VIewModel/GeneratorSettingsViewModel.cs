@@ -1,15 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
-using EnvDTE;
 using Kysect.AssignmentReporter.Models;
 using Kysect.AssignmentReporter.Models.FileSearchRules;
 using Kysect.AssignmentReporter.Plugin.VIewModel.BillingGenerationsSettings;
@@ -148,13 +141,13 @@ namespace Kysect.AssignmentReporter.Plugin.VIewModel
             }
         }
 
-        private GeneratorSettingsCommand _selectPathToRepositoryCommand;
-        public GeneratorSettingsCommand SelectPathToRepositoryCommand
+        private AssignmentReporterPluginCommand _selectPathToRepositoryCommand;
+        public AssignmentReporterPluginCommand SelectPathToRepositoryCommand
         {
             get
             {
                 return _selectPathToRepositoryCommand ??
-                       (_selectPathToRepositoryCommand = new GeneratorSettingsCommand(obj =>
+                       (_selectPathToRepositoryCommand = new AssignmentReporterPluginCommand(obj =>
                        {
                            FolderBrowserDialog dlg = new FolderBrowserDialog();
                            if (dlg.ShowDialog() == DialogResult.OK)
@@ -165,13 +158,13 @@ namespace Kysect.AssignmentReporter.Plugin.VIewModel
             }
         }
 
-        private GeneratorSettingsCommand _selectPathToSaveCommand;
-        public GeneratorSettingsCommand SelectPathToSaveCommand
+        private AssignmentReporterPluginCommand _selectPathToSaveCommand;
+        public AssignmentReporterPluginCommand SelectPathToSaveCommand
         {
             get
             {
                 return _selectPathToSaveCommand ??
-                       (_selectPathToSaveCommand = new GeneratorSettingsCommand(obj =>
+                       (_selectPathToSaveCommand = new AssignmentReporterPluginCommand(obj =>
                        {
                            SaveFileDialog saveFileDialog = new SaveFileDialog
                            {
@@ -188,39 +181,13 @@ namespace Kysect.AssignmentReporter.Plugin.VIewModel
             }
         }
 
-        private GeneratorSettingsCommand _multiGenCheckBoxUncheckedCommand;
-        public GeneratorSettingsCommand MultiGenCheckBoxUncheckedCommand
-        {
-            get
-            {
-                return _multiGenCheckBoxUncheckedCommand ??
-                       (_multiGenCheckBoxUncheckedCommand = new GeneratorSettingsCommand(obj =>
-                       {
-                           MultiGeneration = false;
-                       }));
-            }
-        }
-
-        private GeneratorSettingsCommand _multiGenCheckBoxCheckedCommand;
-        public GeneratorSettingsCommand MultiGenCheckBoxCheckedCommand
-        {
-            get
-            {
-                return _multiGenCheckBoxCheckedCommand ??
-                       (_multiGenCheckBoxCheckedCommand = new GeneratorSettingsCommand(obj =>
-                       {
-                           MultiGeneration = true;
-                       }));
-            }
-        }
-
-        private GeneratorSettingsCommand _generateCommand;
-        public GeneratorSettingsCommand GenerateCommand
+        private AssignmentReporterPluginCommand _generateCommand;
+        public AssignmentReporterPluginCommand GenerateCommand
         {
             get
             {
                 return _generateCommand ??
-                       (_generateCommand = new GeneratorSettingsCommand(obj =>
+                       (_generateCommand = new AssignmentReporterPluginCommand(obj =>
                        {
                            FileSystemSourceCodeProvider provider = new FileSystemSourceCodeProvider(PathToRepository, _filter);
                            ReportExtendedInfo info = new ReportExtendedInfo(_introduction, _conclusion, PathToSave);

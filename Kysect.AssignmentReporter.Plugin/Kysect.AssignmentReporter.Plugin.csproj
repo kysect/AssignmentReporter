@@ -54,9 +54,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="VIewModel\BillingGenerationsSettings\Notifier.cs" />
-    <Compile Include="VIewModel\GeneratorSettingsCommand.cs" />
-    <Compile Include="VIewModel\GeneratorSettingsViewModel.cs" />
+    <Compile Include="ViewModel\BillingGenerationsSettings\Notifier.cs" />
+    <Compile Include="ViewModel\AssignmentReporterPluginCommand.cs" />
+    <Compile Include="ViewModel\CoverPageSettingsViewModel.cs" />
+    <Compile Include="ViewModel\GeneratorSettingsViewModel.cs" />
+    <Compile Include="ViewModel\SearchSettingsViewModel.cs" />
     <Compile Include="Windows\CoverPageSettingsWindow.xaml.cs">
       <DependentUpon>CoverPageSettingsWindow.xaml</DependentUpon>
     </Compile>
@@ -79,7 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="AssignmentReporter.snk" />
-    <None Include="Windows\Resources\titleScreen.docx" />
+    <None Include="ViewModel\Resources\titleScreen.docx" />
     <None Include="source.extension.vsixmanifest">
       <SubType>Designer</SubType>
     </None>

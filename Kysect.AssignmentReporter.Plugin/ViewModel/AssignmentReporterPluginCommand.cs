@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 namespace Kysect.AssignmentReporter.Plugin.VIewModel
 {
-    public class GeneratorSettingsCommand : ICommand
+    public class AssignmentReporterPluginCommand : ICommand
     {
         private Action<object> execute;
         private Func<object, bool> canExecute;
@@ -18,7 +18,7 @@ namespace Kysect.AssignmentReporter.Plugin.VIewModel
             remove { CommandManager.RequerySuggested -= value; }
         }
 
-        public GeneratorSettingsCommand(Action<object> execute, Func<object, bool> canExecute = null)
+        public AssignmentReporterPluginCommand(Action<object> execute, Func<object, bool> canExecute = null)
         {
             this.execute = execute;
             this.canExecute = canExecute;
