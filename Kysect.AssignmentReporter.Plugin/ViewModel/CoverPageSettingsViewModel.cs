@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Kysect.AssignmentReporter.Models;
 using Kysect.AssignmentReporter.Plugin.VIewModel.BillingGenerationsSettings;
+using Microsoft.Internal.VisualStudio.PlatformUI;
 
 namespace Kysect.AssignmentReporter.Plugin.VIewModel
 {

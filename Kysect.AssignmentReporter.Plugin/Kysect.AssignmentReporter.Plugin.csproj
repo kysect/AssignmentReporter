@@ -81,7 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="AssignmentReporter.snk" />
-    <None Include="ViewModel\Resources\titleScreen.docx" />
+    <None Include="Resources\titleScreen.docx" />
     <None Include="source.extension.vsixmanifest">
       <SubType>Designer</SubType>
     </None>
