@@ -54,11 +54,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="VIewModel\BillingGenerationsSettings\GeneratorEventArgs.cs" />
-    <Compile Include="VIewModel\BillingGenerationsSettings\IGeneratorSettingsModel.cs" />
     <Compile Include="VIewModel\BillingGenerationsSettings\Notifier.cs" />
     <Compile Include="VIewModel\GeneratorSettingsCommand.cs" />
-    <Compile Include="VIewModel\GeneratorSettingsModel.cs" />
     <Compile Include="VIewModel\GeneratorSettingsViewModel.cs" />
     <Compile Include="Windows\CoverPageSettingsWindow.xaml.cs">
       <DependentUpon>CoverPageSettingsWindow.xaml</DependentUpon>

@@ -32,6 +32,5 @@ namespace Kysect.AssignmentReporter.Plugin.VIewModel
         {
             this.execute(parameter);
         }
-
     }
 }

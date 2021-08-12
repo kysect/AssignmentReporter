@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows;
 using Kysect.AssignmentReporter.Models.FileSearchRules;
+using Kysect.AssignmentReporter.Plugin.VIewModel;
 
 namespace Kysect.AssignmentReporter.Plugin.Windows
 {
@@ -48,7 +49,7 @@ namespace Kysect.AssignmentReporter.Plugin.Windows
             }
 
             Settings = Builder.Build();
-            ToolWindowControl.TransferFilters(Settings);
+            GeneratorSettingsViewModel.TransferFilters(Settings);
             this.Close();
         } 
         private void get_SetDefaultSearchSettings_Button_Click(object sender, RoutedEventArgs e)

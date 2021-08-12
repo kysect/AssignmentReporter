@@ -1,42 +1,91 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
+using EnvDTE;
 using Kysect.AssignmentReporter.Models;
 using Kysect.AssignmentReporter.Models.FileSearchRules;
 using Kysect.AssignmentReporter.Plugin.VIewModel.BillingGenerationsSettings;
+using Kysect.AssignmentReporter.ReportGenerator;
+using Kysect.AssignmentReporter.ReportGenerator.MultiGenerator;
+using Kysect.AssignmentReporter.SourceCodeProvider;
 
 namespace Kysect.AssignmentReporter.Plugin.VIewModel
-{
-
-
+{ 
     public class GeneratorSettingsViewModel : Notifier
     {
+
+        private ObservableCollection<string> _generatorTypes = new ObservableCollection<string>(){".pdf", ".docx", ".txt", ".md"} ;
+        private string _selectedGeneratorType;
+        private string _pathToSave = string.Empty;
+        private string _pathToRepository = string.Empty;
         private bool _isMultiGeneration = false;
         private bool _isPdf = true;
-        private string _generatorSettings = string.Empty;
-        private CoverPageInfo _coverPageInfo;
-        private FileSearchFilter _filter;
-        private string _introduction = string.Empty;
-        private string _conclusion = string.Empty;
+        private static CoverPageInfo _coverPageInfo;
+        private static FileSearchFilter _filter;
+        private static string _introduction = string.Empty;
+        private static string _conclusion = string.Empty;
 
-        public GeneratorSettingsViewModel() { }
+        public GeneratorSettingsViewModel()
+        {
+
+        }
 
         public GeneratorSettingsViewModel(string generatorSettings, FileSearchFilter filter)
         {
-            GeneratorSettings = generatorSettings;
+            SelectedGeneratorType = generatorSettings;
             Filter = filter;
         }
 
-        public string GeneratorSettings
+        public string SelectedGeneratorType
         {
-            get => _generatorSettings;
+            get => _selectedGeneratorType;
             set
             {
-                _generatorSettings = value;
-                NotifyPropertyChanged("GeneratorSettings");
+                if (_selectedGeneratorType == ".pdf")
+                {
+                    IsPdf = true;
+                }
+                else
+                {
+                    IsPdf = false;
+                }
+                _selectedGeneratorType = value;
+                NotifyPropertyChanged("SelectedGeneratorType");
+            }
+        }
+        public ObservableCollection<string> GeneratorTypes
+        {
+            get => _generatorTypes;
+            set
+            {
+                _generatorTypes = value;
+                NotifyPropertyChanged("GeneratorTypes");
+            }
+        }
+        public string PathToSave
+        {
+            get => _pathToSave;
+            set
+            {
+                _pathToSave = value;
+                NotifyPropertyChanged("PathToSave");
+            }
+        }
+        public string PathToRepository
+        {
+            get => _pathToRepository;
+            set
+            {
+                _pathToRepository = value;
+                NotifyPropertyChanged("PathToRepository");
             }
         }
         public string Introduction
@@ -97,6 +146,146 @@ namespace Kysect.AssignmentReporter.Plugin.VIewModel
                 _filter = value;
                 NotifyPropertyChanged("Filter");
             }
+        }
+
+        private GeneratorSettingsCommand _selectPathToRepositoryCommand;
+        public GeneratorSettingsCommand SelectPathToRepositoryCommand
+        {
+            get
+            {
+                return _selectPathToRepositoryCommand ??
+                       (_selectPathToRepositoryCommand = new GeneratorSettingsCommand(obj =>
+                       {
+                           FolderBrowserDialog dlg = new FolderBrowserDialog();
+                           if (dlg.ShowDialog() == DialogResult.OK)
+                           {
+                               PathToRepository = dlg.SelectedPath;
+                           }
+                       }));
+            }
+        }
+
+        private GeneratorSettingsCommand _selectPathToSaveCommand;
+        public GeneratorSettingsCommand SelectPathToSaveCommand
+        {
+            get
+            {
+                return _selectPathToSaveCommand ??
+                       (_selectPathToSaveCommand = new GeneratorSettingsCommand(obj =>
+                       {
+                           SaveFileDialog saveFileDialog = new SaveFileDialog
+                           {
+                               Filter = @"pdf files (*.pdf)|*.pdf | doc files (*.docx, .doc) |*.docx *.doc | markdown files (*.md)|*.md | txt files (*.txt)|*.txt",
+                               FilterIndex = 4,
+                               RestoreDirectory = true
+                           };
+
+                           if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                           {
+                               PathToSave = saveFileDialog.FileName;
+                           }
+                       }));
+            }
+        }
+
+        private GeneratorSettingsCommand _multiGenCheckBoxUncheckedCommand;
+        public GeneratorSettingsCommand MultiGenCheckBoxUncheckedCommand
+        {
+            get
+            {
+                return _multiGenCheckBoxUncheckedCommand ??
+                       (_multiGenCheckBoxUncheckedCommand = new GeneratorSettingsCommand(obj =>
+                       {
+                           MultiGeneration = false;
+                       }));
+            }
+        }
+
+        private GeneratorSettingsCommand _multiGenCheckBoxCheckedCommand;
+        public GeneratorSettingsCommand MultiGenCheckBoxCheckedCommand
+        {
+            get
+            {
+                return _multiGenCheckBoxCheckedCommand ??
+                       (_multiGenCheckBoxCheckedCommand = new GeneratorSettingsCommand(obj =>
+                       {
+                           MultiGeneration = true;
+                       }));
+            }
+        }
+
+        private GeneratorSettingsCommand _generateCommand;
+        public GeneratorSettingsCommand GenerateCommand
+        {
+            get
+            {
+                return _generateCommand ??
+                       (_generateCommand = new GeneratorSettingsCommand(obj =>
+                       {
+                           FileSystemSourceCodeProvider provider = new FileSystemSourceCodeProvider(PathToRepository, _filter);
+                           ReportExtendedInfo info = new ReportExtendedInfo(_introduction, _conclusion, PathToSave);
+                           if (!_isMultiGeneration)
+                           {
+                               if (_coverPageInfo != null)
+                               {
+                                   GetGenerator(_coverPageInfo).Generate(provider.GetFiles(), info);
+                               }
+                               else if (_isPdf && _coverPageInfo != null)
+                               {
+                                   DocumentReportGenerator generator = new DocumentReportGenerator(_coverPageInfo);
+                                   generator.Generate(provider.GetFiles(), info);
+                                   generator.ConvertToPdf(info);
+                               }
+                               else
+                               {
+                                   GetGenerator().Generate(provider.GetFiles(), info);
+                               }
+                           }
+                           else
+                           {
+                               MultiGenerator multiGenerator =
+                                   new MultiGenerator(PathToRepository, PathToSave, GetGenerator(_coverPageInfo), _filter);
+                               multiGenerator.Generate();
+                           }
+                       }));
+            }
+        }
+
+        private IReportGenerator GetGenerator(CoverPageInfo info = null)
+        {
+            if (SelectedGeneratorType == ".pdf" || SelectedGeneratorType == ".docx")
+            {
+                return info == null ? new DocumentReportGenerator() : new DocumentReportGenerator(info);
+            }
+            if (SelectedGeneratorType == ".txt")
+            {
+                return new SimpleTextReportGenerator();
+            }
+            if (SelectedGeneratorType == ".md")
+            {
+                return new MarkdownReportGenerator();
+            }
+            throw new Exception("Generator type can't be null");
+        }
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged([CallerMemberName] string prop = "")
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(prop));
+        }
+
+        public static void TransferFilters(SearchSettings settings)
+        {
+            _filter = new FileSearchFilter(settings);
+        }
+
+        public static void TransferInfo(CoverPageInfo coverPage, string introduction, string conclution)
+        {
+            _coverPageInfo = coverPage;
+            _introduction = introduction;
+            _conclusion = conclution;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using Kysect.AssignmentReporter.Models;
+using Kysect.AssignmentReporter.Plugin.VIewModel;
 
 namespace Kysect.AssignmentReporter.Plugin.Windows
 {
@@ -21,7 +22,7 @@ namespace Kysect.AssignmentReporter.Plugin.Windows
             string conclution = string.IsNullOrEmpty(Conclution.Text) ? string.Empty : Conclution.Text;
             string titleScreen = @"Resources\titleScreen.docx";
 
-            ToolWindowControl.TransferInfo(new CoverPageInfo(
+            GeneratorSettingsViewModel.TransferInfo(new CoverPageInfo(
                 teacherName,
                 groupName, 
                 fullName, 
