@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Windows;
 using Kysect.AssignmentReporter.Models.FileSearchRules;
-using Kysect.AssignmentReporter.Plugin.VIewModel;
+using Kysect.AssignmentReporter.Plugin.ViewModel;
 
 namespace Kysect.AssignmentReporter.Plugin.Windows
 {

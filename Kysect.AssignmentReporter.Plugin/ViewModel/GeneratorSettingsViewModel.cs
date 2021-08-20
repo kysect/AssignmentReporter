@@ -5,14 +5,14 @@ using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using Kysect.AssignmentReporter.Models;
 using Kysect.AssignmentReporter.Models.FileSearchRules;
-using Kysect.AssignmentReporter.Plugin.VIewModel.BillingGenerationsSettings;
+using Kysect.AssignmentReporter.Plugin.ViewModel.MvvmBase;
 using Kysect.AssignmentReporter.ReportGenerator;
 using Kysect.AssignmentReporter.ReportGenerator.MultiGenerator;
 using Kysect.AssignmentReporter.SourceCodeProvider;
 
-namespace Kysect.AssignmentReporter.Plugin.VIewModel
+namespace Kysect.AssignmentReporter.Plugin.ViewModel
 { 
-    public class GeneratorSettingsViewModel : Notifier
+    public class GeneratorSettingsViewModel : BaseViewModel
     {
 
         private ObservableCollection<string> _generatorTypes = new ObservableCollection<string>(){".pdf", ".docx", ".txt", ".md"} ;
@@ -42,14 +42,6 @@ namespace Kysect.AssignmentReporter.Plugin.VIewModel
             get => _selectedGeneratorType;
             set
             {
-                if (_selectedGeneratorType == ".pdf")
-                {
-                    IsPdf = true;
-                }
-                else
-                {
-                    IsPdf = false;
-                }
                 _selectedGeneratorType = value;
                 NotifyPropertyChanged("SelectedGeneratorType");
             }
@@ -141,13 +133,13 @@ namespace Kysect.AssignmentReporter.Plugin.VIewModel
             }
         }
 
-        private AssignmentReporterPluginCommand _selectPathToRepositoryCommand;
-        public AssignmentReporterPluginCommand SelectPathToRepositoryCommand
+        private RelayCommand _selectPathToRepositoryCommand;
+        public RelayCommand SelectPathToRepositoryCommand
         {
             get
             {
                 return _selectPathToRepositoryCommand ??
-                       (_selectPathToRepositoryCommand = new AssignmentReporterPluginCommand(obj =>
+                       (_selectPathToRepositoryCommand = new RelayCommand(obj =>
                        {
                            FolderBrowserDialog dlg = new FolderBrowserDialog();
                            if (dlg.ShowDialog() == DialogResult.OK)
@@ -158,13 +150,13 @@ namespace Kysect.AssignmentReporter.Plugin.VIewModel
             }
         }
 
-        private AssignmentReporterPluginCommand _selectPathToSaveCommand;
-        public AssignmentReporterPluginCommand SelectPathToSaveCommand
+        private RelayCommand _selectPathToSaveCommand;
+        public RelayCommand SelectPathToSaveCommand
         {
             get
             {
                 return _selectPathToSaveCommand ??
-                       (_selectPathToSaveCommand = new AssignmentReporterPluginCommand(obj =>
+                       (_selectPathToSaveCommand = new RelayCommand(obj =>
                        {
                            SaveFileDialog saveFileDialog = new SaveFileDialog
                            {
@@ -181,13 +173,13 @@ namespace Kysect.AssignmentReporter.Plugin.VIewModel
             }
         }
 
-        private AssignmentReporterPluginCommand _generateCommand;
-        public AssignmentReporterPluginCommand GenerateCommand
+        private RelayCommand _generateCommand;
+        public RelayCommand GenerateCommand
         {
             get
             {
                 return _generateCommand ??
-                       (_generateCommand = new AssignmentReporterPluginCommand(obj =>
+                       (_generateCommand = new RelayCommand(obj =>
                        {
                            FileSystemSourceCodeProvider provider = new FileSystemSourceCodeProvider(PathToRepository, _filter);
                            ReportExtendedInfo info = new ReportExtendedInfo(_introduction, _conclusion, PathToSave);
@@ -235,13 +227,6 @@ namespace Kysect.AssignmentReporter.Plugin.VIewModel
             throw new Exception("Generator type can't be null");
         }
 
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string prop = "")
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
-        }
 
         public static void TransferFilters(SearchSettings settings)
         {

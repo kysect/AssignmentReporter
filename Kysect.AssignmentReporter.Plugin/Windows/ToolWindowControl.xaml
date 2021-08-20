@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:vsshell="clr-namespace:Microsoft.VisualStudio.Shell;assembly=Microsoft.VisualStudio.Shell.15.0"
-             xmlns:local="clr-namespace:Kysect.AssignmentReporter.Plugin.VIewModel"
+             xmlns:local="clr-namespace:Kysect.AssignmentReporter.Plugin.ViewModel"
              Background ="White"
              Foreground ="Black"
              mc:Ignorable="d" 

@@ -6,7 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Forms;
 using Kysect.AssignmentReporter.Models;
 using Kysect.AssignmentReporter.Models.FileSearchRules;
-using Kysect.AssignmentReporter.Plugin.VIewModel;
+using Kysect.AssignmentReporter.Plugin.ViewModel;
 using Kysect.AssignmentReporter.ReportGenerator;
 using Kysect.AssignmentReporter.ReportGenerator.MultiGenerator;
 using Kysect.AssignmentReporter.SourceCodeProvider;

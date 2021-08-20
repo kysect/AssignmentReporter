@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Kysect.AssignmentReporter.Models.FileSearchRules;
-using Kysect.AssignmentReporter.Plugin.VIewModel.BillingGenerationsSettings;
+using Kysect.AssignmentReporter.Plugin.ViewModel.MvvmBase;
 
-namespace Kysect.AssignmentReporter.Plugin.VIewModel
+namespace Kysect.AssignmentReporter.Plugin.ViewModel
 {
-    public class SearchSettingsViewModel : Notifier
+    public class SearchSettingsViewModel : BaseViewModel
     {
         public ISearchSettingsBuilder Builder = new SearchSettingsBuilder();
         public SearchSettings Settings;
@@ -82,13 +82,13 @@ namespace Kysect.AssignmentReporter.Plugin.VIewModel
             }
         }
 
-        private AssignmentReporterPluginCommand _searchSettings;
-        public AssignmentReporterPluginCommand SearchSettings
+        private RelayCommand _searchSettings;
+        public RelayCommand SearchSettings
         {
             get
             {
                 return _searchSettings ??
-                       (_searchSettings = new AssignmentReporterPluginCommand(obj =>
+                       (_searchSettings = new RelayCommand(obj =>
                        {
                            if (!string.IsNullOrEmpty(WhiteFileNames))
                            {
@@ -126,13 +126,13 @@ namespace Kysect.AssignmentReporter.Plugin.VIewModel
             }
         }
 
-        private AssignmentReporterPluginCommand _setDefaultSettings;
-        public AssignmentReporterPluginCommand SetDefaultSettings
+        private RelayCommand _setDefaultSettings;
+        public RelayCommand SetDefaultSettings
         {
             get
             {
                 return _setDefaultSettings ??
-                       (_setDefaultSettings = new AssignmentReporterPluginCommand(obj =>
+                       (_setDefaultSettings = new RelayCommand(obj =>
                        {
                            Builder.SetDefaultList();
                        }));

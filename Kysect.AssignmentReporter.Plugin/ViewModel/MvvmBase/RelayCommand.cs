@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Kysect.AssignmentReporter.Plugin.VIewModel
+namespace Kysect.AssignmentReporter.Plugin.ViewModel.MvvmBase
 {
-    public class AssignmentReporterPluginCommand : ICommand
+    public class RelayCommand : ICommand
     {
         private Action<object> execute;
         private Func<object, bool> canExecute;
@@ -18,7 +14,7 @@ namespace Kysect.AssignmentReporter.Plugin.VIewModel
             remove { CommandManager.RequerySuggested -= value; }
         }
 
-        public AssignmentReporterPluginCommand(Action<object> execute, Func<object, bool> canExecute = null)
+        public RelayCommand(Action<object> execute, Func<object, bool> canExecute = null)
         {
             this.execute = execute;
             this.canExecute = canExecute;

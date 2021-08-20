@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Kysect.AssignmentReporter.Models;
-using Kysect.AssignmentReporter.Plugin.VIewModel.BillingGenerationsSettings;
+using Kysect.AssignmentReporter.Plugin.ViewModel.MvvmBase;
 using Microsoft.Internal.VisualStudio.PlatformUI;
 
-namespace Kysect.AssignmentReporter.Plugin.VIewModel
+namespace Kysect.AssignmentReporter.Plugin.ViewModel
 {
-   public class CoverPageSettingsViewModel : Notifier
+   public class CoverPageSettingsViewModel : BaseViewModel
    {
        private string _fullName;
        private string _teacherName;
@@ -94,13 +94,13 @@ namespace Kysect.AssignmentReporter.Plugin.VIewModel
            }
        }
 
-       private AssignmentReporterPluginCommand _coverPageSettings;
-       public AssignmentReporterPluginCommand CoverPageSettings
+       private RelayCommand _coverPageSettings;
+       public RelayCommand CoverPageSettings
        {
            get
            {
                return _coverPageSettings ??
-                      (_coverPageSettings = new AssignmentReporterPluginCommand(obj =>
+                      (_coverPageSettings = new RelayCommand(obj =>
                       {
                           GeneratorSettingsViewModel.TransferInfo(new CoverPageInfo(
                                   string.IsNullOrEmpty(TeacherName) ? string.Empty : TeacherName,
