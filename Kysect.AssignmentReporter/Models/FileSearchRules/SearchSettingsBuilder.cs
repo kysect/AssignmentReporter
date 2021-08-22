@@ -15,6 +15,7 @@ namespace Kysect.AssignmentReporter.Models.FileSearchRules
 
         public SearchSettingsBuilder AddBlockedFiles(List<string> files)
         {
+            files = files.Select(a => a.Trim()).ToList();
             _searchSettings.BlackFileNames = files;
             return this;
         }
@@ -22,19 +23,21 @@ namespace Kysect.AssignmentReporter.Models.FileSearchRules
         public SearchSettingsBuilder AddBlockedDirectories(List<string> directories)
         {
             _searchSettings.BlackDirectories = directories
-                .Select(dir => new Regex(dir))
+                .Select(dir => new Regex(dir.Trim()))
                 .ToList();
             return this;
         }
 
         public SearchSettingsBuilder AddBlockedExtensions(List<string> extensions)
         {
+            extensions = extensions.Select(a => a.Trim()).ToList();
             _searchSettings.BlackFileFormats = extensions;
             return this;
         }
 
         public SearchSettingsBuilder AddAllowedFiles(List<string> files)
         {
+            files = files.Select(a => a.Trim()).ToList();
             _searchSettings.WhiteFileNames = files;
             return this;
         }
@@ -42,13 +45,14 @@ namespace Kysect.AssignmentReporter.Models.FileSearchRules
         public SearchSettingsBuilder AddAllowedDirectories(List<string> directories)
         {
             _searchSettings.WhiteDirectories = directories
-                .Select(dir => new Regex(dir))
+                .Select(dir => new Regex(dir.Trim()))
                 .ToList();
             return this;
         }
 
         public SearchSettingsBuilder AddAllowedExtensions(List<string> extensions)
         {
+            extensions = extensions.Select(a => a.Trim()).ToList();
             _searchSettings.WhiteFileFormats = extensions;
             return this;
         }
