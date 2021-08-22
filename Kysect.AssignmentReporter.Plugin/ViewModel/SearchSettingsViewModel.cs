@@ -33,7 +33,7 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel
             set
             {
                 _whiteFileNames = value;
-                NotifyPropertyChanged("WhiteFileNames");
+                NotifyPropertyChanged();
             }
         }
 
@@ -43,7 +43,7 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel
             set
             {
                 _whiteFileFormats = value;
-                NotifyPropertyChanged("WhiteFileFormats");
+                NotifyPropertyChanged();
             }
         }
 
@@ -53,7 +53,7 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel
             set
             {
                 _whiteDirectories = value;
-                NotifyPropertyChanged("WhiteDirectories");
+                NotifyPropertyChanged();
             }
         }
 
@@ -63,7 +63,7 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel
             set
             {
                 _blackFileNames = value;
-                NotifyPropertyChanged("BlackFileNames");
+                NotifyPropertyChanged();
             }
         }
 
@@ -73,7 +73,7 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel
             set
             {
                 _blackFileFormats = value;
-                NotifyPropertyChanged("BlackFileFormats");
+                NotifyPropertyChanged();
             }
         }
 
@@ -83,7 +83,7 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel
             set
             {
                 _blackDirectories = value;
-                NotifyPropertyChanged("BlackDirectories");
+                NotifyPropertyChanged();
             }
         }
 

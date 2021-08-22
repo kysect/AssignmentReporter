@@ -58,7 +58,7 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel
             set
             {
                 _selectedGeneratorType = value;
-                NotifyPropertyChanged("SelectedGeneratorType");
+                NotifyPropertyChanged();
             }
         }
         public ObservableCollection<string> GeneratorTypes
@@ -67,7 +67,7 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel
             set
             {
                 _generatorTypes = value;
-                NotifyPropertyChanged("GeneratorTypes");
+                NotifyPropertyChanged();
             }
         }
         public string PathToSave
@@ -76,7 +76,7 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel
             set
             {
                 _pathToSave = value;
-                NotifyPropertyChanged("PathToSave");
+                NotifyPropertyChanged();
             }
         }
         public string PathToRepository
@@ -85,7 +85,7 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel
             set
             {
                 _pathToRepository = value;
-                NotifyPropertyChanged("PathToRepository");
+                NotifyPropertyChanged();
             }
         }
         public string Introduction
@@ -94,7 +94,7 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel
             set
             {
                 _introduction = value;
-                NotifyPropertyChanged("Introduction");
+                NotifyPropertyChanged();
             }
         }
 
@@ -104,7 +104,7 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel
             set
             {
                 _conclusion = value;
-                NotifyPropertyChanged("Conclusion");
+                NotifyPropertyChanged();
             }
         }
 
@@ -114,7 +114,7 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel
             set
             {
                 _isMultiGeneration = value;
-                NotifyPropertyChanged("MultiGeneration");
+                NotifyPropertyChanged();
             }
         }
 
@@ -124,7 +124,7 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel
             set
             {
                 _isPdf = value;
-                NotifyPropertyChanged("IsPdf");
+                NotifyPropertyChanged();
             }
         }
 
@@ -134,7 +134,7 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel
             set
             {
                 _coverPageInfo = value;
-                NotifyPropertyChanged("CoverPageInfo");
+                NotifyPropertyChanged();
             }
         }
 
@@ -144,7 +144,7 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel
             set
             {
                 _filter = value;
-                NotifyPropertyChanged("Filter");
+                NotifyPropertyChanged();
             }
         }
 
@@ -222,11 +222,11 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel
             _filter = new FileSearchFilter(settings);
         }
 
-        public static void TransferInfo(CoverPageInfo coverPage, string introduction, string conclution)
+        public static void TransferInfo(CoverPageInfo coverPage, string introduction, string conclusion)
         {
             _coverPageInfo = coverPage;
             _introduction = introduction;
-            _conclusion = conclution;
+            _conclusion = conclusion;
         }
     }
 }

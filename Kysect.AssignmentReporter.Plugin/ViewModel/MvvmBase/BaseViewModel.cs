@@ -7,7 +7,7 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel.MvvmBase
    {
        public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
-       protected void NotifyPropertyChanged(string propertyName)
+       protected void NotifyPropertyChanged([CallerMemberName] string propertyName = null)
        {
            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
        }

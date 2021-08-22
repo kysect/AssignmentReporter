@@ -33,7 +33,7 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel
            set
            {
                _fullName = value;
-               NotifyPropertyChanged("FullName");
+               NotifyPropertyChanged();
            }
        }
 
@@ -43,7 +43,7 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel
            set
            {
                _teacherName = value;
-               NotifyPropertyChanged("TeacherName");
+               NotifyPropertyChanged();
            }
        }
 
@@ -53,7 +53,7 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel
            set
            {
                _discipline = value;
-               NotifyPropertyChanged("Discipline");
+               NotifyPropertyChanged();
            }
        }
 
@@ -63,7 +63,7 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel
            set
            {
                _workNumber = value;
-               NotifyPropertyChanged("WorkNumber");
+               NotifyPropertyChanged();
            }
        }
 
@@ -73,7 +73,7 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel
            set
            {
                _groupNumber = value;
-               NotifyPropertyChanged("GroupNumber");
+               NotifyPropertyChanged();
            }
        }
 
@@ -83,7 +83,7 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel
            set
            {
                _introduction = value;
-               NotifyPropertyChanged("Introduction");
+               NotifyPropertyChanged();
            }
        }
 
@@ -93,7 +93,7 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel
            set
            {
                _conclusion = value;
-               NotifyPropertyChanged("Conclusion");
+               NotifyPropertyChanged();
            }
        }
 
