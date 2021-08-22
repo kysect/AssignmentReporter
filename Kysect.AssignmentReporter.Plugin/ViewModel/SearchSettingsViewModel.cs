@@ -21,7 +21,12 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel
         private string _blackDirectories;
 
         public SearchSettingsViewModel()
-        { }
+        {
+            SearchSettings = new RelayCommand(obj =>
+            {
+                SetSettings();
+            });
+        }
         public string WhiteFileNames
         {
             get => _whiteFileNames;
@@ -82,50 +87,43 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel
             }
         }
 
-        private RelayCommand _searchSettings;
-        public RelayCommand SearchSettings
+        public RelayCommand SearchSettings { get; }
+
+        private void SetSettings()
         {
-            get
+            if (!string.IsNullOrEmpty(WhiteFileNames))
             {
-                return _searchSettings ??
-                       (_searchSettings = new RelayCommand(obj =>
-                       {
-                           if (!string.IsNullOrEmpty(WhiteFileNames))
-                           {
-                               Builder.AddAllowedFiles(WhiteFileNames.Split(',').ToList());
-                           }
-
-                           if (!string.IsNullOrEmpty(WhiteFileFormats))
-                           {
-                               Builder.AddAllowedExtensions(WhiteFileFormats.Split(',').ToList());
-                           }
-
-                           if (!string.IsNullOrEmpty(WhiteDirectories))
-                           {
-                               Builder.AddAllowedDirectories(WhiteDirectories.Split(',').ToList());
-                           }
-
-                           if (!string.IsNullOrEmpty(BlackFileNames))
-                           {
-                               Builder.AddBlockedFiles(BlackFileNames.Split(',').ToList());
-                           }
-
-                           if (!string.IsNullOrEmpty(BlackFileFormats))
-                           {
-                               Builder.AddBlockedExtensions(BlackFileFormats.Split(',').ToList());
-                           }
-
-                           if (!string.IsNullOrEmpty(BlackDirectories))
-                           {
-                               Builder.AddBlockedDirectories(BlackDirectories.Split(',').ToList());
-                           }
-
-                           Settings = Builder.Build();
-                           GeneratorSettingsViewModel.TransferFilters(Settings);
-                       }));
+                Builder.AddAllowedFiles(WhiteFileNames.Split(',').ToList());
             }
-        }
 
+            if (!string.IsNullOrEmpty(WhiteFileFormats))
+            {
+                Builder.AddAllowedExtensions(WhiteFileFormats.Split(',').ToList());
+            }
+
+            if (!string.IsNullOrEmpty(WhiteDirectories))
+            {
+                Builder.AddAllowedDirectories(WhiteDirectories.Split(',').ToList());
+            }
+
+            if (!string.IsNullOrEmpty(BlackFileNames))
+            {
+                Builder.AddBlockedFiles(BlackFileNames.Split(',').ToList());
+            }
+
+            if (!string.IsNullOrEmpty(BlackFileFormats))
+            {
+                Builder.AddBlockedExtensions(BlackFileFormats.Split(',').ToList());
+            }
+
+            if (!string.IsNullOrEmpty(BlackDirectories))
+            {
+                Builder.AddBlockedDirectories(BlackDirectories.Split(',').ToList());
+            }
+
+            Settings = Builder.Build();
+            GeneratorSettingsViewModel.TransferFilters(Settings);
+        }
         private RelayCommand _setDefaultSettings;
         public RelayCommand SetDefaultSettings
         {

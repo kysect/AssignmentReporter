@@ -22,7 +22,10 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel
 
        public CoverPageSettingsViewModel()
        {
-
+           CoverPageSettings = new RelayCommand(obj =>
+           {
+               SetCoverPageSettings();
+           });
        }
        public string FullName
        {
@@ -94,25 +97,19 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel
            }
        }
 
-       private RelayCommand _coverPageSettings;
-       public RelayCommand CoverPageSettings
+       public RelayCommand CoverPageSettings { get; }
+
+       private void SetCoverPageSettings()
        {
-           get
-           {
-               return _coverPageSettings ??
-                      (_coverPageSettings = new RelayCommand(obj =>
-                      {
-                          GeneratorSettingsViewModel.TransferInfo(new CoverPageInfo(
-                                  string.IsNullOrEmpty(TeacherName) ? string.Empty : TeacherName,
-                                  string.IsNullOrEmpty(GroupNumber) ? string.Empty : GroupNumber,
-                                  string.IsNullOrEmpty(FullName) ? string.Empty : FullName,
-                                  string.IsNullOrEmpty(Discipline) ? string.Empty : Discipline,
-                                  string.IsNullOrEmpty(WorkNumber) ? string.Empty : WorkNumber,
-                                  _titleScreen),
-                              string.IsNullOrEmpty(Introduction) ? string.Empty : Introduction,
-                              string.IsNullOrEmpty(Conclusion) ? string.Empty : Conclusion);
-                      }));
-           }
-       }
+           GeneratorSettingsViewModel.TransferInfo(new CoverPageInfo(
+                   string.IsNullOrEmpty(TeacherName) ? string.Empty : TeacherName,
+                   string.IsNullOrEmpty(GroupNumber) ? string.Empty : GroupNumber,
+                   string.IsNullOrEmpty(FullName) ? string.Empty : FullName,
+                   string.IsNullOrEmpty(Discipline) ? string.Empty : Discipline,
+                   string.IsNullOrEmpty(WorkNumber) ? string.Empty : WorkNumber,
+                   _titleScreen),
+               string.IsNullOrEmpty(Introduction) ? string.Empty : Introduction,
+               string.IsNullOrEmpty(Conclusion) ? string.Empty : Conclusion);
+        }
     }
 }

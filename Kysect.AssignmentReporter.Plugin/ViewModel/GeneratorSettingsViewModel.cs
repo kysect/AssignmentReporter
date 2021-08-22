@@ -28,13 +28,28 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel
 
         public GeneratorSettingsViewModel()
         {
-
+            GenerateCommand = new RelayCommand(obj =>
+            {
+                Generate();
+            });
+            SelectPathToSaveCommand = new RelayCommand(obj =>
+            {
+                SelectPathToSave();
+            });
         }
 
         public GeneratorSettingsViewModel(string generatorSettings, FileSearchFilter filter)
         {
             SelectedGeneratorType = generatorSettings;
             Filter = filter;
+            GenerateCommand = new RelayCommand(obj =>
+            {
+                Generate();
+            });
+            SelectPathToSaveCommand = new RelayCommand(obj =>
+            {
+                SelectPathToSave();
+            });
         }
 
         public string SelectedGeneratorType
@@ -133,80 +148,54 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel
             }
         }
 
-        private RelayCommand _selectPathToRepositoryCommand;
-        public RelayCommand SelectPathToRepositoryCommand
+        public RelayCommand SelectPathToRepositoryCommand { get; }
+
+        public RelayCommand SelectPathToSaveCommand { get; }
+
+        public void SelectPathToSave()
         {
-            get
+
+            SaveFileDialog saveFileDialog = new SaveFileDialog
             {
-                return _selectPathToRepositoryCommand ??
-                       (_selectPathToRepositoryCommand = new RelayCommand(obj =>
-                       {
-                           FolderBrowserDialog dlg = new FolderBrowserDialog();
-                           if (dlg.ShowDialog() == DialogResult.OK)
-                           {
-                               PathToRepository = dlg.SelectedPath;
-                           }
-                       }));
+                Filter = @"pdf files (*.pdf)|*.pdf | doc files (*.docx, .doc) |*.docx *.doc | markdown files (*.md)|*.md | txt files (*.txt)|*.txt",
+                FilterIndex = 4,
+                RestoreDirectory = true
+            };
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                PathToSave = saveFileDialog.FileName;
             }
         }
 
-        private RelayCommand _selectPathToSaveCommand;
-        public RelayCommand SelectPathToSaveCommand
-        {
-            get
-            {
-                return _selectPathToSaveCommand ??
-                       (_selectPathToSaveCommand = new RelayCommand(obj =>
-                       {
-                           SaveFileDialog saveFileDialog = new SaveFileDialog
-                           {
-                               Filter = @"pdf files (*.pdf)|*.pdf | doc files (*.docx, .doc) |*.docx *.doc | markdown files (*.md)|*.md | txt files (*.txt)|*.txt",
-                               FilterIndex = 4,
-                               RestoreDirectory = true
-                           };
+        public RelayCommand GenerateCommand { get; }
 
-                           if (saveFileDialog.ShowDialog() == DialogResult.OK)
-                           {
-                               PathToSave = saveFileDialog.FileName;
-                           }
-                       }));
+        private void Generate()
+        {
+            FileSystemSourceCodeProvider provider = new FileSystemSourceCodeProvider(PathToRepository, _filter);
+            ReportExtendedInfo info = new ReportExtendedInfo(_introduction, _conclusion, PathToSave);
+            if (!_isMultiGeneration)
+            {
+                if (_coverPageInfo != null)
+                {
+                    GetGenerator(_coverPageInfo).Generate(provider.GetFiles(), info);
+                }
+                else if (_isPdf && _coverPageInfo != null)
+                {
+                    DocumentReportGenerator generator = new DocumentReportGenerator(_coverPageInfo);
+                    generator.Generate(provider.GetFiles(), info);
+                    generator.ConvertToPdf(info);
+                }
+                else
+                {
+                    GetGenerator().Generate(provider.GetFiles(), info);
+                }
             }
-        }
-
-        private RelayCommand _generateCommand;
-        public RelayCommand GenerateCommand
-        {
-            get
+            else
             {
-                return _generateCommand ??
-                       (_generateCommand = new RelayCommand(obj =>
-                       {
-                           FileSystemSourceCodeProvider provider = new FileSystemSourceCodeProvider(PathToRepository, _filter);
-                           ReportExtendedInfo info = new ReportExtendedInfo(_introduction, _conclusion, PathToSave);
-                           if (!_isMultiGeneration)
-                           {
-                               if (_coverPageInfo != null)
-                               {
-                                   GetGenerator(_coverPageInfo).Generate(provider.GetFiles(), info);
-                               }
-                               else if (_isPdf && _coverPageInfo != null)
-                               {
-                                   DocumentReportGenerator generator = new DocumentReportGenerator(_coverPageInfo);
-                                   generator.Generate(provider.GetFiles(), info);
-                                   generator.ConvertToPdf(info);
-                               }
-                               else
-                               {
-                                   GetGenerator().Generate(provider.GetFiles(), info);
-                               }
-                           }
-                           else
-                           {
-                               MultiGenerator multiGenerator =
-                                   new MultiGenerator(PathToRepository, PathToSave, GetGenerator(_coverPageInfo), _filter);
-                               multiGenerator.Generate();
-                           }
-                       }));
+                MultiGenerator multiGenerator =
+                    new MultiGenerator(PathToRepository, PathToSave, GetGenerator(_coverPageInfo), _filter);
+                multiGenerator.Generate();
             }
         }
 
