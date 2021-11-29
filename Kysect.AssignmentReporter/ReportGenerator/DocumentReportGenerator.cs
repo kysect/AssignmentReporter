@@ -6,16 +6,13 @@ using Kysect.AssignmentReporter.Models;
 using SautinSoft;
 using Xceed.Document.NET;
 using Xceed.Words.NET;
-
 using Document = Xceed.Document.NET.Document;
 
 namespace Kysect.AssignmentReporter.ReportGenerator
 {
     public class DocumentReportGenerator : IReportGenerator
     {
-        public CoverPageInfo CoverPage;
         private DocX _document;
-        public string Extension { get; } = ".docx";
 
         public DocumentReportGenerator(CoverPageInfo coverPage) : this()
         {
@@ -23,6 +20,9 @@ namespace Kysect.AssignmentReporter.ReportGenerator
         }
 
         public DocumentReportGenerator() { }
+
+        public CoverPageInfo CoverPage {get; set;}
+        public string Extension { get; } = ".docx";
 
         public FileDescriptor Generate(List<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
         {

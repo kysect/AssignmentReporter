@@ -13,16 +13,16 @@ namespace Kysect.AssignmentReporter.Models.FileSearchRules
         public List<string> BlackFileFormats { get; set; } = new List<string>();
         public List<Regex> BlackDirectories { get; set; } = new List<Regex>();
 
-        public SearchSettings() { }
-
         public bool FileIsAcceptable(string fileName)
         {
-            return (WhiteFileNames.Count == 0 || WhiteFileNames.Contains(fileName)) && !BlackFileNames.Contains(fileName);
+            return (WhiteFileNames.Count == 0 || WhiteFileNames.Contains(fileName)) &&
+                   !BlackFileNames.Contains(fileName);
         }
 
         public bool FormatIsAcceptable(string fileFormat)
         {
-            return (WhiteFileFormats.Count == 0 || WhiteFileFormats.Contains(fileFormat)) && !BlackFileFormats.Contains(fileFormat);
+            return (WhiteFileFormats.Count == 0 || WhiteFileFormats.Contains(fileFormat)) &&
+                   !BlackFileFormats.Contains(fileFormat);
         }
 
         public bool DirectoryIsAcceptable(string directory)

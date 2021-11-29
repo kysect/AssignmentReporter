@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Windows.Forms;
-using Kysect.AssignmentReporter.Models;
+﻿using Kysect.AssignmentReporter.Models;
 using Kysect.AssignmentReporter.Models.FileSearchRules;
 using Kysect.AssignmentReporter.Plugin.ViewModel.MvvmBase;
 using Kysect.AssignmentReporter.ReportGenerator;
@@ -11,24 +6,27 @@ using Kysect.AssignmentReporter.ReportGenerator.MultiGenerator;
 using Kysect.AssignmentReporter.SourceCodeProvider;
 
 namespace Kysect.AssignmentReporter.Plugin.ViewModel
-{ 
+{
     public class GeneratorSettingsViewModel : BaseViewModel
     {
-
-        private ObservableCollection<string> _generatorTypes = new ObservableCollection<string>(){".pdf", ".docx", ".txt", ".md"} ;
-        private string _selectedGeneratorType;
-        private string _pathToSave = string.Empty;
-        private string _pathToRepository = string.Empty;
-        private bool _isMultiGeneration = false;
-        private bool _isPdf = true;
         private static CoverPageInfo _coverPageInfo;
         private static FileSearchFilter _filter;
         private static string _introduction = string.Empty;
         private static string _conclusion = string.Empty;
 
+        private ObservableCollection<string> _generatorTypes =
+         new ObservableCollection<string>
+            { ".pdf", ".docx", ".txt", ".md" };
+
+        private bool _isMultiGeneration = false;
+        private bool _isPdf = true;
+        private string _pathToRepository = string.Empty;
+        private string _pathToSave = string.Empty;
+        private string _selectedGeneratorType;
+
         public GeneratorSettingsViewModel()
         {
-            GenerateCommand = new RelayCommand(obj =>
+            GenerateCommand = new RelayCommand(obj => 
             {
                 Generate();
             });
@@ -61,6 +59,7 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel
                 NotifyPropertyChanged();
             }
         }
+
         public ObservableCollection<string> GeneratorTypes
         {
             get => _generatorTypes;
@@ -70,6 +69,7 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel
                 NotifyPropertyChanged();
             }
         }
+
         public string PathToSave
         {
             get => _pathToSave;
@@ -79,6 +79,7 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel
                 NotifyPropertyChanged();
             }
         }
+
         public string PathToRepository
         {
             get => _pathToRepository;
@@ -88,6 +89,7 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel
                 NotifyPropertyChanged();
             }
         }
+
         public string Introduction
         {
             get => _introduction;
@@ -152,12 +154,14 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel
 
         public RelayCommand SelectPathToSaveCommand { get; }
 
+        public RelayCommand GenerateCommand { get; }
+
         public void SelectPathToSave()
         {
-
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
-                Filter = @"pdf files (*.pdf)|*.pdf | doc files (*.docx, .doc) |*.docx *.doc | markdown files (*.md)|*.md | txt files (*.txt)|*.txt",
+                Filter =
+                    @"pdf files (*.pdf)|*.pdf | doc files (*.docx, .doc) |*.docx *.doc | markdown files (*.md)|*.md | txt files (*.txt)|*.txt",
                 FilterIndex = 4,
                 RestoreDirectory = true
             };
@@ -168,12 +172,10 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel
             }
         }
 
-        public RelayCommand GenerateCommand { get; }
-
         private void Generate()
         {
-            FileSystemSourceCodeProvider provider = new FileSystemSourceCodeProvider(PathToRepository, _filter);
-            ReportExtendedInfo info = new ReportExtendedInfo(_introduction, _conclusion, PathToSave);
+            var provider = new FileSystemSourceCodeProvider(PathToRepository, _filter);
+            var info = new ReportExtendedInfo(_introduction, _conclusion, PathToSave);
             if (!_isMultiGeneration)
             {
                 if (_coverPageInfo != null)
@@ -182,7 +184,7 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel
                 }
                 else if (_isPdf && _coverPageInfo != null)
                 {
-                    DocumentReportGenerator generator = new DocumentReportGenerator(_coverPageInfo);
+                    var generator = new DocumentReportGenerator(_coverPageInfo);
                     generator.Generate(provider.GetFiles(), info);
                     generator.ConvertToPdf(info);
                 }
@@ -193,7 +195,7 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel
             }
             else
             {
-                MultiGenerator multiGenerator =
+                var multiGenerator =
                     new MultiGenerator(PathToRepository, PathToSave, GetGenerator(_coverPageInfo), _filter);
                 multiGenerator.Generate();
             }

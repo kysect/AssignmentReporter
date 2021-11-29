@@ -1,9 +1,4 @@
-﻿using Microsoft.VisualStudio.Shell;
-using System;
-using System.Runtime.InteropServices;
-using System.Threading;
-using Microsoft.VisualStudio.Threading;
-using Task = System.Threading.Tasks.Task;
+﻿using Task = System.Threading.Tasks.Task;
 
 namespace Kysect.AssignmentReporter.Plugin
 {
@@ -13,11 +8,15 @@ namespace Kysect.AssignmentReporter.Plugin
     {
         public const string PackageGuidString = "017225f8-7e93-42cb-84cc-9aaa284c6def";
 
-    #region Package Members
+        #region Package Members
 
-    protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress) {
-        await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
+        protected override async Task InitializeAsync(
+            CancellationToken cancellationToken,
+            IProgress<ServiceProgressData> progress)
+        {
+            await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
+        }
+
+        #endregion
     }
-    #endregion
-}
 }

@@ -17,7 +17,7 @@ namespace Kysect.AssignmentReporter.ReportGenerator
             var builder = new StringBuilder();
             foreach (FileDescriptor file in files)
             {
-                builder.AppendLine("## " + file.Name);
+                builder.Append("## ").AppendLine(file.Name);
 
                 builder.Append("```");
 
@@ -27,6 +27,7 @@ namespace Kysect.AssignmentReporter.ReportGenerator
 
                 builder.AppendLine("\n```\n");
             }
+
             File.WriteAllText(reportExtendedInfo.Path, builder.ToString());
             FileInfo info = new FileInfo(reportExtendedInfo.Path);
             return new FileDescriptor(info.Name, File.ReadAllText(info.FullName), info.DirectoryName);

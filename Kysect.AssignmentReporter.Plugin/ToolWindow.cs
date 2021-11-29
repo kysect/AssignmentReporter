@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using Kysect.AssignmentReporter.Plugin.Windows;
-using Microsoft.VisualStudio.Shell;
+﻿using Kysect.AssignmentReporter.Plugin.Windows;
 
 namespace Kysect.AssignmentReporter.Plugin
 {

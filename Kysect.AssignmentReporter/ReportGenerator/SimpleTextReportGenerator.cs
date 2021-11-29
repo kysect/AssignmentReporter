@@ -17,13 +17,14 @@ namespace Kysect.AssignmentReporter.ReportGenerator
             var builder = new StringBuilder();
             if (!string.IsNullOrEmpty(reportExtendedInfo.Intro))
             {
-                builder.AppendLine("Introduction:" + reportExtendedInfo.Intro);
+                builder.Append("Introduction:").AppendLine(reportExtendedInfo.Intro);
 
                 builder.AppendLine("\n\n");
             }
+
             foreach (FileDescriptor file in files)
             {
-                builder.AppendLine("File name:" + file.Name);
+                builder.Append("File name:").AppendLine(file.Name);
 
                 builder.AppendLine("\n");
 
@@ -33,9 +34,10 @@ namespace Kysect.AssignmentReporter.ReportGenerator
 
                 builder.AppendLine("\n\n");
             }
+
             if (!string.IsNullOrEmpty(reportExtendedInfo.Conclusion))
             {
-                builder.AppendLine("Introduction:" + reportExtendedInfo.Conclusion);
+                builder.Append("Introduction:").AppendLine(reportExtendedInfo.Conclusion);
             }
             File.WriteAllText(reportExtendedInfo.Path, builder.ToString());
             FileInfo info = new FileInfo(reportExtendedInfo.Path);

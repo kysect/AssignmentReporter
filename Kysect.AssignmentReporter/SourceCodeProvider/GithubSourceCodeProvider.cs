@@ -10,14 +10,19 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
 {
     public class GithubSourceCodeProvider : ISourceCodeProvider
     {
-        private string _localStoragePath;
-        private readonly string _repositoryOwner;
-        private readonly string _repositoryName;
-        private readonly string _url;
         private readonly GitUserData _data;
         private readonly FileSearchFilter _fileSearchFilter;
+        private readonly string _repositoryName;
+        private readonly string _repositoryOwner;
+        private readonly string _url;
+        private string _localStoragePath;
 
-        public GithubSourceCodeProvider(string owner, string name, string rootPath, GitUserData data, FileSearchFilter fileSearchFilter)
+        public GithubSourceCodeProvider(
+            string owner,
+            string name,
+            string rootPath,
+            GitUserData data,
+            FileSearchFilter fileSearchFilter)
         {
             _repositoryOwner = owner;
             _repositoryName = name;
@@ -68,7 +73,6 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
                         }
                     }
                 };
-
 
                 var signature = new Signature(
                     new Identity($"{credentialsInfo.Username}", $"{_data.Email}"), DateTimeOffset.Now);
