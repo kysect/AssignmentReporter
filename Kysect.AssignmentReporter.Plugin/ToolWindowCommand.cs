@@ -1,4 +1,10 @@
-﻿using Task = System.Threading.Tasks.Task;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
+using System.Linq;
+using System.Text;
+using Microsoft.VisualStudio.Shell;
+using Task = System.Threading.Tasks.Task;
 
 namespace Kysect.AssignmentReporter.Plugin
 {

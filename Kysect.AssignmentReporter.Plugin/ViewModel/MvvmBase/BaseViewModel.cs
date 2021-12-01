@@ -1,4 +1,7 @@
-﻿namespace Kysect.AssignmentReporter.Plugin.ViewModel.MvvmBase
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
+
+namespace Kysect.AssignmentReporter.Plugin.ViewModel.MvvmBase
 {
     public class BaseViewModel : INotifyPropertyChanged
     {

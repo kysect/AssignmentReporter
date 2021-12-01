@@ -1,4 +1,9 @@
-﻿using Kysect.AssignmentReporter.Models.FileSearchRules;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Kysect.AssignmentReporter.Models.FileSearchRules;
 using Kysect.AssignmentReporter.Plugin.ViewModel.MvvmBase;
 
 namespace Kysect.AssignmentReporter.Plugin.ViewModel

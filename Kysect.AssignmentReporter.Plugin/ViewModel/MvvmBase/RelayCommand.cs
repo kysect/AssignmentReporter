@@ -1,4 +1,6 @@
-﻿namespace Kysect.AssignmentReporter.Plugin.ViewModel.MvvmBase
+﻿using System;
+using System.Windows.Input;
+namespace Kysect.AssignmentReporter.Plugin.ViewModel.MvvmBase
 {
     public class RelayCommand : ICommand
     {

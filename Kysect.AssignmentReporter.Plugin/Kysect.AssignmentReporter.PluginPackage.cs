@@ -1,4 +1,9 @@
-﻿using Task = System.Threading.Tasks.Task;
+﻿using Microsoft.VisualStudio.Shell;
+using System;
+using System.Runtime.InteropServices;
+using System.Threading;
+using Microsoft.VisualStudio.Threading;
+using Task = System.Threading.Tasks.Task;
 
 namespace Kysect.AssignmentReporter.Plugin
 {

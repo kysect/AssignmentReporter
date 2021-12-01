@@ -1,4 +1,9 @@
-﻿using Kysect.AssignmentReporter.Models;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Windows.Forms;
+using Kysect.AssignmentReporter.Models;
 using Kysect.AssignmentReporter.Models.FileSearchRules;
 using Kysect.AssignmentReporter.Plugin.ViewModel.MvvmBase;
 using Kysect.AssignmentReporter.ReportGenerator;
