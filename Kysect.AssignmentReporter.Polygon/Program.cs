@@ -7,19 +7,19 @@ namespace Kysect.AssignmentReporter.Polygon
 {
     internal static class Program
     {
-        private static void Main(string[] args)
+        public static void Main()
         {
             GenerateSimpleReport();
         }
 
         public static void GenerateSimpleReport()
         {
-            FileSearchFilter filter = new(new SearchSettings
+            FileSearchFilter filter = new (new SearchSettings
             {
                 WhiteFileFormats = { ".cs" },
-                BlackDirectories = { new Regex("bin"), new Regex("obj") }
+                BlackDirectories = { new Regex("bin"), new Regex("obj") },
             });
-            MultiGenerator mg = new(@"C:\test\repos", @"C:\test\reports", new MarkdownReportGenerator(), filter);
+            var mg = new MultiGenerator(@"C:\test\repos", @"C:\test\reports", new MarkdownReportGenerator(), filter);
             mg.Generate();
         }
     }

@@ -15,7 +15,7 @@ namespace Kysect.AssignmentReporter.ReportGenerator
         {
             //TODO: here we need to group by folder
             ILookup<string, FileDescriptor> fileGroups = null;
-            List<object> result = new List<object>();
+            var result = new List<object>();
 
             foreach (IGrouping<string, FileDescriptor> fileGroup in fileGroups)
             {

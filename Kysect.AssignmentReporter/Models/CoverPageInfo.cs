@@ -2,8 +2,13 @@
 {
     public class CoverPageInfo
     {
-        public CoverPageInfo(string teacherName, string groupNumber, string fullName, string discipline,
-            string workNumber, string pathToCoverPage)
+        public CoverPageInfo(
+            string teacherName,
+            string groupNumber,
+            string fullName,
+            string discipline,
+            string workNumber,
+            string pathToCoverPage)
         {
             TeacherName = teacherName;
             FullName = fullName;

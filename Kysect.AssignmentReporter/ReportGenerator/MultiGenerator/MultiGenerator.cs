@@ -32,12 +32,14 @@ namespace Kysect.AssignmentReporter.ReportGenerator.MultiGenerator
 
         public List<FileDescriptor> Generate()
         {
-            return GetRepositories().
-                ConvertAll(repository
-                    => Generator.Generate(new FileSystemSourceCodeProvider(repository, Filter).GetFiles(),
-                    new ReportExtendedInfo(string.Empty,
-                        string.Empty,
-                        $"{ReportsPath}/{new DirectoryInfo(repository).Name}")));
+            return GetRepositories()
+                .ConvertAll(repository
+                    => Generator.Generate(
+                        new FileSystemSourceCodeProvider(repository, Filter).GetFiles(),
+                        new ReportExtendedInfo(
+                            string.Empty,
+                            string.Empty,
+                            $"{ReportsPath}/{new DirectoryInfo(repository).Name}")));
         }
     }
 }

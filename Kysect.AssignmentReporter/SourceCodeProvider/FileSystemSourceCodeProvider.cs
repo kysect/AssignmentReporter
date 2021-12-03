@@ -21,11 +21,12 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
             var files = new List<FileDescriptor>();
             foreach (var file in Directory.EnumerateFiles(_rootDirectoryPath, "*", SearchOption.AllDirectories))
             {
-                FileInfo info = new FileInfo(file);
+                var info = new FileInfo(file);
                 if (_fileSearchFilter.FileIsAcceptable(info))
                 {
                     files
-                        .Add(new FileDescriptor(info.Name,
+                        .Add(new FileDescriptor(
+                            info.Name,
                             File.ReadAllText(info.FullName),
                             info.DirectoryName));
                 }

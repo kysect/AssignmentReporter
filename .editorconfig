@@ -113,3 +113,42 @@ indent_size = 2
 indent_style = space
 indent_size = 4
 tab_width = 4
+
+# SA1600: Elements should be documented
+dotnet_diagnostic.SA1600.severity = none
+
+# SA1200: Using directives should be placed correctly
+dotnet_diagnostic.SA1200.severity = none
+
+# IDE0008: Use explicit type
+csharp_style_var_when_type_is_apparent = true:warning
+
+# IDE0008: Use explicit type
+csharp_style_var_elsewhere = false:warning
+
+# IDE0008: Use explicit type
+dotnet_diagnostic.IDE0008.severity = warning
+
+# IDE0005: Using directive is unnecessary.
+dotnet_diagnostic.IDE0005.severity = warning
+
+# IDE0040: Add accessibility modifiers
+dotnet_style_require_accessibility_modifiers = always
+
+# SA1101: Prefix local calls with this
+dotnet_diagnostic.SA1101.severity = none
+
+#Elements Must Be Separated By Blank Line
+dotnet_diagnostic.SA1516.severity = none
+
+# SA1309: Field names should not begin with underscore
+dotnet_diagnostic.SA1309.severity = silent
+
+# SA1633: File should have header
+dotnet_diagnostic.SA1633.severity = none
+csharp_new_line_before_open_brace = all
+csharp_space_between_method_declaration_parameter_list_parentheses = false
+csharp_new_line_before_members_in_object_initializers = false
+
+#Expression value is never used [Kysect.AssignmentReporter]csharp(IDE0058)
+dotnet_diagnostic.IDE0058.severity = none
