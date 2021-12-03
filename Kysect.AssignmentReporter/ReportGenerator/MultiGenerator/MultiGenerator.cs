@@ -26,7 +26,7 @@ namespace Kysect.AssignmentReporter.ReportGenerator.MultiGenerator
         {
             return Directory
                 .GetDirectories(RootPath)
-                
+                .Where(dir => Filter.SearchSettings.DirectoryIsAcceptable(dir))
                 .ToList();
         }
 
