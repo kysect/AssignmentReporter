@@ -7,11 +7,15 @@ namespace Kysect.AssignmentReporter.ReportGenerator
 {
     public static class ReportGeneratorExtensions
     {
-        public static List<object> GeneratePerFolder(this IReportGenerator reportGenerator, List<FileDescriptor> files, FileSearchFilter fileSearchFilter, ReportExtendedInfo reportExtendedInfo)
+        public static List<object> GeneratePerFolder(
+            this IReportGenerator reportGenerator,
+            List<FileDescriptor> files,
+            FileSearchFilter fileSearchFilter,
+            ReportExtendedInfo reportExtendedInfo)
         {
             //TODO: here we need to group by folder
             ILookup<string, FileDescriptor> fileGroups = null;
-            List<object> result = new List<object>();
+            var result = new List<object>();
 
             foreach (IGrouping<string, FileDescriptor> fileGroup in fileGroups)
             {

@@ -10,15 +10,14 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel
 {
     public class SearchSettingsViewModel : BaseViewModel
     {
+        private string _blackDirectories;
+        private string _blackFileFormats;
+        private string _blackFileNames;
+        private string _whiteDirectories;
+        private string _whiteFileFormats;
+        private string _whiteFileNames;
         public ISearchSettingsBuilder Builder = new SearchSettingsBuilder();
         public SearchSettings Settings;
-
-        private string _whiteFileNames;
-        private string _whiteFileFormats;
-        private string _whiteDirectories;
-        private string _blackFileNames;
-        private string _blackFileFormats;
-        private string _blackDirectories;
 
         public SearchSettingsViewModel()
         {
@@ -27,6 +26,7 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel
                 SetSettings();
             });
         }
+
         public string WhiteFileNames
         {
             get => _whiteFileNames;
@@ -135,7 +135,6 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel
                            Builder.SetDefaultList();
                        }));
             }
-        }
-
+        }  
     }
 }

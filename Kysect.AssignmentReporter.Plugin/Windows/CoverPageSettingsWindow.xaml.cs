@@ -16,6 +16,5 @@ namespace Kysect.AssignmentReporter.Plugin.Windows
         {
             Close();
         }
-
     }
 }

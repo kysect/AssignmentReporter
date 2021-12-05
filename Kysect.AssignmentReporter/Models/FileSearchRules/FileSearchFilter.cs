@@ -5,12 +5,12 @@ namespace Kysect.AssignmentReporter.Models.FileSearchRules
 {
     public class FileSearchFilter
     {
-        public SearchSettings SearchSettings { get; set; }
-
         public FileSearchFilter(SearchSettings searchSettings)
         {
             SearchSettings = searchSettings ?? throw new Exception("Search settings can't be null");
         }
+
+        public SearchSettings SearchSettings { get; set; }
 
         public bool FileIsAcceptable(FileInfo file)
         {

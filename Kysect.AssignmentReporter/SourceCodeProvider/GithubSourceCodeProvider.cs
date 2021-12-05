@@ -10,14 +10,19 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
 {
     public class GithubSourceCodeProvider : ISourceCodeProvider
     {
-        private string _localStoragePath;
-        private readonly string _repositoryOwner;
-        private readonly string _repositoryName;
-        private readonly string _url;
         private readonly GitUserData _data;
         private readonly FileSearchFilter _fileSearchFilter;
+        private readonly string _repositoryName;
+        private readonly string _repositoryOwner;
+        private readonly string _url;
+        private string _localStoragePath;
 
-        public GithubSourceCodeProvider(string owner, string name, string rootPath, GitUserData data, FileSearchFilter fileSearchFilter)
+        public GithubSourceCodeProvider(
+            string owner,
+            string name,
+            string rootPath,
+            GitUserData data,
+            FileSearchFilter fileSearchFilter)
         {
             _repositoryOwner = owner;
             _repositoryName = name;
@@ -29,7 +34,7 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
 
         public List<FileDescriptor> GetFiles()
         {
-            char separator = Path.DirectorySeparatorChar;
+            var separator = Path.DirectorySeparatorChar;
             EnsureParentDirectoryExist(_localStoragePath)
                 .CreateSubdirectory($"{_repositoryOwner}{separator}{_repositoryName}");
             _localStoragePath += $"{_repositoryOwner}{separator}{_repositoryName}";
@@ -46,11 +51,11 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
             {
                 var options = new CloneOptions
                 {
-                    CredentialsProvider = (_url, usernameFromUrl, types) => new UsernamePasswordCredentials
+                    CredentialsProvider = (url, usernameFromUrl, types) => new UsernamePasswordCredentials
                     {
                         Username = credentialsInfo.Username,
-                        Password = credentialsInfo.Password
-                    }
+                        Password = credentialsInfo.Password,
+                    },
                 };
                 Repository.Clone(_url, _localStoragePath, options);
             }
@@ -61,14 +66,13 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
                 {
                     FetchOptions = new FetchOptions
                     {
-                        CredentialsProvider = (_url, usernameFromUrl, types) => new UsernamePasswordCredentials
+                        CredentialsProvider = (url, usernameFromUrl, types) => new UsernamePasswordCredentials
                         {
                             Username = credentialsInfo.Username,
-                            Password = credentialsInfo.Password
-                        }
-                    }
+                            Password = credentialsInfo.Password,
+                        },
+                    },
                 };
-
 
                 var signature = new Signature(
                     new Identity($"{credentialsInfo.Username}", $"{_data.Email}"), DateTimeOffset.Now);
@@ -79,10 +83,14 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
             return _localStoragePath;
         }
 
-        public DirectoryInfo EnsureParentDirectoryExist(string _path)
+        public DirectoryInfo EnsureParentDirectoryExist(string path)
         {
-            var dirInfo = new DirectoryInfo(_path);
-            if (!dirInfo.Exists) dirInfo.Create();
+            var dirInfo = new DirectoryInfo(path);
+            if (!dirInfo.Exists)
+            {
+                dirInfo.Create();
+            }
+
             return dirInfo;
         }
     }

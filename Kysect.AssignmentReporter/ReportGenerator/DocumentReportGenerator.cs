@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using Kysect.AssignmentReporter.Models;
@@ -7,22 +7,23 @@ using SautinSoft;
 using Xceed.Document.NET;
 using Xceed.Words.NET;
 
-using Document = Xceed.Document.NET.Document;
-
 namespace Kysect.AssignmentReporter.ReportGenerator
 {
     public class DocumentReportGenerator : IReportGenerator
     {
-        public CoverPageInfo CoverPage;
         private DocX _document;
-        public string Extension { get; } = ".docx";
-
-        public DocumentReportGenerator(CoverPageInfo coverPage) : this()
+        public DocumentReportGenerator(CoverPageInfo coverPage)
+            : this()
         {
             CoverPage = coverPage;
         }
 
-        public DocumentReportGenerator() { }
+        public DocumentReportGenerator()
+        {
+        }
+
+        public CoverPageInfo CoverPage { get; set; }
+        public string Extension { get; } = ".docx";
 
         public FileDescriptor Generate(List<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
         {
@@ -41,10 +42,20 @@ namespace Kysect.AssignmentReporter.ReportGenerator
             InsertConclusion(reportExtendedInfo.Conclusion);
 
             _document.Save();
-            FileInfo documentInfo = new FileInfo(reportExtendedInfo.Path);
-            return new FileDescriptor(documentInfo.Name,
+            var documentInfo = new FileInfo(reportExtendedInfo.Path);
+            return new FileDescriptor(
+                documentInfo.Name,
                 _document.Text,
                 documentInfo.DirectoryName);
+        }
+
+        public void ConvertToPdf(ReportExtendedInfo info)
+        {
+            new PdfMetamorphosis()
+                .DocxToPdfConvertFile(
+                    info.Path,
+                    info.Path
+                        .Replace(".docx", ".pdf"));
         }
 
         private Document WriteInCoverList(CoverPageInfo info, ReportExtendedInfo reportExtendedInfo)
@@ -54,7 +65,7 @@ namespace Kysect.AssignmentReporter.ReportGenerator
             const int parWithFullName = 11;
             const int parWithTeacherName = 12;
 
-            var titleList = DocX.Load(info.PathToCoverPage).Copy();
+            Document titleList = DocX.Load(info.PathToCoverPage).Copy();
             var par = titleList.Paragraphs.ToList();
 
             par[parWithWorkNumber]
@@ -81,27 +92,19 @@ namespace Kysect.AssignmentReporter.ReportGenerator
             return titleList;
         }
 
-        public void ConvertToPdf(ReportExtendedInfo info)
-        {
-            new PdfMetamorphosis()
-                .DocxToPdfConvertFile(info.Path,
-                    info.Path
-                        .Replace(".docx", ".pdf"));
-        }
-
         private void AddCoverPage(Document coverPage)
         {
             const int indentationAmount = 22;
-            var titleList = coverPage.Paragraphs;
+            ReadOnlyCollection<Paragraph> titleList = coverPage.Paragraphs;
 
-            foreach (var paragraph in titleList)
+            foreach (Paragraph paragraph in titleList)
             {
                 _document.InsertParagraph(paragraph);
             }
 
-            for (int i = 0; i < indentationAmount; i++)
+            for (var i = 0; i < indentationAmount; i++)
             {
-                _document.InsertParagraph(String.Empty);
+                _document.InsertParagraph(string.Empty);
             }
         }
 
@@ -129,17 +132,19 @@ namespace Kysect.AssignmentReporter.ReportGenerator
 
         private void InsertContent(List<FileDescriptor> files)
         {
-            foreach (var fileContent in files)
+            foreach (FileDescriptor fileContent in files)
             {
                 _document.InsertParagraph(fileContent.Name + ":")
                     .Font("Consolas")
                     .FontSize(14)
                     .Alignment = Alignment.center;
 
-                var table = _document.AddTable(1, 1);
+                Table table = _document.AddTable(1, 1);
 
                 table.Alignment = Alignment.center;
-                table.Rows[0].Cells[0].Paragraphs[0]
+                table.Rows[0]
+                    .Cells[0]
+                    .Paragraphs[0]
                     .Append(fileContent.Content)
                     .FontSize(10.5)
                     .Font("Consolas");

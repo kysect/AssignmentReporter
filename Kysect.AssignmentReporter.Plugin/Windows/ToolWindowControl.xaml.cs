@@ -21,15 +21,16 @@ namespace Kysect.AssignmentReporter.Plugin.Windows
             InitializeComponent();
             DataContext = new GeneratorSettingsViewModel();
         }
+
         private void SearchSettings_Button_Click(object sender, RoutedEventArgs e)
         {
-            SearchSettingsWindow taskWindow = new SearchSettingsWindow();
+            var taskWindow = new SearchSettingsWindow();
             taskWindow.Show();
         }
 
         private void CoverPageSettings_Button_Click(object sender, RoutedEventArgs e)
         {
-            CoverPageSettingsWindow taskWindow = new CoverPageSettingsWindow();
+            var taskWindow = new CoverPageSettingsWindow();
             taskWindow.Show();
         }
     }

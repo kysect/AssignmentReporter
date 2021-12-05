@@ -7,13 +7,8 @@ using Kysect.AssignmentReporter.SourceCodeProvider;
 
 namespace Kysect.AssignmentReporter.ReportGenerator.MultiGenerator
 {
-   public class MultiGenerator
-   {
-        public string RootPath { get; }
-        public string ReportsPath { get; }
-        public IReportGenerator Generator { get;}
-        public FileSearchFilter Filter { get;}
-
+    public class MultiGenerator
+    {
         public MultiGenerator(string rootPath, string reportsPath, IReportGenerator generator, FileSearchFilter filter)
         {
             RootPath = rootPath;
@@ -21,6 +16,11 @@ namespace Kysect.AssignmentReporter.ReportGenerator.MultiGenerator
             Generator = generator;
             Filter = filter;
         }
+
+        public string RootPath { get; }
+        public string ReportsPath { get; }
+        public IReportGenerator Generator { get; }
+        public FileSearchFilter Filter { get; }
 
         public List<string> GetRepositories()
         {
@@ -32,21 +32,14 @@ namespace Kysect.AssignmentReporter.ReportGenerator.MultiGenerator
 
         public List<FileDescriptor> Generate()
         {
-            List<FileDescriptor> reports = new List<FileDescriptor>();
-
-            foreach (var repository in GetRepositories())
-            {
-                string intro = string.Empty;
-                string conclusion = string.Empty;
-                string pathToReport = $@"{ReportsPath}/{new DirectoryInfo(repository).Name}";
-
-                reports.Add(Generator.Generate(new FileSystemSourceCodeProvider(repository, Filter)
-                    .GetFiles(), new ReportExtendedInfo(
-                    intro,
-                    conclusion,
-                    pathToReport)));
-            }
-            return reports;
+            return GetRepositories()
+                .ConvertAll(repository
+                    => Generator.Generate(
+                        new FileSystemSourceCodeProvider(repository, Filter).GetFiles(),
+                        new ReportExtendedInfo(
+                            string.Empty,
+                            string.Empty,
+                            $"{ReportsPath}/{new DirectoryInfo(repository).Name}")));
         }
-   }
+    }
 }
