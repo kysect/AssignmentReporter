@@ -23,13 +23,11 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
             {
                 var info = new FileInfo(file);
                 if (_fileSearchFilter.FileIsAcceptable(info))
-                {
                     files
                         .Add(new FileDescriptor(
                             info.Name,
                             File.ReadAllText(info.FullName),
                             info.DirectoryName));
-                }
             }
 
             return files;

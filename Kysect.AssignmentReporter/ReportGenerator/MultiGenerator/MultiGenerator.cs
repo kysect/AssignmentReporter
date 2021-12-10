@@ -9,7 +9,15 @@ namespace Kysect.AssignmentReporter.ReportGenerator.MultiGenerator
 {
    public class MultiGenerator
    {
-        public string RootPath { get; }
+       public MultiGenerator(string rootPath, string reportsPath, IReportGenerator generator, FileSearchFilter filter)
+       {
+           RootPath = rootPath;
+           ReportsPath = reportsPath;
+           Generator = generator;
+           Filter = filter;
+       }
+
+       public string RootPath { get; }
         public string ReportsPath { get; }
         public IReportGenerator Generator { get;}
         public FileSearchFilter Filter { get;}

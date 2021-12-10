@@ -29,16 +29,16 @@ namespace Kysect.AssignmentReporter.ReportGenerator
         {
             reportExtendedInfo.Path = reportExtendedInfo.Path.CheckExtension(Extension);
             FileStream file = File.Create(reportExtendedInfo.Path);
-            
+
             MemoryStream stream = GenerateStream(files, reportExtendedInfo);
             stream.Position = 0;
             stream.CopyTo(file);
             stream.Close();
-            
-            FileInfo documentInfo = new FileInfo(reportExtendedInfo.Path);
-            FileDescriptor descriptor = new FileDescriptor(
-                documentInfo.Name, 
-                file, 
+
+            var documentInfo = new FileInfo(reportExtendedInfo.Path);
+            var descriptor = new FileDescriptor(
+                documentInfo.Name,
+                file,
                 documentInfo.DirectoryName);
             file.Close();
 
@@ -47,7 +47,7 @@ namespace Kysect.AssignmentReporter.ReportGenerator
 
         public MemoryStream GenerateStream(IReadOnlyList<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
         {
-            MemoryStream stream = new MemoryStream();
+            var stream = new MemoryStream();
             _document = DocX.Create(stream);
 
             if (CoverPage != null)
@@ -94,7 +94,7 @@ namespace Kysect.AssignmentReporter.ReportGenerator
                 .Append(info.TeacherName)
                 .FontSize(12)
                 .Font("Times New Roman");
-            
+
             return titleList;
         }
 
