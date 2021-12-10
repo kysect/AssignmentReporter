@@ -70,8 +70,7 @@ namespace Kysect.AssignmentReporter.ReportGenerator
             new PdfMetamorphosis()
                 .DocxToPdfConvertFile(
                     info.Path,
-                    info.Path.Replace(".docx", ".pdf")
-                    );
+                    info.Path.Replace(".docx", ".pdf"));
         }
 
         private Document WriteInCoverList(CoverPageInfo info)

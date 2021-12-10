@@ -47,6 +47,12 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
             return descriptors;
         }
 
+        public IReadOnlyList<GithubRepositoryInfo> GetRepositories()
+        {
+            IReadOnlyList<Repository> repos = _client.Repository.GetAllForCurrent().Result;
+            return repos.Select(r => new GithubRepositoryInfo(r)).ToList();
+        }
+
         private void GetFolderFiles(List<FileDescriptor> files, SearchSettings settings, string path = "/")
         {
             IReadOnlyList<RepositoryContent> content = _client.Repository.Content.GetAllContents(Repository.Id, path).Result;
@@ -57,12 +63,10 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
                 {
                     GetFolderFiles(files, settings, repositoryContent.Path);
                 }
-
                 else if (
                     repositoryContent.Type == ContentType.File &&
                     settings.FileIsAcceptable(repositoryContent.Name) &&
-                    settings.FormatIsAcceptable(System.IO.Path.GetExtension(repositoryContent.Name))
-                    )
+                    settings.FormatIsAcceptable(System.IO.Path.GetExtension(repositoryContent.Name)))
                 {
                     using (var client = new WebClient())
                     {
@@ -74,12 +78,6 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
                     }
                 }
             }
-        }
-
-        public IReadOnlyList<GithubRepositoryInfo> GetRepositories()
-        {
-            IReadOnlyList<Repository> repos = _client.Repository.GetAllForCurrent().Result;
-            return repos.Select(r => new GithubRepositoryInfo(r)).ToList();
         }
     }
 }
