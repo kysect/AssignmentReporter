@@ -13,7 +13,21 @@ namespace Kysect.AssignmentReporter.ReportGenerator
         {
             reportExtendedInfo.Path = reportExtendedInfo.Path.CheckExtension(Extension);
             var reportFile = File.Create(reportExtendedInfo.Path);
+            MemoryStream stream = GenerateStream(files, reportExtendedInfo);
+            stream.Position = 0;
+            stream.CopyTo(reportFile);
+            stream.Close();
+            FileInfo info = new FileInfo(reportExtendedInfo.Path);
+            FileDescriptor descriptor = new FileDescriptor(
+                info.Name, 
+                reportFile,
+                info.DirectoryName);
             reportFile.Close();
+            return descriptor;
+        }
+
+        public MemoryStream GenerateStream(List<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
+        {
             var builder = new StringBuilder();
             if (!string.IsNullOrEmpty(reportExtendedInfo.Intro))
             {
@@ -37,9 +51,10 @@ namespace Kysect.AssignmentReporter.ReportGenerator
             {
                 builder.AppendLine("Introduction:" + reportExtendedInfo.Conclusion);
             }
-            File.WriteAllText(reportExtendedInfo.Path, builder.ToString());
-            FileInfo info = new FileInfo(reportExtendedInfo.Path);
-            return new FileDescriptor(info.Name, File.ReadAllText(info.FullName), info.DirectoryName);
+            MemoryStream stream = new MemoryStream();
+            byte[] bytes = Encoding.UTF8.GetBytes(builder.ToString());
+            stream.Write(bytes, 0, bytes.Length);
+            return stream;
         }
     }
 }

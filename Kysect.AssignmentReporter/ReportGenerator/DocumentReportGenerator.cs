@@ -27,11 +27,31 @@ namespace Kysect.AssignmentReporter.ReportGenerator
         public FileDescriptor Generate(List<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
         {
             reportExtendedInfo.Path = reportExtendedInfo.Path.CheckExtension(Extension);
-            _document = DocX.Create(reportExtendedInfo.Path);
+            FileStream file = File.Create(reportExtendedInfo.Path);
+            
+            MemoryStream stream = GenerateStream(files, reportExtendedInfo);
+            stream.Position = 0;
+            stream.CopyTo(file);
+            stream.Close();
+            
+            FileInfo documentInfo = new FileInfo(reportExtendedInfo.Path);
+            FileDescriptor descriptor = new FileDescriptor(
+                documentInfo.Name, 
+                file, 
+                documentInfo.DirectoryName);
+            file.Close();
+
+            return descriptor;
+        }
+
+        public MemoryStream GenerateStream(List<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
+        {
+            MemoryStream stream = new MemoryStream();
+            _document = DocX.Create(stream);
 
             if (CoverPage != null)
             {
-                AddCoverPage(WriteInCoverList(CoverPage, reportExtendedInfo));
+                AddCoverPage(WriteInCoverList(CoverPage));
             }
 
             InsertIntroduction(reportExtendedInfo.Intro);
@@ -41,13 +61,10 @@ namespace Kysect.AssignmentReporter.ReportGenerator
             InsertConclusion(reportExtendedInfo.Conclusion);
 
             _document.Save();
-            FileInfo documentInfo = new FileInfo(reportExtendedInfo.Path);
-            return new FileDescriptor(documentInfo.Name,
-                _document.Text,
-                documentInfo.DirectoryName);
+            return stream;
         }
 
-        private Document WriteInCoverList(CoverPageInfo info, ReportExtendedInfo reportExtendedInfo)
+        private Document WriteInCoverList(CoverPageInfo info)
         {
             const int parWithWorkNumber = 6;
             const int parWithDiscipline = 7;
@@ -76,8 +93,7 @@ namespace Kysect.AssignmentReporter.ReportGenerator
                 .Append(info.TeacherName)
                 .FontSize(12)
                 .Font("Times New Roman");
-
-            titleList.SaveAs(reportExtendedInfo.Path);
+            
             return titleList;
         }
 
