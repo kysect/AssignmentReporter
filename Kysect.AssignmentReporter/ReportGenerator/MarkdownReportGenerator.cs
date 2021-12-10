@@ -9,7 +9,7 @@ namespace Kysect.AssignmentReporter.ReportGenerator
     {
         public string Extension { get; } = ".md";
 
-        public FileDescriptor Generate(List<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
+        public FileDescriptor Generate(IReadOnlyList<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
         {
             MemoryStream stream = GenerateStream(files, reportExtendedInfo);
             FileStream reportFile = File.Create(reportExtendedInfo.Path);
@@ -22,7 +22,7 @@ namespace Kysect.AssignmentReporter.ReportGenerator
             return descriptor;
         }
 
-        public MemoryStream GenerateStream(List<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
+        public MemoryStream GenerateStream(IReadOnlyList<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
         {
             reportExtendedInfo.Path = reportExtendedInfo.Path.CheckExtension(Extension);
             MemoryStream stream = new MemoryStream();

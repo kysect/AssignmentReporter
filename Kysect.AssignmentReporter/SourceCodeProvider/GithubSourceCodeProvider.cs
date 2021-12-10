@@ -1,89 +1,75 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Net;
 using Kysect.AssignmentReporter.Models;
 using Kysect.AssignmentReporter.Models.FileSearchRules;
-using LibGit2Sharp;
-using Microsoft.Alm.Authentication;
+using Octokit;
+using Octokit.Internal;
 
 namespace Kysect.AssignmentReporter.SourceCodeProvider
 {
     public class GithubSourceCodeProvider : ISourceCodeProvider
     {
-        private string _localStoragePath;
-        private readonly string _repositoryOwner;
-        private readonly string _repositoryName;
-        private readonly string _url;
-        private readonly GitUserData _data;
-        private readonly FileSearchFilter _fileSearchFilter;
-
-        public GithubSourceCodeProvider(string owner, string name, string rootPath, GitUserData data, FileSearchFilter fileSearchFilter)
+        private GitHubClient _client;
+        private ICredentialStore _credentialStore;
+        private string _token;
+        public GithubSourceCodeProvider(string token, string username)
         {
-            _repositoryOwner = owner;
-            _repositoryName = name;
-            _localStoragePath = rootPath;
-            _url = $"https://github.com/{_repositoryOwner}/{_repositoryName}.git";
-            _data = data;
-            _fileSearchFilter = fileSearchFilter;
+            Repository = null;
+            _credentialStore = new InMemoryCredentialStore(new Credentials(token));
+            _client = new GitHubClient(new ProductHeaderValue("AssignmentReporter"), _credentialStore);
         }
-
-        public List<FileDescriptor> GetFiles()
+        public IReadOnlyList<FileDescriptor> GetFiles()
         {
-            char separator = Path.DirectorySeparatorChar;
-            EnsureParentDirectoryExist(_localStoragePath)
-                .CreateSubdirectory($"{_repositoryOwner}{separator}{_repositoryName}");
-            _localStoragePath += $"{_repositoryOwner}{separator}{_repositoryName}";
-            DownloadRepositoryFromGit();
-            return new FileSystemSourceCodeProvider(_localStoragePath, _fileSearchFilter).GetFiles();
+            if (Repository is null)
+                throw new InvalidOperationException("You must specify repository first");
+            var descriptors = new List<FileDescriptor>();
+            GetFolderFiles(descriptors, new SearchSettings());
+            return descriptors;
         }
-
-        public string DownloadRepositoryFromGit()
+        
+        public IReadOnlyList<FileDescriptor> GetFiles(SearchSettings settings, string folder = "/")
         {
-            Credential credentialsInfo =
-                new BasicAuthentication(new SecretStore("git")).GetCredentials(new TargetUri("https://github.com"));
+            if (Repository is null)
+                throw new InvalidOperationException("You must specify repository first");
+            var descriptors = new List<FileDescriptor>();
+            GetFolderFiles(descriptors, settings, folder);
+            return descriptors;
+        }
+        
+        private void GetFolderFiles(List<FileDescriptor> files, SearchSettings settings, string Path = "/")
+        { 
+            var content = _client.Repository.Content.GetAllContents(Repository.Id, Path).Result;
 
-            if (!Repository.IsValid(_localStoragePath))
+            foreach (var repositoryContent in content.Where(c => (c.Name[0] != '.')))
             {
-                var options = new CloneOptions
+                if (repositoryContent.Type == ContentType.Dir 
+                    && settings.DirectoryIsAcceptable(repositoryContent.Name))
+                    GetFolderFiles(files, settings, repositoryContent.Path);
+                else if (repositoryContent.Type == ContentType.File 
+                         && settings.FileIsAcceptable(repositoryContent.Name) 
+                         && settings.FormatIsAcceptable(System.IO.Path.GetExtension(repositoryContent.Name)))
                 {
-                    CredentialsProvider = (_url, usernameFromUrl, types) => new UsernamePasswordCredentials
+                    using (var client = new WebClient())
                     {
-                        Username = credentialsInfo.Username,
-                        Password = credentialsInfo.Password
-                    }
-                };
-                Repository.Clone(_url, _localStoragePath, options);
-            }
-            else
-            {
-                var repository = new Repository(_localStoragePath);
-                var options = new PullOptions
-                {
-                    FetchOptions = new FetchOptions
-                    {
-                        CredentialsProvider = (_url, usernameFromUrl, types) => new UsernamePasswordCredentials
+                        var download = client.DownloadData(repositoryContent.DownloadUrl);
+                        using (var stream = new MemoryStream(download))
                         {
-                            Username = credentialsInfo.Username,
-                            Password = credentialsInfo.Password
+                            files.Add(new FileDescriptor(repositoryContent.Name, stream, repositoryContent.Path));
                         }
                     }
-                };
-
-
-                var signature = new Signature(
-                    new Identity($"{credentialsInfo.Username}", $"{_data.Email}"), DateTimeOffset.Now);
-
-                Commands.Pull(repository, signature, options);
+                }
             }
-
-            return _localStoragePath;
         }
-
-        public DirectoryInfo EnsureParentDirectoryExist(string _path)
+        
+        public GithubRepositoryInfo Repository { get; set; }
+        
+        public IReadOnlyList<GithubRepositoryInfo> GetRepositories()
         {
-            var dirInfo = new DirectoryInfo(_path);
-            if (!dirInfo.Exists) dirInfo.Create();
-            return dirInfo;
+            var repos = _client.Repository.GetAllForCurrent().Result;
+            return repos.Select(r => new GithubRepositoryInfo(r)).ToList();
         }
     }
 }
