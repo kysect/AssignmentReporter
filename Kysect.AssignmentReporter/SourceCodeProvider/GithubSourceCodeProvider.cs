@@ -1,97 +1,83 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Net;
 using Kysect.AssignmentReporter.Models;
 using Kysect.AssignmentReporter.Models.FileSearchRules;
-using LibGit2Sharp;
-using Microsoft.Alm.Authentication;
+using Octokit;
+using Octokit.Internal;
 
 namespace Kysect.AssignmentReporter.SourceCodeProvider
 {
     public class GithubSourceCodeProvider : ISourceCodeProvider
     {
-        private readonly GitUserData _data;
-        private readonly FileSearchFilter _fileSearchFilter;
-        private readonly string _repositoryName;
-        private readonly string _repositoryOwner;
-        private readonly string _url;
-        private string _localStoragePath;
+        private readonly GitHubClient _client;
 
-        public GithubSourceCodeProvider(
-            string owner,
-            string name,
-            string rootPath,
-            GitUserData data,
-            FileSearchFilter fileSearchFilter)
+        public GithubSourceCodeProvider(string token)
         {
-            _repositoryOwner = owner;
-            _repositoryName = name;
-            _localStoragePath = rootPath;
-            _url = $"https://github.com/{_repositoryOwner}/{_repositoryName}.git";
-            _data = data;
-            _fileSearchFilter = fileSearchFilter;
+            Repository = null;
+            ICredentialStore credentialStore = new InMemoryCredentialStore(new Credentials(token));
+            _client = new GitHubClient(new ProductHeaderValue("AssignmentReporter"), credentialStore);
         }
 
-        public List<FileDescriptor> GetFiles()
-        {
-            var separator = Path.DirectorySeparatorChar;
-            EnsureParentDirectoryExist(_localStoragePath)
-                .CreateSubdirectory($"{_repositoryOwner}{separator}{_repositoryName}");
-            _localStoragePath += $"{_repositoryOwner}{separator}{_repositoryName}";
-            DownloadRepositoryFromGit();
-            return new FileSystemSourceCodeProvider(_localStoragePath, _fileSearchFilter).GetFiles();
-        }
+        public GithubRepositoryInfo Repository { get; set; }
 
-        public string DownloadRepositoryFromGit()
+        public IReadOnlyList<FileDescriptor> GetFiles()
         {
-            Credential credentialsInfo =
-                new BasicAuthentication(new SecretStore("git")).GetCredentials(new TargetUri("https://github.com"));
-
-            if (!Repository.IsValid(_localStoragePath))
+            if (Repository is null)
             {
-                var options = new CloneOptions
-                {
-                    CredentialsProvider = (url, usernameFromUrl, types) => new UsernamePasswordCredentials
-                    {
-                        Username = credentialsInfo.Username,
-                        Password = credentialsInfo.Password,
-                    },
-                };
-                Repository.Clone(_url, _localStoragePath, options);
+                throw new InvalidOperationException("You must specify repository first");
             }
-            else
+
+            var descriptors = new List<FileDescriptor>();
+            GetFolderFiles(descriptors, new SearchSettings());
+            return descriptors;
+        }
+
+        public IReadOnlyList<FileDescriptor> GetFiles(SearchSettings settings, string folder = "/")
+        {
+            if (Repository is null)
             {
-                var repository = new Repository(_localStoragePath);
-                var options = new PullOptions
+                throw new InvalidOperationException("You must specify repository first");
+            }
+
+            var descriptors = new List<FileDescriptor>();
+            GetFolderFiles(descriptors, settings, folder);
+            return descriptors;
+        }
+
+        public IReadOnlyList<GithubRepositoryInfo> GetRepositories()
+        {
+            IReadOnlyList<Repository> repos = _client.Repository.GetAllForCurrent().Result;
+            return repos.Select(r => new GithubRepositoryInfo(r)).ToList();
+        }
+
+        private void GetFolderFiles(List<FileDescriptor> files, SearchSettings settings, string path = "/")
+        {
+            IReadOnlyList<RepositoryContent> content = _client.Repository.Content.GetAllContents(Repository.Id, path).Result;
+
+            foreach (RepositoryContent repositoryContent in content.Where(c => (c.Name[0] != '.')))
+            {
+                if (repositoryContent.Type == ContentType.Dir && settings.DirectoryIsAcceptable(repositoryContent.Name))
                 {
-                    FetchOptions = new FetchOptions
+                    GetFolderFiles(files, settings, repositoryContent.Path);
+                }
+                else if (
+                    repositoryContent.Type == ContentType.File &&
+                    settings.FileIsAcceptable(repositoryContent.Name) &&
+                    settings.FormatIsAcceptable(System.IO.Path.GetExtension(repositoryContent.Name)))
+                {
+                    using (var client = new WebClient())
                     {
-                        CredentialsProvider = (url, usernameFromUrl, types) => new UsernamePasswordCredentials
+                        var download = client.DownloadData(repositoryContent.DownloadUrl);
+                        using (var stream = new MemoryStream(download))
                         {
-                            Username = credentialsInfo.Username,
-                            Password = credentialsInfo.Password,
-                        },
-                    },
-                };
-
-                var signature = new Signature(
-                    new Identity($"{credentialsInfo.Username}", $"{_data.Email}"), DateTimeOffset.Now);
-
-                Commands.Pull(repository, signature, options);
+                            files.Add(new FileDescriptor(repositoryContent.Name, stream, repositoryContent.Path));
+                        }
+                    }
+                }
             }
-
-            return _localStoragePath;
-        }
-
-        public DirectoryInfo EnsureParentDirectoryExist(string path)
-        {
-            var dirInfo = new DirectoryInfo(path);
-            if (!dirInfo.Exists)
-            {
-                dirInfo.Create();
-            }
-
-            return dirInfo;
         }
     }
 }

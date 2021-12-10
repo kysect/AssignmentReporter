@@ -16,7 +16,7 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
             _fileSearchFilter = fileSearchFilter;
         }
 
-        public List<FileDescriptor> GetFiles()
+        public IReadOnlyList<FileDescriptor> GetFiles()
         {
             var files = new List<FileDescriptor>();
             foreach (var file in Directory.EnumerateFiles(_rootDirectoryPath, "*", SearchOption.AllDirectories))
