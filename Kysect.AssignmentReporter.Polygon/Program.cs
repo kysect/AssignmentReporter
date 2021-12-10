@@ -19,7 +19,9 @@ namespace Kysect.AssignmentReporter.Polygon
                 WhiteFileFormats = { ".cs" },
                 BlackDirectories = { new Regex("bin"), new Regex("obj") },
             });
-            var mg = new MultiGenerator(@"C:\test\repos", @"C:\test\reports", new MarkdownReportGenerator(), filter);
+            var rootPath = @"C:\test\repos";
+            var reportPath = @"C:\test\report";
+            var mg = new MultiGenerator(rootPath, reportPath, new MarkdownReportGenerator(), filter);
             mg.Generate();
         }
     }

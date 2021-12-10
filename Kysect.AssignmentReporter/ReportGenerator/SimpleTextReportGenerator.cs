@@ -50,7 +50,9 @@ namespace Kysect.AssignmentReporter.ReportGenerator
             }
 
             if (!string.IsNullOrEmpty(reportExtendedInfo.Conclusion))
+            {
                 builder.Append("Introduction:").AppendLine(reportExtendedInfo.Conclusion);
+            }
 
             var stream = new MemoryStream();
             byte[] bytes = Encoding.UTF8.GetBytes(builder.ToString());

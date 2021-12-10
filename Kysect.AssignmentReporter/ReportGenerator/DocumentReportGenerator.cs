@@ -65,6 +65,15 @@ namespace Kysect.AssignmentReporter.ReportGenerator
             return stream;
         }
 
+        public void ConvertToPdf(ReportExtendedInfo info)
+        {
+            new PdfMetamorphosis()
+                .DocxToPdfConvertFile(
+                    info.Path,
+                    info.Path.Replace(".docx", ".pdf")
+                    );
+        }
+
         private Document WriteInCoverList(CoverPageInfo info)
         {
             const int parWithWorkNumber = 6;
@@ -112,14 +121,6 @@ namespace Kysect.AssignmentReporter.ReportGenerator
             {
                 _document.InsertParagraph(string.Empty);
             }
-        }
-
-        public void ConvertToPdf(ReportExtendedInfo info)
-        {
-            new PdfMetamorphosis()
-                .DocxToPdfConvertFile(info.Path,
-                    info.Path
-                        .Replace(".docx", ".pdf"));
         }
 
         private void InsertIntroduction(string introduction)

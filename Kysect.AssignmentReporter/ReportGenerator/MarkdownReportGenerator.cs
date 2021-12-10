@@ -39,6 +39,7 @@ namespace Kysect.AssignmentReporter.ReportGenerator
 
                 builder.AppendLine("\n```\n");
             }
+
             byte[] bytes = Encoding.UTF8.GetBytes(builder.ToString());
             stream.Write(bytes, 0, bytes.Length);
             return stream;

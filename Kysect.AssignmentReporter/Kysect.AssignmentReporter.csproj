@@ -14,11 +14,11 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="System.IO.Packaging" Version="5.0.0"/>
+    <PackageReference Include="System.IO.Packaging" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\.editorconfig"/>
+    <None Include="..\.editorconfig" />
   </ItemGroup>
 
 </Project>

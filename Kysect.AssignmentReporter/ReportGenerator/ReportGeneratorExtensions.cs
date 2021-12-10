@@ -13,7 +13,7 @@ namespace Kysect.AssignmentReporter.ReportGenerator
             FileSearchFilter fileSearchFilter,
             ReportExtendedInfo reportExtendedInfo)
         {
-            //TODO: here we need to group by folder
+            // TODO: here we need to group by folder
             ILookup<string, FileDescriptor> fileGroups = null;
             var result = new List<object>();
 
