@@ -16,7 +16,7 @@ namespace Kysect.AssignmentReporter.Models
             stream.Position = position;
             RootDirectory = rootDirectory;
         }
-        
+
         public FileDescriptor(string name, string content, string rootDirectory)
         {
             Name = name;

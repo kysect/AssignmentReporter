@@ -12,14 +12,14 @@ namespace Kysect.AssignmentReporter.ReportGenerator
         public FileDescriptor Generate(IReadOnlyList<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
         {
             reportExtendedInfo.Path = reportExtendedInfo.Path.CheckExtension(Extension);
-            var reportFile = File.Create(reportExtendedInfo.Path);
+            FileStream reportFile = File.Create(reportExtendedInfo.Path);
             MemoryStream stream = GenerateStream(files, reportExtendedInfo);
             stream.Position = 0;
             stream.CopyTo(reportFile);
             stream.Close();
-            FileInfo info = new FileInfo(reportExtendedInfo.Path);
-            FileDescriptor descriptor = new FileDescriptor(
-                info.Name, 
+            var info = new FileInfo(reportExtendedInfo.Path);
+            var descriptor = new FileDescriptor(
+                info.Name,
                 reportFile,
                 info.DirectoryName);
             reportFile.Close();
@@ -31,13 +31,14 @@ namespace Kysect.AssignmentReporter.ReportGenerator
             var builder = new StringBuilder();
             if (!string.IsNullOrEmpty(reportExtendedInfo.Intro))
             {
-                builder.AppendLine("Introduction:" + reportExtendedInfo.Intro);
+                builder.Append("Introduction:").AppendLine(reportExtendedInfo.Intro);
 
                 builder.AppendLine("\n\n");
             }
+
             foreach (FileDescriptor file in files)
             {
-                builder.AppendLine("File name:" + file.Name);
+                builder.Append("File name:").AppendLine(file.Name);
 
                 builder.AppendLine("\n");
 
@@ -47,11 +48,13 @@ namespace Kysect.AssignmentReporter.ReportGenerator
 
                 builder.AppendLine("\n\n");
             }
+
             if (!string.IsNullOrEmpty(reportExtendedInfo.Conclusion))
             {
-                builder.AppendLine("Introduction:" + reportExtendedInfo.Conclusion);
+                builder.Append("Introduction:").AppendLine(reportExtendedInfo.Conclusion);
             }
-            MemoryStream stream = new MemoryStream();
+
+            var stream = new MemoryStream();
             byte[] bytes = Encoding.UTF8.GetBytes(builder.ToString());
             stream.Write(bytes, 0, bytes.Length);
             return stream;

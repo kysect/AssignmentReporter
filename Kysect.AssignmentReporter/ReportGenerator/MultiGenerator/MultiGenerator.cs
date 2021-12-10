@@ -9,36 +9,37 @@ namespace Kysect.AssignmentReporter.ReportGenerator.MultiGenerator
 {
    public class MultiGenerator
    {
-        public string RootPath { get; }
-        public string ReportsPath { get; }
-        public IReportGenerator Generator { get;}
-        public FileSearchFilter Filter { get;}
+       public MultiGenerator(string rootPath, string reportsPath, IReportGenerator generator, FileSearchFilter filter)
+       {
+           RootPath = rootPath;
+           ReportsPath = reportsPath;
+           Generator = generator;
+           Filter = filter;
+       }
 
-        public List<string> GetRepositories()
-        {
-            return Directory
-                .GetDirectories(RootPath)
-                .Where(dir => Filter.SearchSettings.DirectoryIsAcceptable(dir))
-                .ToList();
-        }
+       public string RootPath { get; }
+       public string ReportsPath { get; }
+       public IReportGenerator Generator { get; }
+       public FileSearchFilter Filter { get; }
 
-        public List<FileDescriptor> Generate()
-        {
-            List<FileDescriptor> reports = new List<FileDescriptor>();
+       public List<string> GetRepositories()
+       {
+           return Directory
+               .GetDirectories(RootPath)
+               .Where(dir => Filter.SearchSettings.DirectoryIsAcceptable(dir))
+               .ToList();
+       }
 
-            foreach (var repository in GetRepositories())
-            {
-                string intro = string.Empty;
-                string conclusion = string.Empty;
-                string pathToReport = $@"{ReportsPath}/{new DirectoryInfo(repository).Name}";
-
-                reports.Add(Generator.Generate(new FileSystemSourceCodeProvider(repository, Filter)
-                    .GetFiles(), new ReportExtendedInfo(
-                    intro,
-                    conclusion,
-                    pathToReport)));
-            }
-            return reports;
-        }
-   }
+       public List<FileDescriptor> Generate()
+       {
+           return GetRepositories()
+               .ConvertAll(repository
+                   => Generator.Generate(
+                       new FileSystemSourceCodeProvider(repository, Filter).GetFiles(),
+                       new ReportExtendedInfo(
+                           string.Empty,
+                           string.Empty,
+                           $"{ReportsPath}/{new DirectoryInfo(repository).Name}")));
+       }
+    }
 }

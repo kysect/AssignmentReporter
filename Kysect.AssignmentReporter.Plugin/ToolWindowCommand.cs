@@ -18,7 +18,7 @@ namespace Kysect.AssignmentReporter.Plugin
 
         private ToolWindowCommand(AsyncPackage package, OleMenuCommandService commandService)
         {
-            this._package = package ?? throw new ArgumentNullException(nameof(package));
+            _package = package ?? throw new ArgumentNullException(nameof(package));
             commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
 
             var menuCommandId = new CommandID(CommandSet, CommandId);
@@ -26,25 +26,16 @@ namespace Kysect.AssignmentReporter.Plugin
             commandService.AddCommand(menuItem);
         }
 
-        public static ToolWindowCommand Instance
-        {
-            get;
-            private set;
-        }
+        public static ToolWindowCommand Instance { get; private set; }
 
-        private Microsoft.VisualStudio.Shell.IAsyncServiceProvider ServiceProvider
-        {
-            get
-            {
-                return _package;
-            }
-        }
-        
+        private Microsoft.VisualStudio.Shell.IAsyncServiceProvider ServiceProvider { get => _package; }
+
         public static async Task InitializeAsync(AsyncPackage package)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);
 
-            OleMenuCommandService commandService = await package.GetServiceAsync((typeof(IMenuCommandService))) as OleMenuCommandService;
+            OleMenuCommandService commandService =
+                await package.GetServiceAsync(typeof(IMenuCommandService)) as OleMenuCommandService;
             Instance = new ToolWindowCommand(package, commandService);
         }
 
@@ -52,9 +43,9 @@ namespace Kysect.AssignmentReporter.Plugin
         {
             _package.JoinableTaskFactory.RunAsync(async delegate
             {
-                ToolWindowPane window = await _package.ShowToolWindowAsync(typeof(ToolWindow), 0, true, _package.DisposalToken);
-                if ((null == window) || (null == window.Frame))
-                {
+                ToolWindowPane window =
+                    await _package.ShowToolWindowAsync(typeof(ToolWindow), 0, true, _package.DisposalToken);
+                if (null == window || null == window.Frame){
                     throw new NotSupportedException("Cannot create tool window");
                 }
             });

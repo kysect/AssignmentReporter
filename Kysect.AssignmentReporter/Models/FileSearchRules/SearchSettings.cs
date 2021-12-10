@@ -13,8 +13,6 @@ namespace Kysect.AssignmentReporter.Models.FileSearchRules
         public List<string> BlackFileFormats { get; set; } = new List<string>();
         public List<Regex> BlackDirectories { get; set; } = new List<Regex>();
 
-        public SearchSettings() { }
-
         public bool FileIsAcceptable(string fileName)
         {
             return (WhiteFileNames.Count == 0 || WhiteFileNames.Contains(fileName)) && !BlackFileNames.Contains(fileName);
@@ -30,12 +28,10 @@ namespace Kysect.AssignmentReporter.Models.FileSearchRules
             return !BlackDirectories
                        .Any(dirName => dirName
                            .IsMatch(directory))
-                   &&
-                   (WhiteDirectories.Count == 0
-                    ||
-                    WhiteDirectories
-                        .Any(dirName => dirName
-                            .IsMatch(directory)));
+                   && (WhiteDirectories.Count == 0
+                       || WhiteDirectories
+                           .Any(dirName => dirName
+                               .IsMatch(directory)));
         }
     }
 }

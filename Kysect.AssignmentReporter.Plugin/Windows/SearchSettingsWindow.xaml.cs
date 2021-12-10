@@ -6,7 +6,7 @@ using Kysect.AssignmentReporter.Plugin.ViewModel;
 
 namespace Kysect.AssignmentReporter.Plugin.Windows
 {
-    public partial class SearchSettingsWindow 
+    public partial class SearchSettingsWindow
     {
         public SearchSettingsWindow()
         {
