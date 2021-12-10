@@ -114,6 +114,14 @@ namespace Kysect.AssignmentReporter.ReportGenerator
             }
         }
 
+        public void ConvertToPdf(ReportExtendedInfo info)
+        {
+            new PdfMetamorphosis()
+                .DocxToPdfConvertFile(info.Path,
+                    info.Path
+                        .Replace(".docx", ".pdf"));
+        }
+
         private void InsertIntroduction(string introduction)
         {
             _document.InsertParagraph("introduction:")
