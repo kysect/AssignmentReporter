@@ -6,7 +6,7 @@ namespace Kysect.AssignmentReporter.ReportGenerator
 {
     public interface IReportGenerator
     {
-        FileDescriptor Generate(List<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo);
-        MemoryStream GenerateStream(List<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo);
+        FileDescriptor Generate(IReadOnlyList<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo);
+        MemoryStream GenerateStream(IReadOnlyList<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo);
     }
 }

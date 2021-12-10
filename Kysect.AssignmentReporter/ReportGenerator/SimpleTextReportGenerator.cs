@@ -9,7 +9,7 @@ namespace Kysect.AssignmentReporter.ReportGenerator
     {
         public string Extension { get; } = ".txt";
 
-        public FileDescriptor Generate(List<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
+        public FileDescriptor Generate(IReadOnlyList<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
         {
             reportExtendedInfo.Path = reportExtendedInfo.Path.CheckExtension(Extension);
             var reportFile = File.Create(reportExtendedInfo.Path);
@@ -26,7 +26,7 @@ namespace Kysect.AssignmentReporter.ReportGenerator
             return descriptor;
         }
 
-        public MemoryStream GenerateStream(List<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
+        public MemoryStream GenerateStream(IReadOnlyList<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
         {
             var builder = new StringBuilder();
             if (!string.IsNullOrEmpty(reportExtendedInfo.Intro))

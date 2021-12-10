@@ -24,7 +24,7 @@ namespace Kysect.AssignmentReporter.ReportGenerator
 
         public DocumentReportGenerator() { }
 
-        public FileDescriptor Generate(List<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
+        public FileDescriptor Generate(IReadOnlyList<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
         {
             reportExtendedInfo.Path = reportExtendedInfo.Path.CheckExtension(Extension);
             FileStream file = File.Create(reportExtendedInfo.Path);
@@ -44,7 +44,7 @@ namespace Kysect.AssignmentReporter.ReportGenerator
             return descriptor;
         }
 
-        public MemoryStream GenerateStream(List<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
+        public MemoryStream GenerateStream(IReadOnlyList<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
         {
             MemoryStream stream = new MemoryStream();
             _document = DocX.Create(stream);
@@ -143,7 +143,7 @@ namespace Kysect.AssignmentReporter.ReportGenerator
                 .Alignment = Alignment.left;
         }
 
-        private void InsertContent(List<FileDescriptor> files)
+        private void InsertContent(IReadOnlyList<FileDescriptor> files)
         {
             foreach (var fileContent in files)
             {

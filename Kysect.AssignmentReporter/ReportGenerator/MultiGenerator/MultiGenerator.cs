@@ -14,14 +14,6 @@ namespace Kysect.AssignmentReporter.ReportGenerator.MultiGenerator
         public IReportGenerator Generator { get;}
         public FileSearchFilter Filter { get;}
 
-        public MultiGenerator(string rootPath, string reportsPath, IReportGenerator generator, FileSearchFilter filter)
-        {
-            RootPath = rootPath;
-            ReportsPath = reportsPath;
-            Generator = generator;
-            Filter = filter;
-        }
-
         public List<string> GetRepositories()
         {
             return Directory
