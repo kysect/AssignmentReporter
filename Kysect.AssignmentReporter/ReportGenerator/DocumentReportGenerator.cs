@@ -51,7 +51,7 @@ namespace Kysect.AssignmentReporter.ReportGenerator
 
             if (CoverPage != null)
             {
-                AddCoverPage(WriteInCoverList(CoverPage, reportExtendedInfo));
+                AddCoverPage(WriteInCoverList(CoverPage));
             }
 
             InsertIntroduction(reportExtendedInfo.Intro);
@@ -64,7 +64,7 @@ namespace Kysect.AssignmentReporter.ReportGenerator
             return stream;
         }
 
-        private Document WriteInCoverList(CoverPageInfo info, ReportExtendedInfo reportExtendedInfo)
+        private Document WriteInCoverList(CoverPageInfo info)
         {
             const int parWithWorkNumber = 6;
             const int parWithDiscipline = 7;
@@ -93,8 +93,7 @@ namespace Kysect.AssignmentReporter.ReportGenerator
                 .Append(info.TeacherName)
                 .FontSize(12)
                 .Font("Times New Roman");
-
-            //titleList.SaveAs(reportExtendedInfo.Path); TODO: WTF
+            
             return titleList;
         }
 
