@@ -11,9 +11,21 @@ namespace Kysect.AssignmentReporter.ReportGenerator
 
         public FileDescriptor Generate(List<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
         {
-            reportExtendedInfo.Path = reportExtendedInfo.Path.CheckExtension(Extension);
-            var reportFile = File.Create(reportExtendedInfo.Path);
+            MemoryStream stream = GenerateStream(files, reportExtendedInfo);
+            FileStream reportFile = File.Create(reportExtendedInfo.Path);
+            stream.Position = 0;
+            stream.CopyTo(reportFile);
+            stream.Dispose();
+            FileInfo info = new FileInfo(reportExtendedInfo.Path);
+            FileDescriptor descriptor = new FileDescriptor(info.Name, reportFile, info.DirectoryName);
             reportFile.Close();
+            return descriptor;
+        }
+
+        public MemoryStream GenerateStream(List<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
+        {
+            reportExtendedInfo.Path = reportExtendedInfo.Path.CheckExtension(Extension);
+            MemoryStream stream = new MemoryStream();
             var builder = new StringBuilder();
             foreach (FileDescriptor file in files)
             {
@@ -27,9 +39,9 @@ namespace Kysect.AssignmentReporter.ReportGenerator
 
                 builder.AppendLine("\n```\n");
             }
-            File.WriteAllText(reportExtendedInfo.Path, builder.ToString());
-            FileInfo info = new FileInfo(reportExtendedInfo.Path);
-            return new FileDescriptor(info.Name, File.ReadAllText(info.FullName), info.DirectoryName);
+            byte[] bytes = Encoding.UTF8.GetBytes(builder.ToString());
+            stream.Write(bytes, 0, bytes.Length);
+            return stream;
         }
     }
 }
