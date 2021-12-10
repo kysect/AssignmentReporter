@@ -1,9 +1,10 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 
 namespace Kysect.AssignmentReporter.Models
 {
-    public class FileDescriptor
+    public class FileDescriptor : IDisposable
     {
         public FileDescriptor(string name, Stream stream, string rootDirectory)
         {
@@ -29,5 +30,10 @@ namespace Kysect.AssignmentReporter.Models
         public MemoryStream Stream { get; }
         public string Content => Encoding.UTF8.GetString(Stream.ToArray());
         public string RootDirectory { get; }
+
+        public void Dispose()
+        {
+            Stream?.Dispose();
+        }
     }
 }
