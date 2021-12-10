@@ -5,10 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DocX" Version="1.8.0"/>
-    <PackageReference Include="LibGit2Sharp" Version="0.26.2"/>
-    <PackageReference Include="Microsoft.Alm.Authentication" Version="4.3.0"/>
-    <PackageReference Include="sautinsoft.pdfmetamorphosis" Version="8.4.1.28"/>
+    <PackageReference Include="DocX" Version="1.8.0" />
+    <PackageReference Include="Microsoft.Alm.Authentication" Version="4.3.0" />
+    <PackageReference Include="Octokit" Version="0.50.0" />
+    <PackageReference Include="sautinsoft.pdfmetamorphosis" Version="8.4.1.28" />
+    <PackageReference Include="System.IO.Packaging" Version="5.0.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
