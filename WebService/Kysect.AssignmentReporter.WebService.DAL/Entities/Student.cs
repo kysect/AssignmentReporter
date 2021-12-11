@@ -10,6 +10,6 @@
 
         private Student() { }
 
-        public Group Group { get; private init; }
+        public Group Group { get; set; }
     }
 }

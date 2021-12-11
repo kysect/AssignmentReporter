@@ -10,7 +10,7 @@ namespace Kysect.AssignmentReporter.WebService.DAL.Entities
         }
 
         private Subject() { }
-        [Key]
+
         public string Name { get; private init; }
     }
 }
