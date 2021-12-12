@@ -1,5 +1,7 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using Kysect.AssignmentReporter.WebService.Server.Service;
+using Kysect.AssignmentReporter.WebService.Shared;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Kysect.AssignmentReporter.WebService.Server.Controllers
@@ -27,12 +29,25 @@ namespace Kysect.AssignmentReporter.WebService.Server.Controllers
             }
         }
 
-        [HttpPost("Teachers/Add{fullName}")]
-        public IActionResult Add([FromRoute] string fullName)
+        [HttpPost("Teachers/Add")]
+        public IActionResult Add([Required] [FromBody] MinimalTeacherDto teacher)
         {
             try
             {
-                _service.AddTeacher(fullName);
+                return Ok(_service.AddTeacher(teacher));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpDelete("Teachers/Delete")]
+        public IActionResult Delete([Required] [FromBody] MinimalTeacherDto teacher)
+        {
+            try
+            {
+                _service.DeleteTeacher(teacher);
                 return Ok();
             }
             catch (Exception e)
@@ -41,13 +56,12 @@ namespace Kysect.AssignmentReporter.WebService.Server.Controllers
             }
         }
 
-        [HttpDelete("Teachers/Delete/{id}")]
-        public IActionResult Delete([FromRoute] Guid id)
+        [HttpGet("Teachers/Get")]
+        public IActionResult Get([Required] [FromBody] MinimalTeacherDto teacher)
         {
             try
             {
-                _service.DeleteTeacher(id);
-                return Ok();
+                return Ok(_service.GetTeacher(teacher));
             }
             catch (Exception e)
             {

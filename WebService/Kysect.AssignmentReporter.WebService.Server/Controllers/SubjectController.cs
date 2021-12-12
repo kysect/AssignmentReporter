@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using Kysect.AssignmentReporter.WebService.Server.Service;
+using Kysect.AssignmentReporter.WebService.Shared;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Kysect.AssignmentReporter.WebService.Server.Controllers;
@@ -15,13 +16,12 @@ public class SubjectController : Controller
         _service = service;
     }
 
-    [HttpPost("Subjects/Create{subjectName}s")]
-    public IActionResult Create([Required] [FromRoute] string subjectName)
+    [HttpPost("Subjects/Create")]
+    public IActionResult Create([Required] [FromBody] SubjectDto subjectDto)
     {
         try
         {
-            _service.CreateSubject(subjectName);
-            return Ok();
+            return Ok(_service.CreateSubject(subjectDto));
         }
         catch (Exception e)
         {
@@ -29,12 +29,12 @@ public class SubjectController : Controller
         }
     }
 
-    [HttpDelete("Subjects/Delete/{subjectName}")]
-    public IActionResult Delete([Required] [FromRoute] string subjectName)
+    [HttpDelete("Subjects/Delete")]
+    public IActionResult Delete([Required] [FromBody] SubjectDto subjectDto)
     {
         try
         {
-            _service.DeleteSubject(subjectName);
+            _service.DeleteSubject(subjectDto);
             return Ok();
         }
         catch (Exception e)

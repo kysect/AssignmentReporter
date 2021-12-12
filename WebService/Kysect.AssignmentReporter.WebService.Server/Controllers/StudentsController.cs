@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using Kysect.AssignmentReporter.WebService.Server.Service;
+using Kysect.AssignmentReporter.WebService.Shared;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Kysect.AssignmentReporter.WebService.Server.Controllers
@@ -16,12 +17,11 @@ namespace Kysect.AssignmentReporter.WebService.Server.Controllers
         }
 
         [HttpPut("Students/Add")]
-        public IActionResult CreateStudent([Required] [FromQuery] string fullName, [Required] [FromQuery] string groupName)
+        public IActionResult CreateStudent([Required] [FromBody] StudentDto student)
         {
             try
             {
-                _service.AddStudent(fullName, groupName);
-                return Ok();
+                return Ok(_service.AddStudent(student));
             }
             catch (Exception e)
             {
@@ -29,26 +29,13 @@ namespace Kysect.AssignmentReporter.WebService.Server.Controllers
             }
         }
 
-        [HttpDelete("Students/Delete/{studentId}")]
-        public IActionResult DeleteStudent([Required] [FromRoute] Guid studentId)
+        [HttpDelete("Students/Delete")]
+        public IActionResult DeleteStudent([Required] [FromBody] StudentDto student)
         {
             try
             {
-                _service.DeleteStudent(studentId);
+                _service.DeleteStudent(student);
                 return Ok();
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
-
-        [HttpGet("Students/GetGroupStudents/{groupName}")]
-        public IActionResult DeleteStudent([Required] [FromRoute] string groupName)
-        {
-            try
-            {
-                return Ok(_service.GetGroupStudents(groupName));
             }
             catch (Exception e)
             {
@@ -69,54 +56,12 @@ namespace Kysect.AssignmentReporter.WebService.Server.Controllers
             }
         }
 
-        [HttpGet("Students/Get/{studentId}")]
-        public IActionResult Get([Required] [FromRoute] Guid studentId)
-        {
-            try
-            {
-                return Ok(_service.GetStudent(studentId));
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
-
         [HttpPut("Students/Move")]
-        public IActionResult Move([Required] [FromQuery] Guid studentId, [Required] [FromQuery] string groupName)
+        public IActionResult Move([Required] [FromBody] StudentDto student, [Required] [FromBody] GroupDto group)
         {
             try
             {
-                _service.MoveStudent(studentId, groupName);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
-
-        [HttpPut("Students/AddStudentToSubjectGroup")]
-        public IActionResult AddStudentToSubjectGroup([Required] [FromQuery] Guid studentId, [Required] [FromQuery] Guid groupId)
-        {
-            try
-            {
-                _service.AddStudentToSubjectGroup(studentId, groupId);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
-
-        [HttpDelete("Students/RemoveStudentFromSubjectGroup")]
-        public IActionResult RemoveStudentFromSubjectGroup([Required] [FromQuery] Guid studentId, [Required] [FromQuery] Guid groupId)
-        {
-            try
-            {
-                _service.RemoveStudentFromSubjectGroup(studentId, groupId);
-                return Ok();
+                return Ok(_service.MoveStudent(student, group));
             }
             catch (Exception e)
             {

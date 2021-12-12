@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using Kysect.AssignmentReporter.WebService.Server.Service;
+using Kysect.AssignmentReporter.WebService.Shared;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Kysect.AssignmentReporter.WebService.Server.Controllers
@@ -16,12 +17,11 @@ namespace Kysect.AssignmentReporter.WebService.Server.Controllers
         }
 
         [HttpPost("Groups/Add")]
-        public IActionResult CreateGroup([Required] [FromQuery] string groupName)
+        public IActionResult CreateGroup([Required] [FromBody] GroupDto group)
         {
             try
             {
-                _service.AddGroup(groupName);
-                return Ok();
+                return Ok(_service.AddGroup(group));
             }
             catch (Exception e)
             {
@@ -34,7 +34,7 @@ namespace Kysect.AssignmentReporter.WebService.Server.Controllers
         {
             try
             {
-                return Ok(_service.GetGroupNames());
+                return Ok(_service.GetGroups());
             }
             catch (Exception e)
             {
@@ -42,12 +42,12 @@ namespace Kysect.AssignmentReporter.WebService.Server.Controllers
             }
         }
 
-        [HttpGet("Groups/Get/{name}")]
-        public IActionResult GetGroups([Required] [FromRoute] string name)
+        [HttpGet("Groups/Get")]
+        public IActionResult GetGroups([Required] [FromBody] MinimalGroupDto group)
         {
             try
             {
-                return Ok(_service.GetGroup(name));
+                return Ok(_service.GetGroup(group));
             }
             catch (Exception e)
             {
@@ -55,13 +55,26 @@ namespace Kysect.AssignmentReporter.WebService.Server.Controllers
             }
         }
 
-        [HttpDelete("Groups/Delete/{name}")]
-        public IActionResult DeleteGroup([Required] [FromRoute] string name)
+        [HttpDelete("Groups/Delete")]
+        public IActionResult DeleteGroup([Required] [FromBody] GroupDto group)
         {
             try
             {
-                _service.DeleteGroup(name);
+                _service.DeleteGroup(group);
                 return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpGet("Groups/GetStudents")]
+        public IActionResult DeleteStudent([Required] [FromBody] MinimalGroupDto group)
+        {
+            try
+            {
+                return Ok(_service.GetGroupStudents(group));
             }
             catch (Exception e)
             {

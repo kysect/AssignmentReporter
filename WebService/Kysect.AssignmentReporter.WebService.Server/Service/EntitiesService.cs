@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dropbox.Api.Team;
 using Kysect.AssignmentReporter.WebService.DAL.Database;
 using Kysect.AssignmentReporter.WebService.DAL.Entities;
 using Kysect.AssignmentReporter.WebService.Shared;
@@ -18,23 +19,24 @@ namespace Kysect.AssignmentReporter.WebService.Server.Service
             _context = context;
         }
 
-        public void AddGroup(string groupName)
+        public MinimalGroupDto AddGroup(GroupDto groupDto)
         {
-            var group = new Group(groupName);
-            if (_context.Groups.Any(g => g.Name == groupName))
+            if (_context.Groups.Any(g => g.Name == groupDto.Name))
             {
                 throw new ArgumentException("Group already exists");
             }
 
-            _context.Groups.Add(group);
+            var group = new Group(groupDto.Name);
+            _context.Groups.Add(new Group(groupDto.Name));
             _context.SaveChanges();
+            return MinimalGroupDto.FromGroup(group);
         }
 
-        public void DeleteGroup(string groupName)
+        public void DeleteGroup(GroupDto groupDto)
         {
             Group group = _context.Groups
                               .Include(x => x.Students)
-                              .FirstOrDefault(x => x.Name == groupName)
+                              .FirstOrDefault(x => x.Name == groupDto.Name)
                           ?? throw new InvalidOperationException("No such group registered");
 
             if (group.Students.Count > 0)
@@ -46,49 +48,42 @@ namespace Kysect.AssignmentReporter.WebService.Server.Service
             _context.SaveChanges();
         }
 
-        public GroupDto GetGroup(string groupName)
+        public IReadOnlyList<MinimalGroupDto> GetGroups()
+        {
+            return _context.Groups
+                .Select(x => MinimalGroupDto.FromGroup(x))
+                .ToList();
+        }
+
+        public GroupDto GetGroup(MinimalGroupDto groupDto)
         {
             Group group = _context.Groups
                               .Include(x => x.Students)
-                              .FirstOrDefault(x => x.Name == groupName)
+                              .FirstOrDefault(x => x.Name == groupDto.Name)
                           ?? throw new InvalidOperationException("No such group registered");
 
             return GroupDto.FromGroup(group);
         }
 
-        public IReadOnlyList<string> GetGroupNames()
-        {
-            return _context.Groups.Select(x => x.Name).ToList();
-        }
-
-        public void AddStudent(string fullName, string groupName)
+        public StudentDto AddStudent(StudentDto studentDto)
         {
             Group group = _context.Groups
                               .Include(x => x.Students)
-                              .FirstOrDefault(x => x.Name == groupName)
+                              .FirstOrDefault(x => x.Name == studentDto.Group.Name)
                 ?? throw new InvalidOperationException("No such group registered");
 
-            var student = new Student(fullName, group);
+            var student = new Student(studentDto.Name, group);
             student.Group.Students.Add(student);
             _context.Students.Add(student);
             _context.SaveChanges();
-        }
-
-        public StudentDto GetStudent(Guid id)
-        {
-            Student student = _context.Students
-                              .Include(x => x.Group)
-                              .FirstOrDefault(x => x.Id == id)
-                ?? throw new InvalidOperationException("No such student registered");
-
             return StudentDto.FromStudent(student);
         }
 
-        public void DeleteStudent(Guid studentId)
+        public void DeleteStudent(StudentDto studentDto)
         {
             Student student = _context.Students
                                   .Include(x => x.Group)
-                                  .FirstOrDefault(x => x.Id == studentId)
+                                  .FirstOrDefault(x => x.Id == studentDto.Id)
                               ?? throw new InvalidOperationException("No such student registered");
             _context.SubjectGroups
                 .Include(x => x.Students)
@@ -108,59 +103,62 @@ namespace Kysect.AssignmentReporter.WebService.Server.Service
                 .ToList();
         }
 
-        public IReadOnlyList<StudentDto> GetGroupStudents(string groupName)
+        public IReadOnlyList<StudentDto> GetGroupStudents(MinimalGroupDto groupDto)
         {
             Group group = _context.Groups
                               .Include(x => x.Students)
-                              .FirstOrDefault(x => x.Name == groupName)
+                              .FirstOrDefault(x => x.Name == groupDto.Name)
                           ?? throw new InvalidOperationException("No such group registered");
 
             return group.Students.Select(x => StudentDto.FromStudent(x)).ToList();
         }
 
-        public void MoveStudent(Guid studentId, string newGroupName)
+        public StudentDto MoveStudent(StudentDto studentDto, GroupDto groupDto)
         {
             Student student = _context.Students
                                   .Include(x => x.Group)
                                   .ThenInclude(x => x.Students)
-                                  .FirstOrDefault(x => x.Id == studentId)
+                                  .FirstOrDefault(x => x.Id == studentDto.Id)
                               ?? throw new InvalidOperationException("No such student registered");
 
             Group group = _context.Groups
                               .Include(x => x.Students)
-                              .FirstOrDefault(x => x.Name == newGroupName)
+                              .FirstOrDefault(x => x.Name == groupDto.Name)
                           ?? throw new InvalidOperationException("No such group registered");
 
             student.Group.Students.Remove(student);
             group.Students.Add(student);
             student.Group = group;
             _context.SaveChanges();
+            return StudentDto.FromStudent(student);
         }
 
-        public void CreateSubject(string name)
+        public SubjectDto CreateSubject(SubjectDto subjectDto)
         {
-            if (_context.Subjects.Find(name) is not null)
+            if (_context.Subjects.Find(subjectDto.Name) is not null)
             {
                 throw new InvalidOperationException("Subject already exists");
             }
 
-            _context.Subjects.Add(new Subject(name));
+            var subject = new Subject(subjectDto.Name);
+            _context.Subjects.Add(subject);
             _context.SaveChanges();
+            return SubjectDto.FromSubject(subject);
         }
 
-        public void DeleteSubject(string name)
+        public void DeleteSubject(SubjectDto subjectDto)
         {
-            if (_context.Reports.Include(x => x.Subject).Any(x => x.Subject.Name == name))
+            if (_context.Reports.Include(x => x.Subject).Any(x => x.Subject.Name == subjectDto.Name))
             {
                 throw new InvalidOperationException("Subject is used in report");
             }
 
-            if (_context.SubjectGroups.Include(x => x.Subject).Any(x => x.Subject.Name == name))
+            if (_context.SubjectGroups.Include(x => x.Subject).Any(x => x.Subject.Name == subjectDto.Name))
             {
                 throw new InvalidOperationException("Subject is used in subject group");
             }
 
-            Subject subject = _context.Subjects.Find(name)
+            Subject subject = _context.Subjects.Find(subjectDto.Name)
                               ?? throw new InvalidOperationException("No such subject registered");
 
             _context.Subjects.Remove(subject);
@@ -172,16 +170,18 @@ namespace Kysect.AssignmentReporter.WebService.Server.Service
             return _context.Subjects.Select(x => new SubjectDto(x.Name)).ToList();
         }
 
-        public void AddTeacher(string fullName)
+        public MinimalTeacherDto AddTeacher(MinimalTeacherDto minimalTeacherDto)
         {
-            _context.Teachers.Add(new Teacher(fullName));
+            var teacher = new Teacher(minimalTeacherDto.FullName);
+            _context.Teachers.Add(teacher);
             _context.SaveChanges();
+            return MinimalTeacherDto.FromTeacher(teacher);
         }
 
-        public void DeleteTeacher(Guid teacherId)
+        public void DeleteTeacher(MinimalTeacherDto minimalTeacherDto)
         {
             Teacher teacher = _context.Teachers
-                                  .FirstOrDefault(x => x.Id == teacherId)
+                                  .FirstOrDefault(x => x.Id == minimalTeacherDto.Id)
                               ?? throw new InvalidOperationException("No such teacher registered");
 
             if (_context.SubjectGroups.Include(x => x.Teacher).Any(x => x.Teacher == teacher))
@@ -193,82 +193,113 @@ namespace Kysect.AssignmentReporter.WebService.Server.Service
             _context.SaveChanges();
         }
 
-        public IReadOnlyList<TeacherDto> GetTeachers()
+        public IReadOnlyList<MinimalTeacherDto> GetTeachers()
         {
             return _context.Teachers
-                .Include(x => x.SubjectGroups)
-                .Select(x => TeacherDto.FromTeacher(x))
+                .Select(x => MinimalTeacherDto.FromTeacher(x))
                 .ToList();
         }
 
-        public void AddSubjectGroup(string subjectName, Guid teacherId)
+        public TeacherDto GetTeacher(MinimalTeacherDto minimalTeacherDto)
         {
-            Subject subject = _context.Subjects
-                                  .FirstOrDefault(x => x.Name == subjectName)
-                              ?? throw new InvalidOperationException("No such subject registered");
-
             Teacher teacher = _context.Teachers
-                                  .FirstOrDefault(x => x.Id == teacherId)
-                              ?? throw new InvalidOperationException("No such teacher registered");
-
-            _context.SubjectGroups.Add(new SubjectGroup(teacher, subject));
-            _context.SaveChanges();
+                .Include(x => x.SubjectGroups)
+                .FirstOrDefault(x => x.Id == minimalTeacherDto.Id)
+                ?? throw new InvalidOperationException("No such teacher registered");
+            return TeacherDto.FromTeacher(teacher);
         }
 
-        public void DeleteSubjectGroup(Guid id)
+        public MinimalSubjectGroupDto AddSubjectGroup(MinimalSubjectGroupDto minimalSubjectGroupDto)
+        {
+            Subject subject = _context.Subjects
+                              .FirstOrDefault(x => x.Name == minimalSubjectGroupDto.Subject.Name)
+                          ?? throw new InvalidOperationException("No such subject registered");
+
+            Teacher teacher = _context.Teachers
+                              .FirstOrDefault(x => x.Id == minimalSubjectGroupDto.MinimalTeacherDto.Id)
+                          ?? throw new InvalidOperationException("No such teacher registered");
+
+            var subjectGroup = new SubjectGroup(teacher, subject);
+            _context.SubjectGroups.Add(subjectGroup);
+            _context.SaveChanges();
+            return MinimalSubjectGroupDto.FromSubjectGroup(subjectGroup);
+        }
+
+        public void DeleteSubjectGroup(MinimalSubjectGroupDto minimalSubjectGroupDto)
         {
             SubjectGroup subjectGroup = _context.SubjectGroups
                                           .Include(x => x.Students)
                                           .Include(x => x.Teacher)
-                                          .FirstOrDefault(x => x.Id == id)
+                                          .FirstOrDefault(x => x.Id == minimalSubjectGroupDto.Id)
                                       ?? throw new InvalidOperationException("No such subject group registered");
 
+            subjectGroup.Students.ForEach(student => subjectGroup.Students.Remove(student));
             subjectGroup.Teacher.SubjectGroups.Remove(subjectGroup);
             _context.SubjectGroups.Remove(subjectGroup);
             _context.SaveChanges();
         }
 
-        public void AddStudentToSubjectGroup(Guid studentId, Guid subjectGroupId)
+        public MinimalSubjectGroupDto AddStudentToSubjectGroup(StudentDto studentDto, MinimalSubjectGroupDto minimalSubjectGroupDto)
         {
             Student student = _context.Students
-                                  .FirstOrDefault(x => x.Id == studentId)
-                              ?? throw new InvalidOperationException("No such student registered");
+                              .FirstOrDefault(x => x.Id == studentDto.Id)
+                          ?? throw new InvalidOperationException("No such student registered");
 
             SubjectGroup subjectGroup = _context.SubjectGroups
                                           .Include(x => x.Students)
                                           .Include(x => x.Teacher)
-                                          .FirstOrDefault(x => x.Id == subjectGroupId)
+                                          .FirstOrDefault(x => x.Id == minimalSubjectGroupDto.Id)
                                       ?? throw new InvalidOperationException("No such subject group registered");
+
+            if (subjectGroup.Students.Contains(student))
+            {
+                throw new InvalidOperationException("Student is already in subject group");
+            }
 
             subjectGroup.Students.Add(student);
             _context.SaveChanges();
+            return MinimalSubjectGroupDto.FromSubjectGroup(subjectGroup);
         }
 
-        public void RemoveStudentFromSubjectGroup(Guid studentId, Guid subjectGroupId)
+        public void DeleteStudentFromSubjectGroup(StudentDto studentDto, MinimalSubjectGroupDto minimalSubjectGroupDto)
         {
             Student student = _context.Students
-                                  .FirstOrDefault(x => x.Id == studentId)
+                                  .FirstOrDefault(x => x.Id == studentDto.Id)
                               ?? throw new InvalidOperationException("No such student registered");
 
             SubjectGroup subjectGroup = _context.SubjectGroups
                                             .Include(x => x.Students)
-                                            .Include(x => x.Teacher)
-                                            .FirstOrDefault(x => x.Id == subjectGroupId)
+                                            .FirstOrDefault(x => x.Id == minimalSubjectGroupDto.Id)
                                         ?? throw new InvalidOperationException("No such subject group registered");
+
+            if (!subjectGroup.Students.Contains(student))
+            {
+                throw new InvalidOperationException("Student is not in subject group");
+            }
 
             subjectGroup.Students.Remove(student);
             _context.SaveChanges();
         }
 
-        public IReadOnlyList<SubjectGroupDto> GetSubjectGroups()
+        public IReadOnlyList<MinimalSubjectGroupDto> GetSubjectGroups()
         {
             return _context.SubjectGroups
-                .Include(x => x.Students)
-                .ThenInclude(x => x.Group)
                 .Include(x => x.Teacher)
                 .Include(x => x.Subject)
-                .Select(x => SubjectGroupDto.FromSubjectGroup(x))
+                .Select(x => MinimalSubjectGroupDto.FromSubjectGroup(x))
                 .ToList();
+        }
+
+        public SubjectGroupDto GetSubjectGroup(MinimalSubjectGroupDto minimalSubjectGroupDto)
+        {
+            SubjectGroup subjectGroup = _context.SubjectGroups
+                                          .Include(x => x.Students)
+                                          .ThenInclude(x => x.Group)
+                                          .Include(x => x.Teacher)
+                                          .FirstOrDefault(x => x.Id == minimalSubjectGroupDto.Id)
+                                      ?? throw new InvalidOperationException("No such subject group registered");
+
+            return SubjectGroupDto.FromSubjectGroup(subjectGroup);
         }
     }
 }
