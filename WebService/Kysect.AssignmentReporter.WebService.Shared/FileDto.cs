@@ -5,10 +5,6 @@ namespace Kysect.AssignmentReporter.WebService.Shared
 {
     public class FileDto
     {
-        private FileDto()
-        {
-        }
-
         public FileDto(string name, Stream stream)
         {
             Name = name;
@@ -26,6 +22,7 @@ namespace Kysect.AssignmentReporter.WebService.Shared
             get => Stream.ToArray();
             private init => Stream = new MemoryStream(value);
         }
+
         [JsonIgnore]
         public MemoryStream Stream { get; private init; }
     }

@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Kysect.AssignmentReporter.WebService.DAL.Entities;
 using Kysect.AssignmentReporter.WebService.Shared;
 
-
 namespace Kysect.AssignmentReporter.WebService.Server.Repository
 {
     public interface IRepository

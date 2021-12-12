@@ -62,7 +62,6 @@ namespace Kysect.AssignmentReporter.WebService.Server.Controllers
         [HttpPost("Reports/Download/{id}")]
         public FileResult DownloadReport([Required] [FromRoute] Guid id)
         {
-
             FileDto file = _service.DownloadReport(id);
             return File(file.Stream, System.Net.Mime.MediaTypeNames.Application.Octet, file.Name);
         }

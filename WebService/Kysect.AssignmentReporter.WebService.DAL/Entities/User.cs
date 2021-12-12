@@ -16,7 +16,11 @@ namespace Kysect.AssignmentReporter.WebService.DAL.Entities
             FullName = fullName;
         }
 
-       protected User() { }
+ #pragma warning disable CS8618
+        protected User()
+        {
+        }
+ #pragma warning restore CS8618
 
         public Guid Id { get; private init; }
         public string FullName { get; private init; }

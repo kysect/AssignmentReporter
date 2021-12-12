@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Dropbox.Api;
@@ -49,7 +48,7 @@ namespace Kysect.AssignmentReporter.WebService.Server.Repository
             using (var dropBox = new DropboxClient(accessToken))
             {
                 var deleteArg = new DeleteArg(path);
-                await dropBox.Files.DeleteV2Async(deleteArg); //TODO: handle exception
+                await dropBox.Files.DeleteV2Async(deleteArg); // TODO: handle exception
             }
         }
 
@@ -70,9 +69,9 @@ namespace Kysect.AssignmentReporter.WebService.Server.Repository
             string accessToken = _configuration.GetSection("DropBoxAccessToken").Value;
             using (var dropBox = new DropboxClient(accessToken))
             {
-                FileMetadata updated = await dropBox.Files.UploadAsync(
+                await dropBox.Files.UploadAsync(
                     "/" + fileDto.Name,
-                    WriteMode.Overwrite.Instance,
+                    WriteMode.Add.Instance,
                     body: fileDto.Stream);
             }
         }
@@ -82,7 +81,7 @@ namespace Kysect.AssignmentReporter.WebService.Server.Repository
             string accessToken = _configuration.GetSection("DropBoxAccessToken").Value;
             using (var dropBox = new DropboxClient(accessToken))
             {
-                Task<ListFolderResult> files = dropBox.Files.ListFolderAsync(String.Empty);
+                Task<ListFolderResult> files = dropBox.Files.ListFolderAsync(string.Empty);
                 return files.Result.Entries.Any(x => x.Name == fileName);
             }
         }

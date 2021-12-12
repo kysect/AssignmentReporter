@@ -4,11 +4,24 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>disable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <WarningLevel>5</WarningLevel>
+        <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
     </PropertyGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\..\Kysect.AssignmentReporter\Kysect.AssignmentReporter.csproj" />
       <ProjectReference Include="..\Kysect.AssignmentReporter.WebService.DAL\Kysect.AssignmentReporter.WebService.DAL.csproj" />
+    </ItemGroup>
+  
+    <ItemGroup>
+      <None Include="..\..\.editorconfig" />
+    </ItemGroup>
+  
+    <ItemGroup>
+      <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.376">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
     </ItemGroup>
 
 </Project>

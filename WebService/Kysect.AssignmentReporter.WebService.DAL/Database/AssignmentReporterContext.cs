@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Reflection.Metadata.Ecma335;
-using Kysect.AssignmentReporter.WebService.DAL.Entities;
+﻿using Kysect.AssignmentReporter.WebService.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kysect.AssignmentReporter.WebService.DAL.Database
 {
     public sealed class AssignmentReporterContext : DbContext
     {
+ #pragma warning disable CS8618
         public AssignmentReporterContext(DbContextOptions<AssignmentReporterContext> options)
+ #pragma warning restore CS8618
             : base(options)
         {
             Database.EnsureCreated();
@@ -28,7 +28,7 @@ namespace Kysect.AssignmentReporter.WebService.DAL.Database
             modelBuilder.Entity<SubjectGroup>().HasMany(x => x.Students);
             modelBuilder.Entity<SubjectGroup>().HasOne(x => x.Subject);
             modelBuilder.Entity<Report>().HasOne(x => x.Subject);
-            modelBuilder.Entity<Report>().HasOne( x => x.Student);
+            modelBuilder.Entity<Report>().HasOne(x => x.Student);
             modelBuilder.Entity<Report>().HasOne(x => x.Teacher);
             modelBuilder.Entity<Report>().HasOne(x => x.File);
             modelBuilder.Entity<Subject>().HasKey(x => x.Name);

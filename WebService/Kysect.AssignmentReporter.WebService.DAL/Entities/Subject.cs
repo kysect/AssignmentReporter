@@ -9,7 +9,11 @@ namespace Kysect.AssignmentReporter.WebService.DAL.Entities
             Name = name;
         }
 
-        private Subject() { }
+ #pragma warning disable CS8618
+        private Subject()
+        {
+        }
+ #pragma warning restore CS8618
 
         public string Name { get; private init; }
     }

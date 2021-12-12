@@ -1,16 +1,9 @@
 ﻿using System;
-using System.IO;
-using System.Net;
-using Kysect.AssignmentReporter.Models;
-
-//using Kysect.AssignmentReporter.Models;
 
 namespace Kysect.AssignmentReporter.WebService.DAL.Entities
 {
     public class Report
     {
-        private Report() { }
-
         public Report(
             Subject subject,
             Student student,
@@ -27,6 +20,12 @@ namespace Kysect.AssignmentReporter.WebService.DAL.Entities
             WorkNumber = workNumber;
             FileName = fileName;
         }
+
+ #pragma warning disable CS8618
+        private Report()
+        {
+        }
+ #pragma warning restore CS8618
 
         public Guid Id { get; private init; }
         public Subject Subject { get; private init; }

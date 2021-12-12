@@ -11,10 +11,8 @@ using Kysect.AssignmentReporter.WebService.DAL.Database;
 using Kysect.AssignmentReporter.WebService.DAL.Entities;
 using Kysect.AssignmentReporter.WebService.Server.Repository;
 using Kysect.AssignmentReporter.WebService.Shared;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace Kysect.AssignmentReporter.WebService.Server.Service
 {
@@ -45,7 +43,7 @@ namespace Kysect.AssignmentReporter.WebService.Server.Service
             IReadOnlyList<FileDescriptor> files = provider.GetFiles(new SearchSettings()
             {
                 BlackDirectories = infoDto.BlacklistedDirectories.Select(x => new Regex(x)).ToList(),
-                WhiteFileFormats = infoDto.WhitelistedExtensions
+                WhiteFileFormats = infoDto.WhitelistedExtensions,
             });
 
             var template = _configuration.GetSection("TemplatePath").Value;
@@ -54,18 +52,18 @@ namespace Kysect.AssignmentReporter.WebService.Server.Service
                 throw new InvalidOperationException("Template path not found, check server configuration");
             }
 
-            SubjectGroup? subjectGroup = _context.SubjectGroups
+            SubjectGroup subjectGroup = _context.SubjectGroups
                                              .Include(x => x.Teacher)
                                              .Include(x => x.Subject)
                                              .FirstOrDefault(x => x.Id == infoDto.SubjectGroupId)
                                          ?? throw new InvalidOperationException("Subject group not found");
 
-            Student? student = _context.Students
+            Student student = _context.Students
                                    .Include(x => x.Group)
-                                   .FirstOrDefault( x => x.Id == infoDto.StudentId)
+                                   .FirstOrDefault(x => x.Id == infoDto.StudentId)
                                ?? throw new InvalidOperationException("Student not found");
 
-            if(!subjectGroup.Students.Contains(student))
+            if (!subjectGroup.Students.Contains(student))
             {
                 throw new InvalidOperationException("Student not found in subject group");
             }
@@ -81,10 +79,11 @@ namespace Kysect.AssignmentReporter.WebService.Server.Service
             var reportExtendedInfo = new ReportExtendedInfo(
                 infoDto.Introduction,
                 infoDto.Conclusion,
-                String.Empty);
+                string.Empty);
 
             var generator = new DocumentReportGenerator(coverPage);
-            MemoryStream? reportStream = generator.GenerateStream(files, reportExtendedInfo);
+            MemoryStream reportStream = generator.GenerateStream(files, reportExtendedInfo);
+            generator.ConvertToPdf(reportStream);
             FileEntry file = _repository.Save(reportStream).Result;
             var report = new Report(
                 subjectGroup.Subject,
@@ -92,7 +91,7 @@ namespace Kysect.AssignmentReporter.WebService.Server.Service
                 subjectGroup.Teacher,
                 infoDto.WorkNumber,
                 file,
-                $"{student.FullName}_{student.Group.Name},_{subjectGroup.Subject.Name}_{infoDto.WorkNumber}.docx");
+                $"{student.FullName}_{student.Group.Name},_{subjectGroup.Subject.Name}_{infoDto.WorkNumber}.pdf");
             _context.Reports.Add(report);
             _context.SaveChanges();
         }
@@ -116,7 +115,6 @@ namespace Kysect.AssignmentReporter.WebService.Server.Service
 
         public FileDto DownloadReport(Guid id)
         {
-
             Report report = _context.Reports
                                 .Include(x => x.File)
                                 .FirstOrDefault(x => x.Id == id)

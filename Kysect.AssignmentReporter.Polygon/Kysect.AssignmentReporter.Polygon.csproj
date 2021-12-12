@@ -6,18 +6,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Kysect.AssignmentReporter\Kysect.AssignmentReporter.csproj"/>
+    <ProjectReference Include="..\Kysect.AssignmentReporter\Kysect.AssignmentReporter.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.376">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\.editorconfig"/>
+    <None Include="..\.editorconfig" />
   </ItemGroup>
 
 </Project>

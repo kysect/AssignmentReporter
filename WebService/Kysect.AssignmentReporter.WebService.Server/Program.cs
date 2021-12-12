@@ -10,20 +10,21 @@ using Microsoft.Extensions.Hosting;
 WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.ResolveConflictingActions (apiDescriptions => apiDescriptions.First());
+    c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
 });
 builder.Services.AddScoped<IRepository, DropboxRepository>();
 builder.Services.AddScoped<ReportsService>();
 builder.Services.AddScoped<EntitiesService>();
 builder.Services.AddDbContext<AssignmentReporterContext>(opt =>
 {
-    opt.UseSqlite("Data Source=Application.db;Cache=Shared");
+    string connectionString = builder.Configuration.GetSection("ConnectionString").Value;
+    opt.UseSqlite(connectionString);
 });
 
 WebApplication? app = builder.Build();
@@ -37,8 +38,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-//app.UseAuthorization();
-
+// app.UseAuthorization();
 app.MapControllers();
 
 app.Run();

@@ -5,20 +5,17 @@ using Kysect.AssignmentReporter.WebService.DAL.Database;
 using Kysect.AssignmentReporter.WebService.DAL.Entities;
 using Kysect.AssignmentReporter.WebService.Shared;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Group = Kysect.AssignmentReporter.WebService.DAL.Entities.Group;
 
 namespace Kysect.AssignmentReporter.WebService.Server.Service
 {
     public class EntitiesService
     {
-        private readonly IConfiguration _configuration;
         private readonly AssignmentReporterContext _context;
 
-        public EntitiesService(AssignmentReporterContext context, IConfiguration configuration)
+        public EntitiesService(AssignmentReporterContext context)
         {
             _context = context;
-            _configuration = configuration;
         }
 
         public void AddGroup(string groupName)

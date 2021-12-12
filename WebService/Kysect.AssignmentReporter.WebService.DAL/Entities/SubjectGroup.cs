@@ -21,7 +21,11 @@ namespace Kysect.AssignmentReporter.WebService.DAL.Entities
             Students = new List<Student>();
         }
 
-        private SubjectGroup() { }
+ #pragma warning disable CS8618
+        private SubjectGroup()
+        {
+        }
+ #pragma warning restore CS8618
 
         public Guid Id { get; private init; }
         public List<Student> Students { get; private init; }
