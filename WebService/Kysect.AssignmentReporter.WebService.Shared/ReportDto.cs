@@ -8,7 +8,8 @@ public record ReportDto(
     SubjectDto Subject,
     StudentDto Student,
     TeacherDto Teacher,
-    string WorkNumber)
+    string WorkNumber,
+    DateTime Date)
 {
     public static ReportDto FromReport(Report report)
     {
@@ -17,6 +18,7 @@ public record ReportDto(
             SubjectDto.FromSubject(report.Subject),
             StudentDto.FromStudent(report.Student),
             TeacherDto.FromTeacher(report.Teacher),
-            report.WorkNumber);
+            report.WorkNumber,
+            report.Date);
     }
 }

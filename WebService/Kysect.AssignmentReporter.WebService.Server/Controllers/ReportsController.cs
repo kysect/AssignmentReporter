@@ -31,12 +31,12 @@ namespace Kysect.AssignmentReporter.WebService.Server.Controllers
             }
         }
 
-        [HttpPost("Reports/CreateSingleStorageReport")]
+        [HttpPost("Reports/CreateReports")]
         public IActionResult CreateReport([Required] [FromBody] RepositoryCreationalInfoDto info)
         {
             try
             {
-                _service.CreateSingleReport(info);
+                _service.CreateReports(info);
                 return Ok();
             }
             catch (Exception ex)
@@ -66,7 +66,7 @@ namespace Kysect.AssignmentReporter.WebService.Server.Controllers
             return File(file.Stream, System.Net.Mime.MediaTypeNames.Application.Octet, file.Name);
         }
 
-        [HttpPost("Reports/Delete/{id}")]
+        [HttpDelete("Reports/Delete/{id}")]
         public IActionResult DeleteReport([Required] [FromRoute] Guid id)
         {
             try

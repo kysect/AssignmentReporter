@@ -28,6 +28,8 @@ namespace Kysect.AssignmentReporter.WebService.DAL.Entities
  #pragma warning restore CS8618
 
         public Guid Id { get; private init; }
+
+        public DateTime Date { get; private set; } = DateTime.Now;
         public Subject Subject { get; private init; }
         public Student Student { get; private init; }
         public Teacher Teacher { get; private init; }

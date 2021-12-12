@@ -29,7 +29,7 @@ namespace Kysect.AssignmentReporter.WebService.Server.Service
             _repository = repository;
         }
 
-        public void CreateSingleReport(RepositoryCreationalInfoDto infoDto)
+        public void CreateReports(RepositoryCreationalInfoDto infoDto)
         {
             var provider = new GithubSourceCodeProvider(infoDto.GithubToken);
             IReadOnlyList<GithubRepositoryInfo> githubRepositoryInfos = provider.GetRepositories().Where(repositoryInfo => infoDto.RepositoryId == repositoryInfo.Id).ToList();
@@ -39,12 +39,6 @@ namespace Kysect.AssignmentReporter.WebService.Server.Service
             }
 
             provider.Repository = githubRepositoryInfos.First();
-
-            IReadOnlyList<FileDescriptor> files = provider.GetFiles(new SearchSettings()
-            {
-                BlackDirectories = infoDto.BlacklistedDirectories.Select(x => new Regex(x)).ToList(),
-                WhiteFileFormats = infoDto.WhitelistedExtensions,
-            });
 
             var template = _configuration.GetSection("TemplatePath").Value;
             if (template is null)
@@ -68,32 +62,50 @@ namespace Kysect.AssignmentReporter.WebService.Server.Service
                 throw new InvalidOperationException("Student not found in subject group");
             }
 
-            var coverPage = new CoverPageInfo(
-                subjectGroup.Teacher.FullName,
-                student.Group.Name,
-                student.FullName,
-                subjectGroup.Subject.Name,
-                infoDto.WorkNumber,
-                template);
+            foreach (SingleReportInfoDto singleReportInfoDto in infoDto.Reports)
+            {
+                var coverPage = new CoverPageInfo(
+                    subjectGroup.Teacher.FullName,
+                    student.Group.Name,
+                    student.FullName,
+                    subjectGroup.Subject.Name,
+                    singleReportInfoDto.WorkNumber,
+                    template);
 
-            var reportExtendedInfo = new ReportExtendedInfo(
-                infoDto.Introduction,
-                infoDto.Conclusion,
-                string.Empty);
+                var reportExtendedInfo = new ReportExtendedInfo(
+                    singleReportInfoDto.Introduction,
+                    singleReportInfoDto.Conclusion,
+                    string.Empty);
 
-            var generator = new DocumentReportGenerator(coverPage);
-            MemoryStream reportStream = generator.GenerateStream(files, reportExtendedInfo);
-            generator.ConvertToPdf(reportStream);
-            FileEntry file = _repository.Save(reportStream).Result;
-            var report = new Report(
-                subjectGroup.Subject,
-                student,
-                subjectGroup.Teacher,
-                infoDto.WorkNumber,
-                file,
-                $"{student.FullName}_{student.Group.Name},_{subjectGroup.Subject.Name}_{infoDto.WorkNumber}.pdf");
-            _context.Reports.Add(report);
-            _context.SaveChanges();
+                var files = new List<FileDescriptor>();
+
+                foreach (var folder in singleReportInfoDto.Folders.Distinct())
+                {
+                    files.AddRange(provider.GetFiles(
+                        new SearchSettings()
+                        {
+                            BlackDirectories = infoDto.BlacklistedDirectories.Select(x => new Regex(x)).ToList(),
+                            WhiteFileFormats = infoDto.WhitelistedExtensions,
+                        },
+                        folder));
+                }
+
+                var generator = new DocumentReportGenerator(coverPage);
+                using (MemoryStream reportStream = generator.GenerateStream(files, reportExtendedInfo))
+                {
+                    reportStream.Position = 0;
+                    FileEntry file = _repository.Save(reportStream).Result;
+                    var report = new Report(
+                        subjectGroup.Subject,
+                        student,
+                        subjectGroup.Teacher,
+                        singleReportInfoDto.WorkNumber,
+                        file,
+                        $"{student.FullName}_{student.Group.Name}_{subjectGroup.Subject.Name}_{singleReportInfoDto.WorkNumber}.docx");
+                    _context.Reports.Add(report);
+                    _context.SaveChanges();
+                }
+            }
         }
 
         public IReadOnlyList<GithubRepositoryInfo> GetRepositories(string token)
@@ -129,7 +141,8 @@ namespace Kysect.AssignmentReporter.WebService.Server.Service
                             ?? throw new InvalidOperationException("Report not found");
 
             _repository.Delete(report);
-            _context.Reports.Remove(report);
+
+            // _context.Reports.Remove(report);
             _context.SaveChanges();
         }
     }

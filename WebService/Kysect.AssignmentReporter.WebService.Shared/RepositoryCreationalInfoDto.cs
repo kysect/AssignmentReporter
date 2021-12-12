@@ -8,9 +8,7 @@ namespace Kysect.AssignmentReporter.WebService.Shared
         long RepositoryId,
         Guid StudentId,
         Guid SubjectGroupId,
-        string WorkNumber,
         List<string> WhitelistedExtensions,
         List<string> BlacklistedDirectories,
-        string Introduction,
-        string Conclusion);
+        IReadOnlyList<SingleReportInfoDto> Reports);
 }
