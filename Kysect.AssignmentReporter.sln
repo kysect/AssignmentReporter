@@ -22,6 +22,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kysect.AssignmentReporter.W
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kysect.AssignmentReporter.WebService.Shared", "WebService\Kysect.AssignmentReporter.WebService.Shared\Kysect.AssignmentReporter.WebService.Shared.csproj", "{A88B0610-7B93-4308-9028-5A52CD41CB61}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kysect.AssignmentReporter.WebService.Client", "WebService\Kysect.AssignmentReporter.WebService.Client\Kysect.AssignmentReporter.WebService.Client.csproj", "{61A6EB2E-344B-44D0-9959-C79F55025D6F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,6 +54,10 @@ Global
 		{A88B0610-7B93-4308-9028-5A52CD41CB61}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A88B0610-7B93-4308-9028-5A52CD41CB61}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A88B0610-7B93-4308-9028-5A52CD41CB61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61A6EB2E-344B-44D0-9959-C79F55025D6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61A6EB2E-344B-44D0-9959-C79F55025D6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61A6EB2E-344B-44D0-9959-C79F55025D6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61A6EB2E-344B-44D0-9959-C79F55025D6F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -63,5 +69,6 @@ Global
 		{4B3A9962-23B6-4B1A-8370-51A68373AB6A} = {DCB4E3D4-4181-45FA-900D-13E66D1F801D}
 		{8B1C47FD-114A-4036-B6C0-B5B6FCE9F042} = {DCB4E3D4-4181-45FA-900D-13E66D1F801D}
 		{A88B0610-7B93-4308-9028-5A52CD41CB61} = {DCB4E3D4-4181-45FA-900D-13E66D1F801D}
+		{61A6EB2E-344B-44D0-9959-C79F55025D6F} = {DCB4E3D4-4181-45FA-900D-13E66D1F801D}
 	EndGlobalSection
 EndGlobal

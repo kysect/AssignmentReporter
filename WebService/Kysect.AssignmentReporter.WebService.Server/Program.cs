@@ -14,6 +14,7 @@ builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddRazorPages();
 builder.Services.AddSwaggerGen(c =>
 {
     c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
@@ -29,9 +30,12 @@ builder.Services.AddDbContext<AssignmentReporterContext>(opt =>
 
 WebApplication? app = builder.Build();
 
+app.UseBlazorFrameworkFiles();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.UseWebAssemblyDebugging();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
@@ -39,6 +43,13 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 // app.UseAuthorization();
+app.UseRouting();
+
+app.UseBlazorFrameworkFiles();
+app.UseStaticFiles();
+
+app.MapRazorPages();
 app.MapControllers();
+app.MapFallbackToFile("index.html");
 
 app.Run();
