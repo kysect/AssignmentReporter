@@ -21,6 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\Kysect.AssignmentReporter\Kysect.AssignmentReporter.csproj" />
       <ProjectReference Include="..\Kysect.AssignmentReporter.WebService.DAL\Kysect.AssignmentReporter.WebService.DAL.csproj" />
       <ProjectReference Include="..\Kysect.AssignmentReporter.WebService.Shared\Kysect.AssignmentReporter.WebService.Shared.csproj" />
     </ItemGroup>

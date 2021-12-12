@@ -21,9 +21,9 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddScoped<IRepository, DropboxRepository>();
 builder.Services.AddScoped<ReportsService>();
 builder.Services.AddScoped<EntitiesService>();
+var connectionString = builder.Configuration.GetSection("ConnectionString").Value;
 builder.Services.AddDbContext<AssignmentReporterContext>(opt =>
 {
-    string connectionString = builder.Configuration.GetSection("ConnectionString").Value;
     opt.UseSqlite(connectionString);
 });
 
