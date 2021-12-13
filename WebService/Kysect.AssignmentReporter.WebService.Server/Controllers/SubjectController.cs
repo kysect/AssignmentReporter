@@ -16,7 +16,7 @@ public class SubjectController : Controller
         _service = service;
     }
 
-    [HttpPost("Subjects/Create")]
+    [HttpPost("Subjects/Add")]
     public IActionResult Create([Required] [FromBody] SubjectDto subjectDto)
     {
         try
@@ -29,12 +29,12 @@ public class SubjectController : Controller
         }
     }
 
-    [HttpDelete("Subjects/Delete")]
-    public IActionResult Delete([Required] [FromBody] SubjectDto subjectDto)
+    [HttpDelete("Subject/{subjectName}/Delete")]
+    public IActionResult Delete([Required] [FromRoute] string subjectName)
     {
         try
         {
-            _service.DeleteSubject(subjectDto);
+            _service.DeleteSubject(subjectName);
             return Ok();
         }
         catch (Exception e)
@@ -43,7 +43,7 @@ public class SubjectController : Controller
         }
     }
 
-    [HttpGet("Subjects/GetAll")]
+    [HttpGet("Subjects/Get")]
     public IActionResult GetAll()
     {
         try

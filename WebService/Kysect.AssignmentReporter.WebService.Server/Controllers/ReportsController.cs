@@ -45,7 +45,7 @@ namespace Kysect.AssignmentReporter.WebService.Server.Controllers
             }
         }
 
-        [HttpPost("Reports/GetAll")]
+        [HttpGet("Reports/Get")]
         public IActionResult GetReports()
         {
             try
@@ -59,14 +59,14 @@ namespace Kysect.AssignmentReporter.WebService.Server.Controllers
             }
         }
 
-        [HttpPost("Reports/Download/{id}")]
+        [HttpPost("Report/{id}/Download/")]
         public FileResult DownloadReport([Required] [FromRoute] Guid id)
         {
             FileDto file = _service.DownloadReport(id);
             return File(file.Stream, System.Net.Mime.MediaTypeNames.Application.Octet, file.Name);
         }
 
-        [HttpDelete("Reports/Delete/{id}")]
+        [HttpDelete("Reports/{id}/Delete/")]
         public IActionResult DeleteReport([Required] [FromRoute] Guid id)
         {
             try

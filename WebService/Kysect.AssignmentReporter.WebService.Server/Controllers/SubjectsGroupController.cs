@@ -16,7 +16,7 @@ namespace Kysect.AssignmentReporter.WebService.Server.Controllers
             _service = service;
         }
 
-        [HttpGet("SubjectGroups/GetAll")]
+        [HttpGet("SubjectGroups/Get")]
         public IActionResult GetAll()
         {
             try
@@ -42,12 +42,12 @@ namespace Kysect.AssignmentReporter.WebService.Server.Controllers
             }
         }
 
-        [HttpDelete("SubjectGroups/Delete")]
-        public IActionResult Delete([Required] [FromBody] MinimalSubjectGroupDto groupDto)
+        [HttpDelete("SubjectGroup{groupId}/Delete")]
+        public IActionResult Delete([Required] [FromRoute] Guid groupId)
         {
             try
             {
-                _service.DeleteSubjectGroup(groupDto);
+                _service.DeleteSubjectGroup(groupId);
                 return Ok();
             }
             catch (Exception e)
@@ -56,12 +56,12 @@ namespace Kysect.AssignmentReporter.WebService.Server.Controllers
             }
         }
 
-        [HttpGet("SubjectGroups/Get")]
-        public IActionResult GetSubjectGroup([Required] [FromBody] MinimalSubjectGroupDto groupDto)
+        [HttpGet("SubjectGroup/{groupId}/Get")]
+        public IActionResult GetSubjectGroup([Required] [FromRoute] Guid groupId)
         {
             try
             {
-                return Ok(_service.GetSubjectGroup(groupDto));
+                return Ok(_service.GetSubjectGroup(groupId));
             }
             catch (Exception e)
             {
@@ -69,12 +69,12 @@ namespace Kysect.AssignmentReporter.WebService.Server.Controllers
             }
         }
 
-        [HttpPut("SubjectGroups/AddStudent")]
-        public IActionResult AddStudent([Required] [FromBody] StudentDto studentDto, [Required] [FromBody] MinimalSubjectGroupDto subjectGroupDto)
+        [HttpPut("SubjectGroup{groupId}/AddStudent/{studentId}")]
+        public IActionResult AddStudent([Required] [FromRoute] Guid studentId, [Required] [FromRoute] Guid groupId)
         {
             try
             {
-                return Ok(_service.AddStudentToSubjectGroup(studentDto, subjectGroupDto));
+                return Ok(_service.AddStudentToSubjectGroup(studentId, groupId));
             }
             catch (Exception e)
             {
@@ -82,12 +82,12 @@ namespace Kysect.AssignmentReporter.WebService.Server.Controllers
             }
         }
 
-        [HttpDelete("SubjectGroups/DeleteStudent")]
-        public IActionResult DeleteStudent([Required] [FromBody] StudentDto studentDto, [Required] [FromBody] MinimalSubjectGroupDto subjectGroupDto)
+        [HttpPut("SubjectGroup/{groupId}/DeleteStudent/{studentId}")]
+        public IActionResult DeleteStudent([Required] [FromRoute] Guid studentId, [Required] [FromRoute] Guid groupId)
         {
             try
             {
-                _service.DeleteStudentFromSubjectGroup(studentDto, subjectGroupDto);
+                _service.DeleteStudentFromSubjectGroup(studentId, groupId);
                 return Ok();
             }
             catch (Exception e)

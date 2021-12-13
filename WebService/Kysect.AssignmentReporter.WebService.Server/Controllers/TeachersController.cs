@@ -42,12 +42,12 @@ namespace Kysect.AssignmentReporter.WebService.Server.Controllers
             }
         }
 
-        [HttpDelete("Teachers/Delete")]
-        public IActionResult Delete([Required] [FromBody] MinimalTeacherDto teacher)
+        [HttpDelete("Teacher{teacherId}/Delete")]
+        public IActionResult Delete([Required] [FromRoute] Guid teacherId)
         {
             try
             {
-                _service.DeleteTeacher(teacher);
+                _service.DeleteTeacher(teacherId);
                 return Ok();
             }
             catch (Exception e)
@@ -56,12 +56,12 @@ namespace Kysect.AssignmentReporter.WebService.Server.Controllers
             }
         }
 
-        [HttpGet("Teachers/Get")]
-        public IActionResult Get([Required] [FromBody] MinimalTeacherDto teacher)
+        [HttpGet("Teacher/{id}/Get")]
+        public IActionResult Get([Required] [FromRoute] Guid id)
         {
             try
             {
-                return Ok(_service.GetTeacher(teacher));
+                return Ok(_service.GetTeacher(id));
             }
             catch (Exception e)
             {

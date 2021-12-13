@@ -16,7 +16,7 @@ namespace Kysect.AssignmentReporter.WebService.Server.Controllers
             _service = service;
         }
 
-        [HttpPut("Students/Add")]
+        [HttpPost("Students/Add")]
         public IActionResult CreateStudent([Required] [FromBody] StudentDto student)
         {
             try
@@ -29,12 +29,12 @@ namespace Kysect.AssignmentReporter.WebService.Server.Controllers
             }
         }
 
-        [HttpDelete("Students/Delete")]
-        public IActionResult DeleteStudent([Required] [FromBody] StudentDto student)
+        [HttpDelete("Student/{studentId}/Delete")]
+        public IActionResult DeleteStudent([Required] [FromRoute] Guid studentId)
         {
             try
             {
-                _service.DeleteStudent(student);
+                _service.DeleteStudent(studentId);
                 return Ok();
             }
             catch (Exception e)
@@ -43,7 +43,7 @@ namespace Kysect.AssignmentReporter.WebService.Server.Controllers
             }
         }
 
-        [HttpGet("Students/GetAll")]
+        [HttpGet("Students/Get")]
         public IActionResult DeleteStudent()
         {
             try
@@ -56,12 +56,12 @@ namespace Kysect.AssignmentReporter.WebService.Server.Controllers
             }
         }
 
-        [HttpPut("Students/Move")]
-        public IActionResult Move([Required] [FromBody] StudentDto student, [Required] [FromBody] GroupDto group)
+        [HttpPut("Student/{studentId}/Move/{newGroupName}")]
+        public IActionResult Move([Required] [FromRoute] Guid studentId, [Required] [FromRoute] string newGroupName)
         {
             try
             {
-                return Ok(_service.MoveStudent(student, group));
+                return Ok(_service.MoveStudent(studentId, newGroupName));
             }
             catch (Exception e)
             {

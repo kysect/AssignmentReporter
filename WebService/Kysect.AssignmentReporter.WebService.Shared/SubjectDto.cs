@@ -2,8 +2,15 @@
 
 namespace Kysect.AssignmentReporter.WebService.Shared;
 
-public record SubjectDto(string Name)
+public class SubjectDto
 {
+    public SubjectDto(string name)
+    {
+        this.Name = name;
+    }
+
+    public string Name { get; set; }
+
     public static SubjectDto FromSubject(Subject subject)
         => new SubjectDto(subject.Name);
 }

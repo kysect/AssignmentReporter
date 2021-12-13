@@ -32,6 +32,7 @@ namespace Kysect.AssignmentReporter.WebService.DAL.Database
             modelBuilder.Entity<Report>().HasOne(x => x.Teacher);
             modelBuilder.Entity<Report>().HasOne(x => x.File);
             modelBuilder.Entity<Subject>().HasKey(x => x.Name);
+            modelBuilder.Entity<Student>().HasKey(x => x.Id);
             base.OnModelCreating(modelBuilder);
         }
     }

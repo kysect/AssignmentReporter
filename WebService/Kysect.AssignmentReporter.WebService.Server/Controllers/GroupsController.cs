@@ -17,7 +17,7 @@ namespace Kysect.AssignmentReporter.WebService.Server.Controllers
         }
 
         [HttpPost("Groups/Add")]
-        public IActionResult CreateGroup([Required] [FromBody] GroupDto group)
+        public IActionResult CreateGroup([Required] [FromBody] MinimalGroupDto group)
         {
             try
             {
@@ -29,7 +29,7 @@ namespace Kysect.AssignmentReporter.WebService.Server.Controllers
             }
         }
 
-        [HttpGet("Groups/GetAll")]
+        [HttpGet("Groups/Get")]
         public IActionResult GetGroupNames()
         {
             try
@@ -42,12 +42,12 @@ namespace Kysect.AssignmentReporter.WebService.Server.Controllers
             }
         }
 
-        [HttpGet("Groups/Get")]
-        public IActionResult GetGroups([Required] [FromBody] MinimalGroupDto group)
+        [HttpGet("Group/{groupName}/Get")]
+        public IActionResult GetGroups([Required] [FromRoute] string groupName)
         {
             try
             {
-                return Ok(_service.GetGroup(group));
+                return Ok(_service.GetGroup(groupName));
             }
             catch (Exception e)
             {
@@ -55,26 +55,13 @@ namespace Kysect.AssignmentReporter.WebService.Server.Controllers
             }
         }
 
-        [HttpDelete("Groups/Delete")]
-        public IActionResult DeleteGroup([Required] [FromBody] GroupDto group)
+        [HttpDelete("Group/{groupName}/Delete")]
+        public IActionResult DeleteGroup([Required] [FromRoute] string groupName)
         {
             try
             {
-                _service.DeleteGroup(group);
+                _service.DeleteGroup(groupName);
                 return Ok();
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
-
-        [HttpGet("Groups/GetStudents")]
-        public IActionResult DeleteStudent([Required] [FromBody] MinimalGroupDto group)
-        {
-            try
-            {
-                return Ok(_service.GetGroupStudents(group));
             }
             catch (Exception e)
             {
