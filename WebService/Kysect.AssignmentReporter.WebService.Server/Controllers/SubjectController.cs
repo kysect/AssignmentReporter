@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Kysect.AssignmentReporter.WebService.Server.Service;
 using Kysect.AssignmentReporter.WebService.Shared;
+using Kysect.AssignmentReporter.WebService.Shared.CreationalDto;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Kysect.AssignmentReporter.WebService.Server.Controllers;
@@ -17,11 +18,11 @@ public class SubjectController : Controller
     }
 
     [HttpPost("Subjects/Add")]
-    public IActionResult Create([Required] [FromBody] SubjectDto subjectDto)
+    public IActionResult Create([Required] [FromBody] SubjectCreationalDto subjectDto)
     {
         try
         {
-            return Ok(_service.CreateSubject(subjectDto));
+            return Ok(_service.AddSubject(subjectDto));
         }
         catch (Exception e)
         {

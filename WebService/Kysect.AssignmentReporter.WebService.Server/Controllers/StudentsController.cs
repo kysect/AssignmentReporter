@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Kysect.AssignmentReporter.WebService.Server.Service;
 using Kysect.AssignmentReporter.WebService.Shared;
+using Kysect.AssignmentReporter.WebService.Shared.CreationalDto;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Kysect.AssignmentReporter.WebService.Server.Controllers
@@ -17,7 +18,7 @@ namespace Kysect.AssignmentReporter.WebService.Server.Controllers
         }
 
         [HttpPost("Students/Add")]
-        public IActionResult CreateStudent([Required] [FromBody] StudentDto student)
+        public IActionResult CreateStudent([Required] [FromBody] StudentCreationalDto student)
         {
             try
             {

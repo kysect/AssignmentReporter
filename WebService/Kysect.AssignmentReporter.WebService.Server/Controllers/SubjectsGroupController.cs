@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Kysect.AssignmentReporter.WebService.Server.Service;
 using Kysect.AssignmentReporter.WebService.Shared;
+using Kysect.AssignmentReporter.WebService.Shared.CreationalDto;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Kysect.AssignmentReporter.WebService.Server.Controllers
@@ -30,7 +31,7 @@ namespace Kysect.AssignmentReporter.WebService.Server.Controllers
         }
 
         [HttpPost("SubjectGroups/Add")]
-        public IActionResult Add([Required] [FromBody] MinimalSubjectGroupDto groupDto)
+        public IActionResult Add([Required] [FromBody] SubjectGroupCreationalDto groupDto)
         {
             try
             {
@@ -42,7 +43,7 @@ namespace Kysect.AssignmentReporter.WebService.Server.Controllers
             }
         }
 
-        [HttpDelete("SubjectGroup{groupId}/Delete")]
+        [HttpDelete("SubjectGroup/{groupId}/Delete")]
         public IActionResult Delete([Required] [FromRoute] Guid groupId)
         {
             try
@@ -69,7 +70,7 @@ namespace Kysect.AssignmentReporter.WebService.Server.Controllers
             }
         }
 
-        [HttpPut("SubjectGroup{groupId}/AddStudent/{studentId}")]
+        [HttpPut("SubjectGroup/{groupId}/AddStudent/{studentId}")]
         public IActionResult AddStudent([Required] [FromRoute] Guid studentId, [Required] [FromRoute] Guid groupId)
         {
             try

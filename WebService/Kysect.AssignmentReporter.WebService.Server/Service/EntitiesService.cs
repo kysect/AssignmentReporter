@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Kysect.AssignmentReporter.WebService.DAL.Database;
 using Kysect.AssignmentReporter.WebService.DAL.Entities;
 using Kysect.AssignmentReporter.WebService.Shared;
+using Kysect.AssignmentReporter.WebService.Shared.CreationalDto;
 using Microsoft.EntityFrameworkCore;
 using Group = Kysect.AssignmentReporter.WebService.DAL.Entities.Group;
 
@@ -11,14 +14,16 @@ namespace Kysect.AssignmentReporter.WebService.Server.Service
 {
     public class EntitiesService
     {
+        private readonly IMapper _mapper;
         private readonly AssignmentReporterContext _context;
 
-        public EntitiesService(AssignmentReporterContext context)
+        public EntitiesService(AssignmentReporterContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        public MinimalGroupDto AddGroup(MinimalGroupDto groupDto)
+        public MinimalGroupDto AddGroup(GroupCreationalDto groupDto)
         {
             if (_context.Groups.Any(g => g.Name == groupDto.Name))
             {
@@ -28,7 +33,7 @@ namespace Kysect.AssignmentReporter.WebService.Server.Service
             var group = new Group(groupDto.Name);
             _context.Groups.Add(new Group(groupDto.Name));
             _context.SaveChanges();
-            return MinimalGroupDto.FromGroup(group);
+            return _mapper.Map<MinimalGroupDto>(group);
         }
 
         public void DeleteGroup(string groupName)
@@ -50,7 +55,7 @@ namespace Kysect.AssignmentReporter.WebService.Server.Service
         public IReadOnlyList<MinimalGroupDto> GetGroups()
         {
             return _context.Groups
-                .Select(x => MinimalGroupDto.FromGroup(x))
+                .ProjectTo<MinimalGroupDto>(_mapper.ConfigurationProvider)
                 .ToList();
         }
 
@@ -61,21 +66,21 @@ namespace Kysect.AssignmentReporter.WebService.Server.Service
                               .FirstOrDefault(x => x.Name == groupName)
                           ?? throw new InvalidOperationException("No such group registered");
 
-            return GroupDto.FromGroup(group);
+            return _mapper.Map<GroupDto>(group);
         }
 
-        public StudentDto AddStudent(StudentDto studentDto)
+        public StudentDto AddStudent(StudentCreationalDto studentDto)
         {
             Group group = _context.Groups
                               .Include(x => x.Students)
-                              .FirstOrDefault(x => x.Name == studentDto.Group.Name)
+                              .FirstOrDefault(x => x.Name == studentDto.GroupName)
                 ?? throw new InvalidOperationException("No such group registered");
 
-            var student = new Student(studentDto.Name, group);
+            var student = new Student(studentDto.FullName, group);
             _context.Students.Add(student);
             student.Group.Students.Add(student);
             _context.SaveChanges();
-            return StudentDto.FromStudent(student);
+            return _mapper.Map<StudentDto>(student);
         }
 
         public void DeleteStudent(Guid id)
@@ -98,7 +103,7 @@ namespace Kysect.AssignmentReporter.WebService.Server.Service
         {
             return _context.Students
                 .Include(x => x.Group)
-                .Select(x => StudentDto.FromStudent(x))
+                .ProjectTo<StudentDto>(_mapper.ConfigurationProvider)
                 .ToList();
         }
 
@@ -109,7 +114,10 @@ namespace Kysect.AssignmentReporter.WebService.Server.Service
                               .FirstOrDefault(x => x.Name == groupName)
                           ?? throw new InvalidOperationException("No such group registered");
 
-            return group.Students.Select(x => StudentDto.FromStudent(x)).ToList();
+            return group.Students
+                .AsQueryable()
+                .ProjectTo<StudentDto>(_mapper.ConfigurationProvider)
+                .ToList();
         }
 
         public StudentDto MoveStudent(Guid studentId, string groupName)
@@ -129,10 +137,10 @@ namespace Kysect.AssignmentReporter.WebService.Server.Service
             group.Students.Add(student);
             student.Group = group;
             _context.SaveChanges();
-            return StudentDto.FromStudent(student);
+            return _mapper.Map<StudentDto>(student);
         }
 
-        public SubjectDto CreateSubject(SubjectDto subjectDto)
+        public SubjectDto AddSubject(SubjectCreationalDto subjectDto)
         {
             if (_context.Subjects.Find(subjectDto.Name) is not null)
             {
@@ -142,7 +150,7 @@ namespace Kysect.AssignmentReporter.WebService.Server.Service
             var subject = new Subject(subjectDto.Name);
             _context.Subjects.Add(subject);
             _context.SaveChanges();
-            return SubjectDto.FromSubject(subject);
+            return _mapper.Map<SubjectDto>(subject);
         }
 
         public void DeleteSubject(string subjectName)
@@ -169,12 +177,12 @@ namespace Kysect.AssignmentReporter.WebService.Server.Service
             return _context.Subjects.Select(x => new SubjectDto(x.Name)).ToList();
         }
 
-        public MinimalTeacherDto AddTeacher(MinimalTeacherDto minimalTeacherDto)
+        public MinimalTeacherDto AddTeacher(TeacherCreationalDto minimalTeacherDto)
         {
             var teacher = new Teacher(minimalTeacherDto.FullName);
             _context.Teachers.Add(teacher);
             _context.SaveChanges();
-            return MinimalTeacherDto.FromTeacher(teacher);
+            return _mapper.Map<MinimalTeacherDto>(teacher);
         }
 
         public void DeleteTeacher(Guid id)
@@ -195,7 +203,7 @@ namespace Kysect.AssignmentReporter.WebService.Server.Service
         public IReadOnlyList<MinimalTeacherDto> GetTeachers()
         {
             return _context.Teachers
-                .Select(x => MinimalTeacherDto.FromTeacher(x))
+                .ProjectTo<MinimalTeacherDto>(_mapper.ConfigurationProvider)
                 .ToList();
         }
 
@@ -205,23 +213,23 @@ namespace Kysect.AssignmentReporter.WebService.Server.Service
                 .Include(x => x.SubjectGroups)
                 .FirstOrDefault(x => x.Id == id)
                 ?? throw new InvalidOperationException("No such teacher registered");
-            return TeacherDto.FromTeacher(teacher);
+            return _mapper.Map<TeacherDto>(teacher);
         }
 
-        public MinimalSubjectGroupDto AddSubjectGroup(MinimalSubjectGroupDto minimalSubjectGroupDto)
+        public MinimalSubjectGroupDto AddSubjectGroup(SubjectGroupCreationalDto minimalSubjectGroupDto)
         {
             Subject subject = _context.Subjects
-                              .FirstOrDefault(x => x.Name == minimalSubjectGroupDto.Subject.Name)
+                              .FirstOrDefault(x => x.Name == minimalSubjectGroupDto.SubjectName)
                           ?? throw new InvalidOperationException("No such subject registered");
 
             Teacher teacher = _context.Teachers
-                              .FirstOrDefault(x => x.Id == minimalSubjectGroupDto.MinimalTeacherDto.Id)
+                              .FirstOrDefault(x => x.Id == minimalSubjectGroupDto.TeacherId)
                           ?? throw new InvalidOperationException("No such teacher registered");
 
             var subjectGroup = new SubjectGroup(teacher, subject);
             _context.SubjectGroups.Add(subjectGroup);
             _context.SaveChanges();
-            return MinimalSubjectGroupDto.FromSubjectGroup(subjectGroup);
+            return _mapper.Map<MinimalSubjectGroupDto>(subjectGroup);
         }
 
         public void DeleteSubjectGroup(Guid id)
@@ -238,15 +246,16 @@ namespace Kysect.AssignmentReporter.WebService.Server.Service
             _context.SaveChanges();
         }
 
-        public MinimalSubjectGroupDto AddStudentToSubjectGroup(Guid studenId, Guid groupId)
+        public MinimalSubjectGroupDto AddStudentToSubjectGroup(Guid studentId, Guid groupId)
         {
             Student student = _context.Students
-                              .FirstOrDefault(x => x.Id == studenId)
+                              .FirstOrDefault(x => x.Id == studentId)
                           ?? throw new InvalidOperationException("No such student registered");
 
             SubjectGroup subjectGroup = _context.SubjectGroups
                                           .Include(x => x.Students)
                                           .Include(x => x.Teacher)
+                                          .Include(x => x.Subject)
                                           .FirstOrDefault(x => x.Id == groupId)
                                       ?? throw new InvalidOperationException("No such subject group registered");
 
@@ -257,7 +266,7 @@ namespace Kysect.AssignmentReporter.WebService.Server.Service
 
             subjectGroup.Students.Add(student);
             _context.SaveChanges();
-            return MinimalSubjectGroupDto.FromSubjectGroup(subjectGroup);
+            return _mapper.Map<MinimalSubjectGroupDto>(subjectGroup);
         }
 
         public void DeleteStudentFromSubjectGroup(Guid studentId, Guid groupId)
@@ -285,7 +294,7 @@ namespace Kysect.AssignmentReporter.WebService.Server.Service
             return _context.SubjectGroups
                 .Include(x => x.Teacher)
                 .Include(x => x.Subject)
-                .Select(x => MinimalSubjectGroupDto.FromSubjectGroup(x))
+                .ProjectTo<MinimalSubjectGroupDto>(_mapper.ConfigurationProvider)
                 .ToList();
         }
 
@@ -295,10 +304,11 @@ namespace Kysect.AssignmentReporter.WebService.Server.Service
                                           .Include(x => x.Students)
                                           .ThenInclude(x => x.Group)
                                           .Include(x => x.Teacher)
+                                          .Include(x => x.Subject)
                                           .FirstOrDefault(x => x.Id == groupId)
                                       ?? throw new InvalidOperationException("No such subject group registered");
 
-            return SubjectGroupDto.FromSubjectGroup(subjectGroup);
+            return _mapper.Map<SubjectGroupDto>(subjectGroup);
         }
     }
 }

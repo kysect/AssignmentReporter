@@ -7,10 +7,6 @@
         <WarningLevel>5</WarningLevel>
         <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
     </PropertyGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\Kysect.AssignmentReporter.WebService.DAL\Kysect.AssignmentReporter.WebService.DAL.csproj" />
-    </ItemGroup>
   
     <ItemGroup>
       <None Include="..\..\.editorconfig" />

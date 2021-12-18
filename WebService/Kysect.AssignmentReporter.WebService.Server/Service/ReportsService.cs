@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Kysect.AssignmentReporter.Models;
 using Kysect.AssignmentReporter.Models.FileSearchRules;
 using Kysect.AssignmentReporter.ReportGenerator;
@@ -11,6 +13,7 @@ using Kysect.AssignmentReporter.WebService.DAL.Database;
 using Kysect.AssignmentReporter.WebService.DAL.Entities;
 using Kysect.AssignmentReporter.WebService.Server.Repository;
 using Kysect.AssignmentReporter.WebService.Shared;
+using Kysect.AssignmentReporter.WebService.Shared.CreationalDto;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -18,15 +21,17 @@ namespace Kysect.AssignmentReporter.WebService.Server.Service
 {
     public class ReportsService
     {
-        private AssignmentReporterContext _context;
-        private IConfiguration _configuration;
-        private IRepository _repository;
+        private readonly AssignmentReporterContext _context;
+        private readonly IConfiguration _configuration;
+        private readonly IRepository _repository;
+        private readonly IMapper _mapper;
 
-        public ReportsService(AssignmentReporterContext context, IConfiguration configuration, IRepository repository)
+        public ReportsService(AssignmentReporterContext context, IConfiguration configuration, IRepository repository, IMapper mapper)
         {
             _context = context;
             _configuration = configuration;
             _repository = repository;
+            _mapper = mapper;
         }
 
         public void CreateReports(RepositoryCreationalInfoDto infoDto)
@@ -122,7 +127,8 @@ namespace Kysect.AssignmentReporter.WebService.Server.Service
                 .Include(x => x.Subject)
                 .Include(x => x.Teacher)
                 .ThenInclude(x => x.SubjectGroups)
-                .Select(x => ReportDto.FromReport(x)).ToList();
+                .ProjectTo<ReportDto>(_mapper.ConfigurationProvider)
+                .ToList();
         }
 
         public FileDto DownloadReport(Guid id)
@@ -142,7 +148,7 @@ namespace Kysect.AssignmentReporter.WebService.Server.Service
 
             _repository.Delete(report);
 
-            // _context.Reports.Remove(report);
+            _context.Reports.Remove(report);
             _context.SaveChanges();
         }
     }

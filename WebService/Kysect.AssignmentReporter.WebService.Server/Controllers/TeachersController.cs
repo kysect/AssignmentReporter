@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Kysect.AssignmentReporter.WebService.Server.Service;
 using Kysect.AssignmentReporter.WebService.Shared;
+using Kysect.AssignmentReporter.WebService.Shared.CreationalDto;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Kysect.AssignmentReporter.WebService.Server.Controllers
@@ -16,7 +17,7 @@ namespace Kysect.AssignmentReporter.WebService.Server.Controllers
             _service = service;
         }
 
-        [HttpGet("Teachers/GetAll")]
+        [HttpGet("Teachers/Get")]
         public IActionResult GetAll()
         {
             try
@@ -30,7 +31,7 @@ namespace Kysect.AssignmentReporter.WebService.Server.Controllers
         }
 
         [HttpPost("Teachers/Add")]
-        public IActionResult Add([Required] [FromBody] MinimalTeacherDto teacher)
+        public IActionResult Add([Required] [FromBody] TeacherCreationalDto teacher)
         {
             try
             {
@@ -42,7 +43,7 @@ namespace Kysect.AssignmentReporter.WebService.Server.Controllers
             }
         }
 
-        [HttpDelete("Teacher{teacherId}/Delete")]
+        [HttpDelete("Teacher/{teacherId}/Delete")]
         public IActionResult Delete([Required] [FromRoute] Guid teacherId)
         {
             try

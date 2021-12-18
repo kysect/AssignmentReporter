@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Kysect.AssignmentReporter.WebService.DAL.Database;
 using Kysect.AssignmentReporter.WebService.Server.Repository;
@@ -19,6 +20,7 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
 });
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IRepository, DropboxRepository>();
 builder.Services.AddScoped<ReportsService>();
 builder.Services.AddScoped<EntitiesService>();

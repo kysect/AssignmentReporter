@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using Kysect.AssignmentReporter.Models;
 using Kysect.AssignmentReporter.WebService.Server.Service;
 using Kysect.AssignmentReporter.WebService.Shared;
+using Kysect.AssignmentReporter.WebService.Shared.CreationalDto;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Kysect.AssignmentReporter.WebService.Server.Controllers
