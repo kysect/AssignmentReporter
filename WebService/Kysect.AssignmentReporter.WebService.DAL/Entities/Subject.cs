@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Kysect.AssignmentReporter.WebService.DAL.Entities
+﻿namespace Kysect.AssignmentReporter.WebService.DAL.Entities
 {
     public class Subject
     {

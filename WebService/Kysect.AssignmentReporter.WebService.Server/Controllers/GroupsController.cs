@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using Kysect.AssignmentReporter.WebService.Server.Service;
-using Kysect.AssignmentReporter.WebService.Shared;
 using Kysect.AssignmentReporter.WebService.Shared.CreationalDto;
 using Microsoft.AspNetCore.Mvc;
 

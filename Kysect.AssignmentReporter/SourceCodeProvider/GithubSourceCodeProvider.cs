@@ -66,7 +66,7 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
                 else if (
                     repositoryContent.Type == ContentType.File &&
                     settings.FileIsAcceptable(repositoryContent.Name) &&
-                    settings.FormatIsAcceptable(System.IO.Path.GetExtension(repositoryContent.Name)))
+                    settings.FormatIsAcceptable(Path.GetExtension(repositoryContent.Name)))
                 {
                     using (var client = new WebClient())
                     {

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Kysect.AssignmentReporter.WebService.Shared.CreationalDto;
+﻿namespace Kysect.AssignmentReporter.WebService.Shared.CreationalDto;
 
 public class TeacherCreationalDto
 {
