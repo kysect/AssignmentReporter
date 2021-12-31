@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 using Kysect.AssignmentReporter.GithubIntegration;
 using Kysect.AssignmentReporter.Models;
@@ -57,15 +56,6 @@ namespace Kysect.AssignmentReporter.Polygon
 
         public static void GenerateOrganization()
         {
-            void GeneratingReport(GithubOrganizationProcessingItem processingItem, FileSearchFilter fileSearchFilter)
-            {
-                var sourceCodeProvider = new FileSystemSourceCodeProvider(processingItem.Path, fileSearchFilter);
-                var info = new ReportExtendedInfo(string.Empty, string.Empty, Path.Combine(@"D:\tmp\github\reports", processingItem.RepositoryName));
-                var documentReportGenerator = new DocumentReportGenerator();
-                documentReportGenerator.Generate(sourceCodeProvider.GetFiles(), info);
-                Console.WriteLine($"done {processingItem.RepositoryName}");
-            }
-
             FileSearchFilter filter = new(new SearchSettings
             {
                 WhiteFileFormats = { ".c" },
@@ -74,10 +64,14 @@ namespace Kysect.AssignmentReporter.Polygon
 
             var formatter = new FakePathFormatter();
             var githubOrganizationReportGenerator = new GithubOrganizationReportGenerator(formatter, User, Token);
-            List<GithubOrganizationProcessingItem> processingItems = githubOrganizationReportGenerator.Process("IS-prog-21-22", true).Result;
+            List<GithubOrganizationProcessingItem> processingItems = githubOrganizationReportGenerator.Process("IS-prog-21-22", true);
             foreach (GithubOrganizationProcessingItem processingItem in processingItems)
             {
-                GeneratingReport(processingItem, filter);
+                var sourceCodeProvider = new FileSystemSourceCodeProvider(processingItem.Path, filter);
+                var info = new ReportExtendedInfo(string.Empty, string.Empty, Path.Combine(@"D:\tmp\github\reports", processingItem.RepositoryName));
+                var documentReportGenerator = new DocumentReportGenerator();
+                documentReportGenerator.Generate(sourceCodeProvider.GetFiles(), info);
+                Console.WriteLine($"done {processingItem.RepositoryName}");
             }
         }
     }
