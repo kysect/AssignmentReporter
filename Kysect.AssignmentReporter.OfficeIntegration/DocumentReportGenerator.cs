@@ -2,13 +2,13 @@
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Xml.Linq;
 using Kysect.AssignmentReporter.Models;
+using Kysect.AssignmentReporter.ReportGenerator;
 using SautinSoft;
 using Xceed.Document.NET;
 using Xceed.Words.NET;
 
-namespace Kysect.AssignmentReporter.ReportGenerator
+namespace Kysect.AssignmentReporter.OfficeIntegration
 {
     public class DocumentReportGenerator : IReportGenerator
     {

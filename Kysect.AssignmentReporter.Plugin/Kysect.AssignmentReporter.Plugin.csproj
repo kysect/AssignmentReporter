@@ -124,6 +124,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Kysect.AssignmentReporter.OfficeIntegration\Kysect.AssignmentReporter.OfficeIntegration.csproj">
+      <Project>{4715d120-c42a-4b0c-b7f1-380b8b952fef}</Project>
+      <Name>Kysect.AssignmentReporter.OfficeIntegration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Kysect.AssignmentReporter\Kysect.AssignmentReporter.csproj">
       <Project>{163e8146-c1f5-4959-9df1-7ef4fec2f0ad}</Project>
       <Name>Kysect.AssignmentReporter</Name>
