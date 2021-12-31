@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
 using Microsoft.VisualStudio.Shell;
 using Task = System.Threading.Tasks.Task;
 
@@ -28,7 +25,7 @@ namespace Kysect.AssignmentReporter.Plugin
 
         public static ToolWindowCommand Instance { get; private set; }
 
-        private Microsoft.VisualStudio.Shell.IAsyncServiceProvider ServiceProvider { get => _package; }
+        private IAsyncServiceProvider ServiceProvider { get => _package; }
 
         public static async Task InitializeAsync(AsyncPackage package)
         {

@@ -2,7 +2,6 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Threading;
-using Microsoft.VisualStudio.Threading;
 using Task = System.Threading.Tasks.Task;
 
 namespace Kysect.AssignmentReporter.Plugin
@@ -19,7 +18,7 @@ namespace Kysect.AssignmentReporter.Plugin
             CancellationToken cancellationToken,
             IProgress<ServiceProgressData> progress)
         {
-            await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
+            await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
         }
 
         #endregion

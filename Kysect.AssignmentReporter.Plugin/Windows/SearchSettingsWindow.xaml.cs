@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Windows;
-using Kysect.AssignmentReporter.Models.FileSearchRules;
+﻿using System.Windows;
 using Kysect.AssignmentReporter.Plugin.ViewModel;
 
 namespace Kysect.AssignmentReporter.Plugin.Windows
@@ -16,7 +13,7 @@ namespace Kysect.AssignmentReporter.Plugin.Windows
 
         private void get_SearchSettings_Button_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Close();
         }
     }
 }

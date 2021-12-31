@@ -21,12 +21,12 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel.MvvmBase
 
         public bool CanExecute(object parameter)
         {
-            return canExecute == null || this.canExecute(parameter);
+            return canExecute == null || canExecute(parameter);
         }
 
         public void Execute(object parameter)
         {
-            this.execute(parameter);
+            execute(parameter);
         }
     }
 }
