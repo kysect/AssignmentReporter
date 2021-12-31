@@ -7,6 +7,7 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Kysect.AssignmentReporter.Models;
 using Kysect.AssignmentReporter.Models.FileSearchRules;
+using Kysect.AssignmentReporter.OfficeIntegration;
 using Kysect.AssignmentReporter.ReportGenerator;
 using Kysect.AssignmentReporter.SourceCodeProvider;
 using Kysect.AssignmentReporter.WebService.DAL.Database;

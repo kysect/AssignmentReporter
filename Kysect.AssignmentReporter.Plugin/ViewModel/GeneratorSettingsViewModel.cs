@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using Kysect.AssignmentReporter.Models;
 using Kysect.AssignmentReporter.Models.FileSearchRules;
+using Kysect.AssignmentReporter.OfficeIntegration;
 using Kysect.AssignmentReporter.Plugin.ViewModel.MvvmBase;
 using Kysect.AssignmentReporter.ReportGenerator;
 using Kysect.AssignmentReporter.ReportGenerator.MultiGenerator;
