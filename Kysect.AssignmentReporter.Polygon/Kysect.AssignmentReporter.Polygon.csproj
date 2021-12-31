@@ -2,10 +2,12 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Kysect.AssignmentReporter.GithubIntegration\Kysect.AssignmentReporter.GithubIntegration.csproj" />
+    <ProjectReference Include="..\Kysect.AssignmentReporter.OfficeIntegration\Kysect.AssignmentReporter.OfficeIntegration.csproj" />
     <ProjectReference Include="..\Kysect.AssignmentReporter\Kysect.AssignmentReporter.csproj" />
   </ItemGroup>
 

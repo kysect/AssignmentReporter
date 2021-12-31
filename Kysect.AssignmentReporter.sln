@@ -26,6 +26,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kysect.AssignmentReporter.W
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kysect.AssignmentReporter.OfficeIntegration", "Kysect.AssignmentReporter.OfficeIntegration\Kysect.AssignmentReporter.OfficeIntegration.csproj", "{4715D120-C42A-4B0C-B7F1-380B8B952FEF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kysect.AssignmentReporter.GithubIntegration", "Kysect.AssignmentReporter.GithubIntegration\Kysect.AssignmentReporter.GithubIntegration.csproj", "{23EAE1C4-2C21-47DF-B00B-D01F274137D9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -64,6 +66,10 @@ Global
 		{4715D120-C42A-4B0C-B7F1-380B8B952FEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4715D120-C42A-4B0C-B7F1-380B8B952FEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4715D120-C42A-4B0C-B7F1-380B8B952FEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23EAE1C4-2C21-47DF-B00B-D01F274137D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23EAE1C4-2C21-47DF-B00B-D01F274137D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23EAE1C4-2C21-47DF-B00B-D01F274137D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23EAE1C4-2C21-47DF-B00B-D01F274137D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
