@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Xml.Linq;
 using Kysect.AssignmentReporter.Models;
 using SautinSoft;
 using Xceed.Document.NET;
@@ -71,6 +72,12 @@ namespace Kysect.AssignmentReporter.ReportGenerator
                 .DocxToPdfConvertFile(
                     info.Path,
                     info.Path.Replace(".docx", ".pdf"));
+        }
+
+        public void ConvertToPdf(Stream stream)
+        {
+            new PdfMetamorphosis()
+                .DocxToPdfConvertStream(stream);
         }
 
         private Document WriteInCoverList(CoverPageInfo info)

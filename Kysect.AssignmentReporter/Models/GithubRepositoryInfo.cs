@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using Octokit;
 
-namespace Kysect.AssignmentReporter.Models.FileSearchRules
+namespace Kysect.AssignmentReporter.Models
 {
     public class GithubRepositoryInfo
     {
