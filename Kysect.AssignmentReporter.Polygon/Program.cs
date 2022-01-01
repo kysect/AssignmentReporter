@@ -1,4 +1,4 @@
-using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using Kysect.AssignmentReporter.GithubIntegration;
@@ -26,7 +26,8 @@ namespace Kysect.AssignmentReporter.Polygon
 
             //GenerateFromGit();
             //GenerateSimpleReport();
-            GenerateOrganization();
+            //GenerateOrganization();
+            GenerateFromGitSplit();
         }
 
         public static void GenerateSimpleReport()
@@ -45,7 +46,7 @@ namespace Kysect.AssignmentReporter.Polygon
             });
             var rootPath = @"C:\test\repos";
             var reportPath = @"C:\test\report";
-            var mg = new MultiGenerator(rootPath, reportPath, new MarkdownReportGenerator(), filter);
+            var mg = new LegacyMultiGenerator(rootPath, reportPath, new MarkdownReportGenerator(), filter);
             mg.Generate();
         }
 
@@ -95,7 +96,47 @@ namespace Kysect.AssignmentReporter.Polygon
             var organizationReportGenerator = new GithubOrganizationReportGenerator(processingItemFactory, reportGenerator, @"D:\tmp\github\reports");
             organizationReportGenerator.Generate(filter, "IS-prog-21-22", string.Empty, string.Empty);
         }
+
+        public static void GenerateFromGitSplit()
+        {
+            var filter = new FileSearchFilter(new SearchSettings
+            {
+                WhiteFileFormats =
+                {
+                    ".cs"
+                },
+                BlackDirectories =
+                {
+                    new Regex("bin"),
+                    new Regex("obj"),
+                    new Regex(".git")
+                },
+            });
+
+            var formatter = new FakePathFormatter();
+            var repositoryFetcher = new RepositoryFetcher(formatter, User, Token);
+            var githubSourceCodeProvider = new GithubSourceCodeProvider(repositoryFetcher, "IS-prog-21-22", "username");
+            var documentReportGenerator = new DocumentReportGenerator();
+            var info = new ReportExtendedInfo("Some test intro", "Some conclusion", @"D:\tmp\github\report-result-split");
+            var multiGenerator = new MultiGenerator(new MultiReportItemFactory(GenerateFakeFilters(), info), documentReportGenerator);
+            multiGenerator.Generate(githubSourceCodeProvider);
+        }
+
+        public static List<FileSearchFilter> GenerateFakeFilters()
+        {
+            return new List<FileSearchFilter>()
+            {
+                new FileSearchFilter(new SearchSettingsBuilder().AddAllowedDirectories(new List<string> { "lub1" }).Build()),
+                new FileSearchFilter(new SearchSettingsBuilder().AddAllowedDirectories(new List<string> { "lub2" }).Build()),
+                new FileSearchFilter(new SearchSettingsBuilder().AddAllowedDirectories(new List<string> { "lub3" }).Build()),
+                new FileSearchFilter(new SearchSettingsBuilder().AddAllowedDirectories(new List<string> { "lub4" }).Build()),
+                new FileSearchFilter(new SearchSettingsBuilder().AddAllowedDirectories(new List<string> { "lub5" }).Build()),
+                new FileSearchFilter(new SearchSettingsBuilder().AddAllowedDirectories(new List<string> { "lub6" }).Build()),
+            };
+        }
     }
+
+
 
     public class FakePathFormatter : IPathFormatter
     {

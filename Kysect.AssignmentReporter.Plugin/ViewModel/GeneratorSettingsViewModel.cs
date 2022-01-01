@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Windows.Forms;
 using Kysect.AssignmentReporter.Models;
@@ -200,7 +200,7 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel
             else
             {
                 var multiGenerator =
-                    new MultiGenerator(PathToRepository, PathToSave, GetGenerator(_coverPageInfo), _filter);
+                    new LegacyMultiGenerator(PathToRepository, PathToSave, GetGenerator(_coverPageInfo), _filter);
                 multiGenerator.Generate();
             }
         }

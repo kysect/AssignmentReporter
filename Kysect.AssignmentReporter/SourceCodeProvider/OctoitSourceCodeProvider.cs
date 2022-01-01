@@ -35,7 +35,7 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
             return descriptors;
         }
 
-        public IReadOnlyList<FileDescriptor> GetFilesInternal(FileSearchFilter fileSearchFilter, string folder = "/")
+        public IReadOnlyList<FileDescriptor> GetFiles(FileSearchFilter fileSearchFilter, string folder)
         {
             if (Repository is null)
             {
