@@ -44,18 +44,18 @@ namespace Kysect.AssignmentReporter.Models.FileSearchRules
             return Reasonable.Create(true);
         }
 
-        public Reasonable<bool> DirectoryIsAcceptable(string directory)
+        public Reasonable<bool> DirectoryIsAcceptable(PartialPath directoryPath)
         {
-            Regex matchedBlackMask = BlackDirectories.FirstOrDefault(mask => mask.IsMatch(directory));
+            Regex matchedBlackMask = BlackDirectories.FirstOrDefault(mask => mask.IsMatch(directoryPath.Path));
             if (matchedBlackMask != null)
             {
-                return Reasonable.Create(false, $"Directory {directory} matched with black list mask: {matchedBlackMask}");
+                return Reasonable.Create(false, $"Directory {directoryPath.Path} matched with black list mask: {matchedBlackMask}");
             }
 
-            Regex matchedWhiteMask = WhiteDirectories.FirstOrDefault(mask => mask.IsMatch(directory));
+            Regex matchedWhiteMask = WhiteDirectories.FirstOrDefault(mask => mask.IsMatch(directoryPath.Path));
             if (WhiteDirectories.Any() && matchedWhiteMask is null)
             {
-                return Reasonable.Create(false, $"Directory {directory} does not matched any white mask");
+                return Reasonable.Create(false, $"Directory {directoryPath.Path} does not matched any white mask");
             }
 
             return Reasonable.Create(true);

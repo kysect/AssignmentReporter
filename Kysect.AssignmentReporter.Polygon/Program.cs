@@ -78,12 +78,12 @@ namespace Kysect.AssignmentReporter.Polygon
         {
             return new List<FileSearchFilter>()
             {
-                new FileSearchFilter(new SearchSettingsBuilder().AddAllowedDirectories(new List<string> { "lub1" }).Build()),
-                new FileSearchFilter(new SearchSettingsBuilder().AddAllowedDirectories(new List<string> { "lub2" }).Build()),
-                new FileSearchFilter(new SearchSettingsBuilder().AddAllowedDirectories(new List<string> { "lub3" }).Build()),
-                new FileSearchFilter(new SearchSettingsBuilder().AddAllowedDirectories(new List<string> { "lub4" }).Build()),
-                new FileSearchFilter(new SearchSettingsBuilder().AddAllowedDirectories(new List<string> { "lub5" }).Build()),
-                new FileSearchFilter(new SearchSettingsBuilder().AddAllowedDirectories(new List<string> { "lub6" }).Build()),
+                new FileSearchFilter(new SearchSettingsBuilder().AddAllowedExtensions(new List<string> { ".c", ".h" }).AddAllowedDirectories(new List<string> { "1" }).Build()),
+                new FileSearchFilter(new SearchSettingsBuilder().AddAllowedExtensions(new List<string> { ".c", ".h" }).AddAllowedDirectories(new List<string> { "2" }).Build()),
+                new FileSearchFilter(new SearchSettingsBuilder().AddAllowedExtensions(new List<string> { ".c", ".h" }).AddAllowedDirectories(new List<string> { "3" }).Build()),
+                new FileSearchFilter(new SearchSettingsBuilder().AddAllowedExtensions(new List<string> { ".c", ".h" }).AddAllowedDirectories(new List<string> { "4" }).Build()),
+                new FileSearchFilter(new SearchSettingsBuilder().AddAllowedExtensions(new List<string> { ".c", ".h" }).AddAllowedDirectories(new List<string> { "5" }).Build()),
+                new FileSearchFilter(new SearchSettingsBuilder().AddAllowedExtensions(new List<string> { ".c", ".h" }).AddAllowedDirectories(new List<string> { "6" }).Build()),
             };
         }
     }
