@@ -14,8 +14,8 @@ namespace Kysect.AssignmentReporter.Polygon
 {
     internal static class Program
     {
-        public static string User = string.Empty;
-        public static string Token = string.Empty;
+        public static string User => Credentials.User;
+        public static string Token => Credentials.Token;
 
         public static void Main()
         {
@@ -26,8 +26,8 @@ namespace Kysect.AssignmentReporter.Polygon
 
             //GenerateFromGit();
             //GenerateSimpleReport();
-            //GenerateOrganization();
-            GenerateFromGitSplit();
+            GenerateOrganizationSplit();
+            //GenerateFromGitSplit();
         }
 
         public static void GenerateSimpleReport()
@@ -50,76 +50,28 @@ namespace Kysect.AssignmentReporter.Polygon
             mg.Generate();
         }
 
-        public static void GenerateFromGit()
+        public static void GenerateOrganizationSplit()
         {
-            var filter = new FileSearchFilter(new SearchSettings
-            {
-                WhiteFileFormats =
-                {
-                    ".cs"
-                },
-                BlackDirectories =
-                {
-                    new Regex("bin"),
-                    new Regex("obj"),
-                    new Regex(".git")
-                },
-            });
-
-            var formatter = new FakePathFormatter();
-            var repositoryFetcher = new RepositoryFetcher(formatter, User, Token);
-            var githubSourceCodeProvider = new GithubSourceCodeProvider(repositoryFetcher, "FrediKats", "MooseFsClient");
-            var documentReportGenerator = new DocumentReportGenerator();
-            var info = new ReportExtendedInfo("Some test intro", "Some conclusion", "report-result");
-            documentReportGenerator.Generate(githubSourceCodeProvider.GetFiles(filter), info);
-        }
-
-        public static void GenerateOrganization()
-        {
-            var filter = new FileSearchFilter(new SearchSettings
-            {
-                WhiteFileFormats =
-                {
-                    ".c"
-                },
-                BlackDirectories =
-                {
-                    new Regex("bin"),
-                    new Regex("obj"),
-                    new Regex("\\.git")
-                },
-            });
-
             var formatter = new FakePathFormatter();
             var processingItemFactory = new GithubOrganizationProcessingItemFactory(formatter, User, Token);
             var reportGenerator = new DocumentReportGenerator();
             var organizationReportGenerator = new GithubOrganizationReportGenerator(processingItemFactory, reportGenerator, @"D:\tmp\github\reports");
-            organizationReportGenerator.Generate(filter, "IS-prog-21-22", string.Empty, string.Empty);
+            var info = new ReportExtendedInfo("Some test intro", "Some conclusion", @"D:\tmp\github\report-result-split");
+            var multiReportItemFactory = new MultiReportItemFactory(GenerateFakeFilters(), info);
+            var multiGenerator = new MultiGenerator(multiReportItemFactory, reportGenerator);
+            organizationReportGenerator.Generate("IS-prog-21-22", multiGenerator);
         }
 
         public static void GenerateFromGitSplit()
         {
-            var filter = new FileSearchFilter(new SearchSettings
-            {
-                WhiteFileFormats =
-                {
-                    ".cs"
-                },
-                BlackDirectories =
-                {
-                    new Regex("bin"),
-                    new Regex("obj"),
-                    new Regex(".git")
-                },
-            });
-
             var formatter = new FakePathFormatter();
             var repositoryFetcher = new RepositoryFetcher(formatter, User, Token);
             var githubSourceCodeProvider = new GithubSourceCodeProvider(repositoryFetcher, "IS-prog-21-22", "username");
             var documentReportGenerator = new DocumentReportGenerator();
             var info = new ReportExtendedInfo("Some test intro", "Some conclusion", @"D:\tmp\github\report-result-split");
-            var multiGenerator = new MultiGenerator(new MultiReportItemFactory(GenerateFakeFilters(), info), documentReportGenerator);
-            multiGenerator.Generate(githubSourceCodeProvider);
+            var multiReportItemFactory = new MultiReportItemFactory(GenerateFakeFilters(), info);
+            var multiGenerator = new MultiGenerator(multiReportItemFactory, documentReportGenerator);
+            multiGenerator.Generate(githubSourceCodeProvider, "username");
         }
 
         public static List<FileSearchFilter> GenerateFakeFilters()
@@ -135,8 +87,6 @@ namespace Kysect.AssignmentReporter.Polygon
             };
         }
     }
-
-
 
     public class FakePathFormatter : IPathFormatter
     {

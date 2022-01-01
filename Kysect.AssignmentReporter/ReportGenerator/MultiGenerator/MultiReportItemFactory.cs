@@ -18,14 +18,17 @@ namespace Kysect.AssignmentReporter.ReportGenerator.MultiGenerator
             _extendedInfo = extendedInfo;
         }
 
-        public IReadOnlyCollection<MultiReportItem> Split(ISourceCodeProvider sourceCodeProvider)
+        public IReadOnlyCollection<MultiReportItem> Split(ISourceCodeProvider sourceCodeProvider, string studentName)
         {
-            //TODO: find user name
+            //TODO: specify lab type
             int i = 1;
-            List<MultiReportItem> result = new List<MultiReportItem>();
+            var result = new List<MultiReportItem>();
             foreach (FileSearchFilter fileSearchFilter in _fileSearchFilters)
             {
-                var reportExtendedInfo = new ReportExtendedInfo(_extendedInfo.Intro, _extendedInfo.Conclusion, Path.Combine(_extendedInfo.Path, i.ToString()));
+                var folderPath = Path.Combine(_extendedInfo.Path, studentName);
+                Directory.CreateDirectory(folderPath);
+                var newPath = Path.Combine(folderPath, i.ToString());
+                var reportExtendedInfo = new ReportExtendedInfo(_extendedInfo.Intro, _extendedInfo.Conclusion, newPath);
                 result.Add(new MultiReportItem(sourceCodeProvider, fileSearchFilter, reportExtendedInfo));
                 i++;
             }
