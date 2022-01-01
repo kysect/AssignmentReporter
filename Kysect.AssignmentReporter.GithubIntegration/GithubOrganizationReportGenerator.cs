@@ -1,60 +1,31 @@
-﻿using Kysect.GithubUtils;
-using Kysect.GithubUtils.RepositoryDiscovering;
+﻿using Kysect.AssignmentReporter.Models;
+using Kysect.AssignmentReporter.Models.FileSearchRules;
+using Kysect.AssignmentReporter.ReportGenerator;
+using Kysect.AssignmentReporter.SourceCodeProvider;
 
 namespace Kysect.AssignmentReporter.GithubIntegration;
 
 public class GithubOrganizationReportGenerator
 {
-    private readonly IPathFormatter _pathFormatter;
-    private readonly string _gitUser;
-    private readonly string _token;
+    private readonly GithubOrganizationProcessingItemFactory _processingItemFactory;
+    private readonly IReportGenerator _reportGenerator;
+    private readonly string _rootDirectory;
 
-    public GithubOrganizationReportGenerator(IPathFormatter pathFormatter, string gitUser, string token)
+    public GithubOrganizationReportGenerator(GithubOrganizationProcessingItemFactory processingItemFactory, IReportGenerator reportGenerator, string rootDirectory)
     {
-        _pathFormatter = pathFormatter;
-        _gitUser = gitUser;
-        _token = token;
-
+        _processingItemFactory = processingItemFactory;
+        _reportGenerator = reportGenerator;
+        _rootDirectory = rootDirectory;
     }
 
-    public List<GithubOrganizationProcessingItem> Process(string organizationName, bool asParallel = false)
+    public void Generate(FileSearchFilter filter, string organizationName, string intro, string conclusion)
     {
-        var gitHubRepositoryDiscoveryService = new GitHubRepositoryDiscoveryService(_token);
-        var repositoryFetcher = new RepositoryFetcher(_pathFormatter, _gitUser, _token);
-
-        List<RepositoryRecord> repositoryRecords = GetRepositoryList(gitHubRepositoryDiscoveryService, organizationName).Result;
-
-        if (asParallel)
+        List<GithubOrganizationProcessingItem> processingItems = _processingItemFactory.Process(organizationName, true);
+        foreach (GithubOrganizationProcessingItem processingItem in processingItems)
         {
-            var result = repositoryRecords
-                .AsParallel()
-                .Select(r => SyncRepository(r, repositoryFetcher, organizationName))
-                .ToList();
-
-            return result;
+            var sourceCodeProvider = new FileSystemSourceCodeProvider(processingItem.Path, filter);
+            var info = new ReportExtendedInfo(intro, conclusion, Path.Combine(_rootDirectory, processingItem.RepositoryName));
+            _reportGenerator.Generate(sourceCodeProvider.GetFiles(), info);
         }
-        else
-        {
-            var result = new List<GithubOrganizationProcessingItem>();
-            foreach (RepositoryRecord repositoryRecord in repositoryRecords)
-            {
-                result.Add(SyncRepository(repositoryRecord, repositoryFetcher, organizationName));
-            }
-            return result;
-        }
-    }
-
-    private GithubOrganizationProcessingItem SyncRepository(RepositoryRecord repositoryName, RepositoryFetcher repositoryFetcher, string organizationName)
-    {
-        var path = repositoryFetcher.EnsureRepositoryUpdated(organizationName, repositoryName.Name);
-        return new GithubOrganizationProcessingItem(path, organizationName, repositoryName.Name);
-    }
-
-    private async Task<List<RepositoryRecord>> GetRepositoryList(GitHubRepositoryDiscoveryService discoveryService, string organizationName)
-    {
-        var repos = new List<RepositoryRecord>();
-        await foreach (RepositoryRecord repositoryRecord in discoveryService.TryDiscover(organizationName))
-            repos.Add(repositoryRecord);
-        return repos;
     }
 }
