@@ -14,6 +14,11 @@ namespace Kysect.AssignmentReporter.GithubIntegration
 
         public GithubSourceCodeProvider(RepositoryFetcher fetcher, string ownerName, string repositoryName, FileSearchFilter fileSearchFilter)
         {
+            ArgumentNullException.ThrowIfNull(fetcher);
+            ArgumentNullException.ThrowIfNull(ownerName);
+            ArgumentNullException.ThrowIfNull(repositoryName);
+            ArgumentNullException.ThrowIfNull(fileSearchFilter);
+
             _fetcher = fetcher;
             _ownerName = ownerName;
             _repositoryName = repositoryName;

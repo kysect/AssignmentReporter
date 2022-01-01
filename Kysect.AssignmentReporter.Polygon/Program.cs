@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Text.RegularExpressions;
 using Kysect.AssignmentReporter.GithubIntegration;
@@ -8,6 +8,7 @@ using Kysect.AssignmentReporter.OfficeIntegration;
 using Kysect.AssignmentReporter.ReportGenerator;
 using Kysect.AssignmentReporter.ReportGenerator.MultiGenerator;
 using Kysect.GithubUtils;
+using Serilog;
 
 namespace Kysect.AssignmentReporter.Polygon
 {
@@ -18,6 +19,11 @@ namespace Kysect.AssignmentReporter.Polygon
 
         public static void Main()
         {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .WriteTo.Console()
+                .CreateLogger();
+
             //GenerateFromGit();
             //GenerateSimpleReport();
             GenerateOrganization();

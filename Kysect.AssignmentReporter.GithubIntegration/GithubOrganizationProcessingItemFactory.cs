@@ -1,5 +1,6 @@
 ﻿using Kysect.GithubUtils;
 using Kysect.GithubUtils.RepositoryDiscovering;
+using Serilog;
 
 namespace Kysect.AssignmentReporter.GithubIntegration;
 
@@ -11,10 +12,13 @@ public class GithubOrganizationProcessingItemFactory
 
     public GithubOrganizationProcessingItemFactory(IPathFormatter pathFormatter, string gitUser, string token)
     {
+        ArgumentNullException.ThrowIfNull(pathFormatter);
+        ArgumentNullException.ThrowIfNull(gitUser);
+        ArgumentNullException.ThrowIfNull(token);
+
         _pathFormatter = pathFormatter;
         _gitUser = gitUser;
         _token = token;
-
     }
 
     public List<GithubOrganizationProcessingItem> Process(string organizationName, bool asParallel = false)
@@ -22,10 +26,14 @@ public class GithubOrganizationProcessingItemFactory
         var gitHubRepositoryDiscoveryService = new GitHubRepositoryDiscoveryService(_token);
         var repositoryFetcher = new RepositoryFetcher(_pathFormatter, _gitUser, _token);
 
+        Log.Information($"Start discovering repositories from {organizationName}");
         List<RepositoryRecord> repositoryRecords = GetRepositoryList(gitHubRepositoryDiscoveryService, organizationName).Result;
+        Log.Information($"Discovered {repositoryRecords.Count} repositories");
 
         if (asParallel)
         {
+            Log.Information("Start parallel processing");
+
             var result = repositoryRecords
                 .AsParallel()
                 .Select(r => SyncRepository(r, repositoryFetcher, organizationName))
@@ -35,11 +43,12 @@ public class GithubOrganizationProcessingItemFactory
         }
         else
         {
-            var result = new List<GithubOrganizationProcessingItem>();
-            foreach (RepositoryRecord repositoryRecord in repositoryRecords)
-            {
-                result.Add(SyncRepository(repositoryRecord, repositoryFetcher, organizationName));
-            }
+            Log.Information("Start single thread processing");
+
+            var result = repositoryRecords
+                .Select(r => SyncRepository(r, repositoryFetcher, organizationName))
+                .ToList();
+
             return result;
         }
     }

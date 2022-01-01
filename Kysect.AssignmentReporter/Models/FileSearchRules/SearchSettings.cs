@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Kysect.AssignmentReporter.Common;
 
 namespace Kysect.AssignmentReporter.Models.FileSearchRules
 {
@@ -13,25 +14,51 @@ namespace Kysect.AssignmentReporter.Models.FileSearchRules
         public List<string> BlackFileFormats { get; set; } = new List<string>();
         public List<Regex> BlackDirectories { get; set; } = new List<Regex>();
 
-        public bool FileIsAcceptable(string fileName)
+        public Reasonable<bool> FileIsAcceptable(string fileName)
         {
-            return (WhiteFileNames.Count == 0 || WhiteFileNames.Contains(fileName)) && !BlackFileNames.Contains(fileName);
+            if (WhiteFileNames.Count != 0 && !WhiteFileNames.Contains(fileName))
+            {
+                return Reasonable.Create(false, $"File {fileName} do not registered in white list");
+            }
+
+            if (BlackFileNames.Contains(fileName))
+            {
+                return Reasonable.Create(false, $"File {fileName} registered in black list");
+            }
+
+            return Reasonable.Create(true);
         }
 
-        public bool FormatIsAcceptable(string fileFormat)
+        public Reasonable<bool> FormatIsAcceptable(string fileFormat)
         {
-            return (WhiteFileFormats.Count == 0 || WhiteFileFormats.Contains(fileFormat)) && !BlackFileFormats.Contains(fileFormat);
+            if (WhiteFileFormats.Count != 0 && !WhiteFileFormats.Contains(fileFormat))
+            {
+                return Reasonable.Create(false, $"File format '{fileFormat}' do not registered in white list");
+            }
+
+            if (BlackFileFormats.Contains(fileFormat))
+            {
+                return Reasonable.Create(false, $"File format '{fileFormat}' registered in black list");
+            }
+
+            return Reasonable.Create(true);
         }
 
-        public bool DirectoryIsAcceptable(string directory)
+        public Reasonable<bool> DirectoryIsAcceptable(string directory)
         {
-            return !BlackDirectories
-                       .Any(dirName => dirName
-                           .IsMatch(directory))
-                   && (WhiteDirectories.Count == 0
-                       || WhiteDirectories
-                           .Any(dirName => dirName
-                               .IsMatch(directory)));
+            Regex matchedBlackMask = BlackDirectories.FirstOrDefault(mask => mask.IsMatch(directory));
+            if (matchedBlackMask != null)
+            {
+                return Reasonable.Create(false, $"Directory {directory} matched with black list mask: {matchedBlackMask}");
+            }
+
+            Regex matchedWhiteMask = WhiteDirectories.FirstOrDefault(mask => mask.IsMatch(directory));
+            if (WhiteDirectories.Any() && matchedWhiteMask is null)
+            {
+                return Reasonable.Create(false, $"Directory {directory} does not matched any white mask");
+            }
+
+            return Reasonable.Create(true);
         }
     }
 }

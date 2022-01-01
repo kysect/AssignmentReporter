@@ -24,11 +24,9 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
                 var info = new FileInfo(file);
                 if (_fileSearchFilter.FileIsAcceptable(info))
                 {
-                    files
-                        .Add(new FileDescriptor(
-                            info.Name,
-                            File.ReadAllText(info.FullName),
-                            info.DirectoryName));
+                    var fileContent = File.ReadAllText(info.FullName);
+                    var fileDescriptor = new FileDescriptor(info.Name, fileContent, info.DirectoryName);
+                    files.Add(fileDescriptor);
                 }
             }
 

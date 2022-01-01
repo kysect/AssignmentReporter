@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using Kysect.AssignmentReporter.Common;
+using Serilog;
 
 namespace Kysect.AssignmentReporter.Models.FileSearchRules
 {
@@ -12,24 +14,43 @@ namespace Kysect.AssignmentReporter.Models.FileSearchRules
 
         public SearchSettings SearchSettings { get; set; }
 
-        public bool FileIsAcceptable(FileInfo file)
+        public Reasonable<bool> FileIsAcceptable(FileInfo file)
         {
-            return NameIsAcceptable(file)
-                   && FormatIsAcceptable(file)
-                   && DirectoryIsAcceptable(file);
+            Reasonable<bool> nameIsAcceptable = NameIsAcceptable(file);
+            if (!nameIsAcceptable)
+            {
+                Log.Verbose($"{nameIsAcceptable.Format()}");
+                return nameIsAcceptable;
+            }
+
+            Reasonable<bool> formatIsAcceptable = FormatIsAcceptable(file);
+            if (!formatIsAcceptable)
+            {
+                Log.Verbose($"{formatIsAcceptable.Format()}");
+                return formatIsAcceptable;
+            }
+
+            Reasonable<bool> directoryIsAcceptable = DirectoryIsAcceptable(file);
+            if (!directoryIsAcceptable)
+            {
+                Log.Verbose($"{directoryIsAcceptable.Format()}");
+                return directoryIsAcceptable;
+            }
+
+            return Reasonable.Create(true);
         }
 
-        public bool NameIsAcceptable(FileInfo file)
+        public Reasonable<bool> NameIsAcceptable(FileInfo file)
         {
             return SearchSettings.FileIsAcceptable(file.Name);
         }
 
-        public bool FormatIsAcceptable(FileInfo file)
+        public Reasonable<bool> FormatIsAcceptable(FileInfo file)
         {
             return SearchSettings.FormatIsAcceptable(file.Extension);
         }
 
-        public bool DirectoryIsAcceptable(FileInfo file)
+        public Reasonable<bool> DirectoryIsAcceptable(FileInfo file)
         {
             return SearchSettings.DirectoryIsAcceptable(file.FullName);
         }
