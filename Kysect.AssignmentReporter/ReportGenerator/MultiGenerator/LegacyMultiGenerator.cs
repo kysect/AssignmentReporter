@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Kysect.AssignmentReporter.Common;
 using Kysect.AssignmentReporter.Models;
 using Kysect.AssignmentReporter.Models.FileSearchRules;
 using Kysect.AssignmentReporter.SourceCodeProvider;
@@ -26,7 +27,7 @@ namespace Kysect.AssignmentReporter.ReportGenerator.MultiGenerator
        {
            return Directory
                .GetDirectories(RootPath)
-               .Where(dir => Filter.SearchSettings.DirectoryIsAcceptable(dir))
+               .Where(dir => Filter.SearchSettings.DirectoryIsAcceptable(new PartialPath(RootPath, dir)))
                .ToList();
        }
 

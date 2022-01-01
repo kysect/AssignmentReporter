@@ -15,11 +15,11 @@ namespace Kysect.AssignmentReporter.ReportGenerator.MultiGenerator
             _generator = generator;
         }
 
-        public IReadOnlyCollection<FileDescriptor> Generate(ISourceCodeProvider sourceCodeProvider)
+        public IReadOnlyCollection<FileDescriptor> Generate(ISourceCodeProvider sourceCodeProvider, string studentName)
         {
             var result = new List<FileDescriptor>();
 
-            foreach (MultiReportItem multiReportItem in _itemFactory.Split(sourceCodeProvider))
+            foreach (MultiReportItem multiReportItem in _itemFactory.Split(sourceCodeProvider, studentName))
             {
                 FileDescriptor report = _generator.Generate(sourceCodeProvider.GetFiles(multiReportItem.Filter), multiReportItem.ExtendedInfo);
                 result.Add(report);

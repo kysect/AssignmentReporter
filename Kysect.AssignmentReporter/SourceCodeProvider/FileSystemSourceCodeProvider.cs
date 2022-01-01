@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using Kysect.AssignmentReporter.Common;
 using Kysect.AssignmentReporter.Models;
 using Kysect.AssignmentReporter.Models.FileSearchRules;
 
@@ -19,11 +20,11 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
             var files = new List<FileDescriptor>();
             foreach (var file in Directory.EnumerateFiles(_rootDirectoryPath, "*", SearchOption.AllDirectories))
             {
-                var info = new FileInfo(file);
-                if (fileSearchFilter.FileIsAcceptable(info))
+                var partialFilePath = new PartialFilePath(_rootDirectoryPath, file);
+                if (fileSearchFilter.FileIsAcceptable(partialFilePath))
                 {
-                    var fileContent = File.ReadAllText(info.FullName);
-                    var fileDescriptor = new FileDescriptor(info.Name, fileContent, info.DirectoryName);
+                    var fileContent = File.ReadAllText(partialFilePath.File.FullName);
+                    var fileDescriptor = new FileDescriptor(partialFilePath.File.Name, fileContent, partialFilePath.ParentDirectoryPath.Path);
                     files.Add(fileDescriptor);
                 }
             }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using Kysect.AssignmentReporter.Common;
 using Kysect.AssignmentReporter.Models;
 using Kysect.AssignmentReporter.Models.FileSearchRules;
 using Octokit;
@@ -59,7 +60,7 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
 
             foreach (RepositoryContent repositoryContent in content.Where(c => (c.Name[0] != '.')))
             {
-                if (repositoryContent.Type == ContentType.Dir && fileSearchFilter.SearchSettings.DirectoryIsAcceptable(repositoryContent.Name))
+                if (repositoryContent.Type == ContentType.Dir && fileSearchFilter.SearchSettings.DirectoryIsAcceptable(PartialPath.FromRoot(repositoryContent.Name)))
                 {
                     GetFolderFiles(files, fileSearchFilter, repositoryContent.Path);
                 }

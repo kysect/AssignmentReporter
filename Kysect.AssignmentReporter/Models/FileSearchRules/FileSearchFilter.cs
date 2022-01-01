@@ -14,23 +14,23 @@ namespace Kysect.AssignmentReporter.Models.FileSearchRules
 
         public SearchSettings SearchSettings { get; set; }
 
-        public Reasonable<bool> FileIsAcceptable(FileInfo file)
+        public Reasonable<bool> FileIsAcceptable(PartialFilePath filePath)
         {
-            Reasonable<bool> nameIsAcceptable = NameIsAcceptable(file);
+            Reasonable<bool> nameIsAcceptable = NameIsAcceptable(filePath.File);
             if (!nameIsAcceptable)
             {
                 Log.Verbose($"{nameIsAcceptable.Format()}");
                 return nameIsAcceptable;
             }
 
-            Reasonable<bool> formatIsAcceptable = FormatIsAcceptable(file);
+            Reasonable<bool> formatIsAcceptable = FormatIsAcceptable(filePath.File);
             if (!formatIsAcceptable)
             {
                 Log.Verbose($"{formatIsAcceptable.Format()}");
                 return formatIsAcceptable;
             }
 
-            Reasonable<bool> directoryIsAcceptable = DirectoryIsAcceptable(file);
+            Reasonable<bool> directoryIsAcceptable = DirectoryIsAcceptable(filePath.ParentDirectoryPath);
             if (!directoryIsAcceptable)
             {
                 Log.Verbose($"{directoryIsAcceptable.Format()}");
@@ -50,9 +50,9 @@ namespace Kysect.AssignmentReporter.Models.FileSearchRules
             return SearchSettings.FormatIsAcceptable(file.Extension);
         }
 
-        public Reasonable<bool> DirectoryIsAcceptable(FileInfo file)
+        public Reasonable<bool> DirectoryIsAcceptable(PartialPath directoryPath)
         {
-            return SearchSettings.DirectoryIsAcceptable(file.FullName);
+            return SearchSettings.DirectoryIsAcceptable(directoryPath);
         }
     }
 }
