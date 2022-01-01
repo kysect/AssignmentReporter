@@ -3,7 +3,6 @@ using Kysect.AssignmentReporter.Models.FileSearchRules;
 using Kysect.AssignmentReporter.ReportGenerator;
 using Kysect.AssignmentReporter.ReportGenerator.MultiGenerator;
 using Kysect.AssignmentReporter.SourceCodeProvider;
-using Kysect.GithubUtils;
 using Serilog;
 
 namespace Kysect.AssignmentReporter.GithubIntegration;
@@ -42,6 +41,7 @@ public class GithubOrganizationReportGenerator
         List<GithubOrganizationProcessingItem> processingItems = _processingItemFactory.Process(organizationName, true);
         foreach (GithubOrganizationProcessingItem processingItem in processingItems)
         {
+            Log.Information($"Generating report for {processingItem.RepositoryName}");
             var sourceCodeProvider = new FileSystemSourceCodeProvider(processingItem.Path);
             multiGenerator.Generate(sourceCodeProvider, processingItem.RepositoryName);
         }

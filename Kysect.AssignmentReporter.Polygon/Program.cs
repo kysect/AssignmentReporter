@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Kysect.AssignmentReporter.GithubIntegration;
 using Kysect.AssignmentReporter.Models;
@@ -26,7 +27,7 @@ namespace Kysect.AssignmentReporter.Polygon
 
             //GenerateFromGit();
             //GenerateSimpleReport();
-            GenerateOrganizationSplit();
+            GenerateOop();
             //GenerateFromGitSplit();
         }
 
@@ -74,6 +75,18 @@ namespace Kysect.AssignmentReporter.Polygon
             multiGenerator.Generate(githubSourceCodeProvider, "username");
         }
 
+        public static void GenerateOop()
+        {
+            var formatter = new FakePathFormatter();
+            var processingItemFactory = new GithubOrganizationProcessingItemFactory(formatter, User, Token);
+            var reportGenerator = new DocumentReportGenerator();
+            var organizationReportGenerator = new GithubOrganizationReportGenerator(processingItemFactory, reportGenerator, @"D:\tmp\github\oop-reports");
+            var info = new ReportExtendedInfo("Some test intro", "Some conclusion", @"D:\tmp\github\oop-report-result-split");
+            var multiReportItemFactory = new MultiReportItemFactory(GenerateOopFilters(), info);
+            var multiGenerator = new MultiGenerator(multiReportItemFactory, reportGenerator);
+            organizationReportGenerator.Generate("is-oop-y24", multiGenerator);
+        }
+
         public static List<FileSearchFilter> GenerateFakeFilters()
         {
             return new List<FileSearchFilter>()
@@ -85,6 +98,31 @@ namespace Kysect.AssignmentReporter.Polygon
                 new FileSearchFilter(new SearchSettingsBuilder().AddAllowedExtensions(new List<string> { ".c", ".h" }).AddAllowedDirectories(new List<string> { "5" }).Build()),
                 new FileSearchFilter(new SearchSettingsBuilder().AddAllowedExtensions(new List<string> { ".c", ".h" }).AddAllowedDirectories(new List<string> { "6" }).Build()),
             };
+        }
+
+        public static List<FileSearchFilter> GenerateOopFilters()
+        {
+            var labList = new List<string>
+            {
+                "Isu",
+                "Shops",
+                "IsuExtra",
+                "Backups",
+                "Banks",
+                "BackupsExtra"
+            };
+
+            var fileSearchFilters = labList
+                .Select(l =>
+                    new FileSearchFilter(
+                        new SearchSettingsBuilder()
+                            .AddAllowedExtensions(new List<string> { ".cs" })
+                            .AddAllowedDirectories(new List<string> { l })
+                            .AddBlockedDirectories(new List<string> { $"{l}Extra" })
+                            .Build()))
+                .ToList();
+
+            return fileSearchFilters;
         }
     }
 
