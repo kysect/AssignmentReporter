@@ -23,7 +23,7 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
 
         public GithubRepositoryInfo Repository { get; set; }
 
-        public IReadOnlyList<FileDescriptor> GetFiles()
+        public IReadOnlyList<FileDescriptor> GetFiles(FileSearchFilter fileSearchFilter)
         {
             if (Repository is null)
             {
@@ -31,11 +31,11 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
             }
 
             var descriptors = new List<FileDescriptor>();
-            GetFolderFiles(descriptors, new SearchSettings());
+            GetFolderFiles(descriptors, fileSearchFilter);
             return descriptors;
         }
 
-        public IReadOnlyList<FileDescriptor> GetFiles(SearchSettings settings, string folder = "/")
+        public IReadOnlyList<FileDescriptor> GetFiles(FileSearchFilter fileSearchFilter, string folder)
         {
             if (Repository is null)
             {
@@ -43,7 +43,7 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
             }
 
             var descriptors = new List<FileDescriptor>();
-            GetFolderFiles(descriptors, settings, folder);
+            GetFolderFiles(descriptors, fileSearchFilter, folder);
             return descriptors;
         }
 
@@ -53,20 +53,20 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
             return repos.Select(r => new GithubRepositoryInfo(r)).ToList();
         }
 
-        private void GetFolderFiles(List<FileDescriptor> files, SearchSettings settings, string path = "/")
+        private void GetFolderFiles(List<FileDescriptor> files, FileSearchFilter fileSearchFilter, string path = "/")
         {
             IReadOnlyList<RepositoryContent> content = _client.Repository.Content.GetAllContents(Repository.Id, path).Result;
 
             foreach (RepositoryContent repositoryContent in content.Where(c => (c.Name[0] != '.')))
             {
-                if (repositoryContent.Type == ContentType.Dir && settings.DirectoryIsAcceptable(repositoryContent.Name))
+                if (repositoryContent.Type == ContentType.Dir && fileSearchFilter.SearchSettings.DirectoryIsAcceptable(repositoryContent.Name))
                 {
-                    GetFolderFiles(files, settings, repositoryContent.Path);
+                    GetFolderFiles(files, fileSearchFilter, repositoryContent.Path);
                 }
                 else if (
                     repositoryContent.Type == ContentType.File &&
-                    settings.FileIsAcceptable(repositoryContent.Name) &&
-                    settings.FormatIsAcceptable(Path.GetExtension(repositoryContent.Name)))
+                    fileSearchFilter.SearchSettings.FileIsAcceptable(repositoryContent.Name) &&
+                    fileSearchFilter.SearchSettings.FormatIsAcceptable(Path.GetExtension(repositoryContent.Name)))
                 {
                     using (var client = new WebClient())
                     {

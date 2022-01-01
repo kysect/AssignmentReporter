@@ -1,45 +1,31 @@
 ﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using Kysect.AssignmentReporter.Models;
-using Kysect.AssignmentReporter.Models.FileSearchRules;
 using Kysect.AssignmentReporter.SourceCodeProvider;
 
 namespace Kysect.AssignmentReporter.ReportGenerator.MultiGenerator
 {
-   public class MultiGenerator
-   {
-       public MultiGenerator(string rootPath, string reportsPath, IReportGenerator generator, FileSearchFilter filter)
-       {
-           RootPath = rootPath;
-           ReportsPath = reportsPath;
-           Generator = generator;
-           Filter = filter;
-       }
+    public class MultiGenerator
+    {
+        private readonly MultiReportItemFactory _itemFactory;
+        private readonly IReportGenerator _generator;
 
-       public string RootPath { get; }
-       public string ReportsPath { get; }
-       public IReportGenerator Generator { get; }
-       public FileSearchFilter Filter { get; }
+        public MultiGenerator(MultiReportItemFactory itemFactory, IReportGenerator generator)
+        {
+            _itemFactory = itemFactory;
+            _generator = generator;
+        }
 
-       public List<string> GetRepositories()
-       {
-           return Directory
-               .GetDirectories(RootPath)
-               .Where(dir => Filter.SearchSettings.DirectoryIsAcceptable(dir))
-               .ToList();
-       }
+        public IReadOnlyCollection<FileDescriptor> Generate(ISourceCodeProvider sourceCodeProvider)
+        {
+            var result = new List<FileDescriptor>();
 
-       public List<FileDescriptor> Generate()
-       {
-           return GetRepositories()
-               .ConvertAll(repository
-                   => Generator.Generate(
-                       new FileSystemSourceCodeProvider(repository, Filter).GetFiles(),
-                       new ReportExtendedInfo(
-                           string.Empty,
-                           string.Empty,
-                           $"{ReportsPath}/{new DirectoryInfo(repository).Name}")));
-       }
+            foreach (MultiReportItem multiReportItem in _itemFactory.Split(sourceCodeProvider))
+            {
+                FileDescriptor report = _generator.Generate(sourceCodeProvider.GetFiles(multiReportItem.Filter), multiReportItem.ExtendedInfo);
+                result.Add(report);
+            }
+
+            return result;
+        }
     }
 }
