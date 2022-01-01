@@ -36,7 +36,7 @@ namespace Kysect.AssignmentReporter.WebService.Server.Service
 
         public void CreateReports(RepositoryCreationalInfoDto infoDto)
         {
-            var provider = new GithubSourceCodeProvider(infoDto.GithubToken);
+            var provider = new OctoitSourceCodeProvider(infoDto.GithubToken);
             IReadOnlyList<GithubRepositoryInfo> githubRepositoryInfos = provider.GetRepositories().Where(repositoryInfo => infoDto.RepositoryId == repositoryInfo.Id).ToList();
             if (githubRepositoryInfos.Count() == 0)
             {
@@ -115,7 +115,7 @@ namespace Kysect.AssignmentReporter.WebService.Server.Service
 
         public IReadOnlyList<GithubRepositoryInfo> GetRepositories(string token)
         {
-            var provider = new GithubSourceCodeProvider(token);
+            var provider = new OctoitSourceCodeProvider(token);
             return provider.GetRepositories();
         }
 

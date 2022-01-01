@@ -10,11 +10,11 @@ using Octokit.Internal;
 
 namespace Kysect.AssignmentReporter.SourceCodeProvider
 {
-    public class GithubSourceCodeProvider : ISourceCodeProvider
+    public class OctoitSourceCodeProvider : ISourceCodeProvider
     {
         private readonly GitHubClient _client;
 
-        public GithubSourceCodeProvider(string token)
+        public OctoitSourceCodeProvider(string token)
         {
             Repository = null;
             ICredentialStore credentialStore = new InMemoryCredentialStore(new Credentials(token));
