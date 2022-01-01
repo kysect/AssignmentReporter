@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.ObjectModel;
 using System.Windows.Forms;
 using Kysect.AssignmentReporter.Models;
@@ -178,23 +178,23 @@ namespace Kysect.AssignmentReporter.Plugin.ViewModel
 
         private void Generate()
         {
-            var provider = new FileSystemSourceCodeProvider(PathToRepository, _filter);
+            var provider = new FileSystemSourceCodeProvider(PathToRepository);
             var info = new ReportExtendedInfo(_introduction, _conclusion, PathToSave);
             if (!_isMultiGeneration)
             {
                 if (_coverPageInfo != null)
                 {
-                    GetGenerator(_coverPageInfo).Generate(provider.GetFiles(), info);
+                    GetGenerator(_coverPageInfo).Generate(provider.GetFiles(_filter), info);
                 }
                 else if (_isPdf && _coverPageInfo != null)
                 {
                     var generator = new DocumentReportGenerator(_coverPageInfo);
-                    generator.Generate(provider.GetFiles(), info);
+                    generator.Generate(provider.GetFiles(_filter), info);
                     generator.ConvertToPdf(info);
                 }
                 else
                 {
-                    GetGenerator().Generate(provider.GetFiles(), info);
+                    GetGenerator().Generate(provider.GetFiles(_filter), info);
                 }
             }
             else

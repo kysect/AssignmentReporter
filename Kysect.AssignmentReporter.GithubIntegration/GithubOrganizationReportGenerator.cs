@@ -29,9 +29,9 @@ public class GithubOrganizationReportGenerator
         foreach (GithubOrganizationProcessingItem processingItem in processingItems)
         {
             Log.Information($"Generating reports for {processingItem.OrganizationName}/{processingItem.RepositoryName}");
-            var sourceCodeProvider = new FileSystemSourceCodeProvider(processingItem.Path, filter);
+            var sourceCodeProvider = new FileSystemSourceCodeProvider(processingItem.Path);
             var info = new ReportExtendedInfo(intro, conclusion, Path.Combine(_rootDirectory, processingItem.RepositoryName));
-            _reportGenerator.Generate(sourceCodeProvider.GetFiles(), info);
+            _reportGenerator.Generate(sourceCodeProvider.GetFiles(filter), info);
         }
     }
 }

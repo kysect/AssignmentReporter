@@ -67,10 +67,10 @@ namespace Kysect.AssignmentReporter.Polygon
 
             var formatter = new FakePathFormatter();
             var repositoryFetcher = new RepositoryFetcher(formatter, User, Token);
-            var githubSourceCodeProvider = new GithubSourceCodeProvider(repositoryFetcher, "FrediKats", "MooseFsClient", filter);
+            var githubSourceCodeProvider = new GithubSourceCodeProvider(repositoryFetcher, "FrediKats", "MooseFsClient");
             var documentReportGenerator = new DocumentReportGenerator();
             var info = new ReportExtendedInfo("Some test intro", "Some conclusion", "report-result");
-            documentReportGenerator.Generate(githubSourceCodeProvider.GetFiles(), info);
+            documentReportGenerator.Generate(githubSourceCodeProvider.GetFiles(filter), info);
         }
 
         public static void GenerateOrganization()

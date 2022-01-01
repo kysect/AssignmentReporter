@@ -7,22 +7,20 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
 {
     public class FileSystemSourceCodeProvider : ISourceCodeProvider
     {
-        private readonly FileSearchFilter _fileSearchFilter;
         private readonly string _rootDirectoryPath;
 
-        public FileSystemSourceCodeProvider(string rootDirectoryPath, FileSearchFilter fileSearchFilter)
+        public FileSystemSourceCodeProvider(string rootDirectoryPath)
         {
             _rootDirectoryPath = rootDirectoryPath;
-            _fileSearchFilter = fileSearchFilter;
         }
 
-        public IReadOnlyList<FileDescriptor> GetFiles()
+        public IReadOnlyList<FileDescriptor> GetFiles(FileSearchFilter fileSearchFilter)
         {
             var files = new List<FileDescriptor>();
             foreach (var file in Directory.EnumerateFiles(_rootDirectoryPath, "*", SearchOption.AllDirectories))
             {
                 var info = new FileInfo(file);
-                if (_fileSearchFilter.FileIsAcceptable(info))
+                if (fileSearchFilter.FileIsAcceptable(info))
                 {
                     var fileContent = File.ReadAllText(info.FullName);
                     var fileDescriptor = new FileDescriptor(info.Name, fileContent, info.DirectoryName);

@@ -87,11 +87,11 @@ namespace Kysect.AssignmentReporter.WebService.Server.Service
                 foreach (var folder in singleReportInfoDto.Folders.Distinct())
                 {
                     files.AddRange(provider.GetFiles(
-                        new SearchSettings()
+                        new FileSearchFilter(new SearchSettings()
                         {
                             BlackDirectories = infoDto.BlacklistedDirectories.Select(x => new Regex(x)).ToList(),
                             WhiteFileFormats = infoDto.WhitelistedExtensions,
-                        },
+                        }),
                         folder));
                 }
 
