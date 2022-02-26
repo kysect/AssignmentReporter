@@ -26,7 +26,7 @@ public class GithubOrganizationReportGenerator
 
     public void Generate(FileSearchFilter filter, string organizationName, string intro, string conclusion)
     {
-        List<GithubOrganizationProcessingItem> processingItems = _processingItemFactory.Process(organizationName, true);
+        IReadOnlyCollection<GithubOrganizationProcessingItem> processingItems = _processingItemFactory.Process(organizationName, true);
         foreach (GithubOrganizationProcessingItem processingItem in processingItems)
         {
             Log.Information($"Generating reports for {processingItem.OrganizationName}/{processingItem.RepositoryName}");
@@ -38,7 +38,7 @@ public class GithubOrganizationReportGenerator
 
     public void Generate(string organizationName, MultiGenerator multiGenerator)
     {
-        List<GithubOrganizationProcessingItem> processingItems = _processingItemFactory.Process(organizationName, true);
+        IReadOnlyCollection<GithubOrganizationProcessingItem> processingItems = _processingItemFactory.Process(organizationName, true);
         foreach (GithubOrganizationProcessingItem processingItem in processingItems)
         {
             Log.Information($"Generating report for {processingItem.RepositoryName}");

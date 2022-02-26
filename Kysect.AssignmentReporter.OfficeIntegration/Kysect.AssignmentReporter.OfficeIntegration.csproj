@@ -30,6 +30,15 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CI|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\CI\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="PdfMetamorphosis, Version=8.4.1.28, Culture=neutral, PublicKeyToken=f77041e5caa5fc2f, processorArchitecture=MSIL">
       <HintPath>..\packages\sautinsoft.pdfmetamorphosis.8.4.1.28\lib\net47\PdfMetamorphosis.dll</HintPath>

@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -9,6 +9,7 @@ using Kysect.AssignmentReporter.OfficeIntegration;
 using Kysect.AssignmentReporter.ReportGenerator;
 using Kysect.AssignmentReporter.ReportGenerator.MultiGenerator;
 using Kysect.GithubUtils;
+using Kysect.GithubUtils.RepositorySync;
 using Serilog;
 
 namespace Kysect.AssignmentReporter.Polygon
@@ -53,7 +54,7 @@ namespace Kysect.AssignmentReporter.Polygon
 
         public static void GenerateOrganizationSplit()
         {
-            var formatter = new FakePathFormatter();
+            var formatter = new UseOwnerAndRepoForFolderNameStrategy(@"D:\tmp\repos");
             var processingItemFactory = new GithubOrganizationProcessingItemFactory(formatter, User, Token);
             var reportGenerator = new DocumentReportGenerator();
             var organizationReportGenerator = new GithubOrganizationReportGenerator(processingItemFactory, reportGenerator, @"D:\tmp\github\reports");
@@ -65,9 +66,9 @@ namespace Kysect.AssignmentReporter.Polygon
 
         public static void GenerateFromGitSplit()
         {
-            var formatter = new FakePathFormatter();
-            var repositoryFetcher = new RepositoryFetcher(formatter, User, Token);
-            var githubSourceCodeProvider = new GithubSourceCodeProvider(repositoryFetcher, "IS-prog-21-22", "username");
+            var formatter = new UseOwnerAndRepoForFolderNameStrategy(@"D:\tmp\repos");
+            var repositoryFetcher = new RepositoryFetcher(new RepositoryFetchOptions(User, Token));
+            var githubSourceCodeProvider = new GithubSourceCodeProvider(repositoryFetcher, "IS-prog-21-22", "username", formatter);
             var documentReportGenerator = new DocumentReportGenerator();
             var info = new ReportExtendedInfo("Some test intro", "Some conclusion", @"D:\tmp\github\report-result-split");
             var multiReportItemFactory = new MultiReportItemFactory(GenerateFakeFilters(), info);
@@ -77,7 +78,7 @@ namespace Kysect.AssignmentReporter.Polygon
 
         public static void GenerateOop()
         {
-            var formatter = new FakePathFormatter();
+            var formatter = new UseOwnerAndRepoForFolderNameStrategy(@"D:\tmp\repos");
             var processingItemFactory = new GithubOrganizationProcessingItemFactory(formatter, User, Token);
             var reportGenerator = new DocumentReportGenerator();
             var organizationReportGenerator = new GithubOrganizationReportGenerator(processingItemFactory, reportGenerator, @"D:\tmp\github\oop-reports");
@@ -123,14 +124,6 @@ namespace Kysect.AssignmentReporter.Polygon
                 .ToList();
 
             return fileSearchFilters;
-        }
-    }
-
-    public class FakePathFormatter : IPathFormatter
-    {
-        public string FormatFolderPath(string username, string repository)
-        {
-            return Path.Combine(@"D:\tmp\github\repos", username, repository);
         }
     }
 }

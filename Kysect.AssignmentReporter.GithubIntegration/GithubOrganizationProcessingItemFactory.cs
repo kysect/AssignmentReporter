@@ -1,16 +1,17 @@
-﻿using Kysect.GithubUtils;
+﻿using Kysect.GithubUtils.Models;
 using Kysect.GithubUtils.RepositoryDiscovering;
+using Kysect.GithubUtils.RepositorySync;
 using Serilog;
 
 namespace Kysect.AssignmentReporter.GithubIntegration;
 
 public class GithubOrganizationProcessingItemFactory
 {
-    private readonly IPathFormatter _pathFormatter;
+    private readonly IPathFormatStrategy _pathFormatter;
     private readonly string _gitUser;
     private readonly string _token;
 
-    public GithubOrganizationProcessingItemFactory(IPathFormatter pathFormatter, string gitUser, string token)
+    public GithubOrganizationProcessingItemFactory(IPathFormatStrategy pathFormatter, string gitUser, string token)
     {
         ArgumentNullException.ThrowIfNull(pathFormatter);
         ArgumentNullException.ThrowIfNull(gitUser);
@@ -21,10 +22,10 @@ public class GithubOrganizationProcessingItemFactory
         _token = token;
     }
 
-    public List<GithubOrganizationProcessingItem> Process(string organizationName, bool asParallel = false)
+    public IReadOnlyCollection<GithubOrganizationProcessingItem> Process(string organizationName, bool asParallel = false)
     {
         var gitHubRepositoryDiscoveryService = new GitHubRepositoryDiscoveryService(_token);
-        var repositoryFetcher = new RepositoryFetcher(_pathFormatter, _gitUser, _token);
+        var repositoryFetcher = new RepositoryFetcher(new RepositoryFetchOptions(_gitUser, _token));
 
         Log.Information($"Start discovering repositories from {organizationName}");
         List<RepositoryRecord> repositoryRecords = GetRepositoryList(gitHubRepositoryDiscoveryService, organizationName).Result;
@@ -55,11 +56,11 @@ public class GithubOrganizationProcessingItemFactory
 
     private GithubOrganizationProcessingItem SyncRepository(RepositoryRecord repositoryName, RepositoryFetcher repositoryFetcher, string organizationName)
     {
-        var path = repositoryFetcher.EnsureRepositoryUpdated(organizationName, repositoryName.Name);
+        var path = repositoryFetcher.EnsureRepositoryUpdated(_pathFormatter, new GithubRepository(organizationName, repositoryName.Name));
         return new GithubOrganizationProcessingItem(path, organizationName, repositoryName.Name);
     }
 
-    private async Task<List<RepositoryRecord>> GetRepositoryList(GitHubRepositoryDiscoveryService discoveryService, string organizationName)
+    private static async Task<List<RepositoryRecord>> GetRepositoryList(GitHubRepositoryDiscoveryService discoveryService, string organizationName)
     {
         var repos = new List<RepositoryRecord>();
         await foreach (RepositoryRecord repositoryRecord in discoveryService.TryDiscover(organizationName))
