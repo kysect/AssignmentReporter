@@ -1,5 +1,4 @@
-﻿using Kysect.GithubUtils;
-using Kysect.GithubUtils.Models;
+﻿using Kysect.GithubUtils.Models;
 using Kysect.GithubUtils.RepositoryDiscovering;
 using Kysect.GithubUtils.RepositorySync;
 using Serilog;
@@ -23,7 +22,7 @@ public class GithubOrganizationProcessingItemFactory
         _token = token;
     }
 
-    public List<GithubOrganizationProcessingItem> Process(string organizationName, bool asParallel = false)
+    public IReadOnlyCollection<GithubOrganizationProcessingItem> Process(string organizationName, bool asParallel = false)
     {
         var gitHubRepositoryDiscoveryService = new GitHubRepositoryDiscoveryService(_token);
         var repositoryFetcher = new RepositoryFetcher(new RepositoryFetchOptions(_gitUser, _token));
@@ -61,7 +60,7 @@ public class GithubOrganizationProcessingItemFactory
         return new GithubOrganizationProcessingItem(path, organizationName, repositoryName.Name);
     }
 
-    private async Task<List<RepositoryRecord>> GetRepositoryList(GitHubRepositoryDiscoveryService discoveryService, string organizationName)
+    private static async Task<List<RepositoryRecord>> GetRepositoryList(GitHubRepositoryDiscoveryService discoveryService, string organizationName)
     {
         var repos = new List<RepositoryRecord>();
         await foreach (RepositoryRecord repositoryRecord in discoveryService.TryDiscover(organizationName))
