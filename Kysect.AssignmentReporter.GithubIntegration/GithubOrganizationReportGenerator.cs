@@ -3,17 +3,18 @@ using Kysect.AssignmentReporter.Models.FileSearchRules;
 using Kysect.AssignmentReporter.ReportGenerator;
 using Kysect.AssignmentReporter.ReportGenerator.MultiGenerator;
 using Kysect.AssignmentReporter.SourceCodeProvider;
+using Kysect.GithubUtils.RepositorySync;
 using Serilog;
 
 namespace Kysect.AssignmentReporter.GithubIntegration;
 
 public class GithubOrganizationReportGenerator
 {
-    private readonly GithubOrganizationProcessingItemFactory _processingItemFactory;
+    private readonly OrganizationFetcher _processingItemFactory;
     private readonly IReportGenerator _reportGenerator;
     private readonly string _rootDirectory;
 
-    public GithubOrganizationReportGenerator(GithubOrganizationProcessingItemFactory processingItemFactory, IReportGenerator reportGenerator, string rootDirectory)
+    public GithubOrganizationReportGenerator(OrganizationFetcher processingItemFactory, IReportGenerator reportGenerator, string rootDirectory)
     {
         ArgumentNullException.ThrowIfNull(processingItemFactory);
         ArgumentNullException.ThrowIfNull(reportGenerator);
@@ -26,8 +27,8 @@ public class GithubOrganizationReportGenerator
 
     public void Generate(FileSearchFilter filter, string organizationName, string intro, string conclusion)
     {
-        IReadOnlyCollection<GithubOrganizationProcessingItem> processingItems = _processingItemFactory.Process(organizationName, true);
-        foreach (GithubOrganizationProcessingItem processingItem in processingItems)
+        IReadOnlyCollection<GithubOrganizationRepository> processingItems = _processingItemFactory.Fetch(organizationName);
+        foreach (GithubOrganizationRepository processingItem in processingItems)
         {
             Log.Information($"Generating reports for {processingItem.OrganizationName}/{processingItem.RepositoryName}");
             var sourceCodeProvider = new FileSystemSourceCodeProvider(processingItem.Path);
@@ -38,8 +39,8 @@ public class GithubOrganizationReportGenerator
 
     public void Generate(string organizationName, MultiGenerator multiGenerator)
     {
-        IReadOnlyCollection<GithubOrganizationProcessingItem> processingItems = _processingItemFactory.Process(organizationName, true);
-        foreach (GithubOrganizationProcessingItem processingItem in processingItems)
+        IReadOnlyCollection<GithubOrganizationRepository> processingItems = _processingItemFactory.Fetch(organizationName);
+        foreach (GithubOrganizationRepository processingItem in processingItems)
         {
             Log.Information($"Generating report for {processingItem.RepositoryName}");
             var sourceCodeProvider = new FileSystemSourceCodeProvider(processingItem.Path);
