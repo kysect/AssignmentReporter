@@ -9,6 +9,8 @@ using Kysect.AssignmentReporter.OfficeIntegration;
 using Kysect.AssignmentReporter.ReportGenerator;
 using Kysect.AssignmentReporter.ReportGenerator.MultiGenerator;
 using Kysect.GithubUtils;
+using Kysect.GithubUtils.OrganizationReplication;
+using Kysect.GithubUtils.RepositoryDiscovering;
 using Kysect.GithubUtils.RepositorySync;
 using Serilog;
 
@@ -52,18 +54,6 @@ namespace Kysect.AssignmentReporter.Polygon
             mg.Generate();
         }
 
-        public static void GenerateOrganizationSplit()
-        {
-            var formatter = new UseOwnerAndRepoForFolderNameStrategy(@"D:\tmp\repos");
-            var processingItemFactory = new GithubOrganizationProcessingItemFactory(formatter, User, Token);
-            var reportGenerator = new DocumentReportGenerator();
-            var organizationReportGenerator = new GithubOrganizationReportGenerator(processingItemFactory, reportGenerator, @"D:\tmp\github\reports");
-            var info = new ReportExtendedInfo("Some test intro", "Some conclusion", @"D:\tmp\github\report-result-split");
-            var multiReportItemFactory = new MultiReportItemFactory(GenerateFakeFilters(), info);
-            var multiGenerator = new MultiGenerator(multiReportItemFactory, reportGenerator);
-            organizationReportGenerator.Generate("IS-prog-21-22", multiGenerator);
-        }
-
         public static void GenerateFromGitSplit()
         {
             var formatter = new UseOwnerAndRepoForFolderNameStrategy(@"D:\tmp\repos");
@@ -78,10 +68,14 @@ namespace Kysect.AssignmentReporter.Polygon
 
         public static void GenerateOop()
         {
+            var organizationReplicatorPathProvider = new OrganizationReplicatorPathFormatter(@"D:\tmp\repos");
+            var discoveryService = new GitHubRepositoryDiscoveryService(Token);
+            var repositoryFetcher = new RepositoryFetcher(new RepositoryFetchOptions(User, Token));
+            var organizationFetcher = new OrganizationFetcher(discoveryService, repositoryFetcher, organizationReplicatorPathProvider);
+
             var formatter = new UseOwnerAndRepoForFolderNameStrategy(@"D:\tmp\repos");
-            var processingItemFactory = new GithubOrganizationProcessingItemFactory(formatter, User, Token);
             var reportGenerator = new DocumentReportGenerator();
-            var organizationReportGenerator = new GithubOrganizationReportGenerator(processingItemFactory, reportGenerator, @"D:\tmp\github\oop-reports");
+            var organizationReportGenerator = new GithubOrganizationReportGenerator(organizationFetcher, reportGenerator, @"D:\tmp\github\oop-reports");
             var info = new ReportExtendedInfo("Some test intro", "Some conclusion", @"D:\tmp\github\oop-report-result-split");
             var multiReportItemFactory = new MultiReportItemFactory(GenerateOopFilters(), info);
             var multiGenerator = new MultiGenerator(multiReportItemFactory, reportGenerator);
