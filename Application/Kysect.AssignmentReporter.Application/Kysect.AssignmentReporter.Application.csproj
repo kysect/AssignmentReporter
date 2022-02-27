@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
+    <PackageReference Include="Dropbox.Api" Version="6.24.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Domain\Kysect.AssignmentReporter.Domain\Kysect.AssignmentReporter.Domain.csproj" />
+    <ProjectReference Include="..\..\Domain\Kysect.AssignmentReporter.ReportGenerator\Kysect.AssignmentReporter.ReportGenerator.csproj" />
+    <ProjectReference Include="..\..\Integrations\Kysect.AssignmentReporter.Integration.GithubIntegration\Kysect.AssignmentReporter.Integration.GithubIntegration.csproj" />
+    <ProjectReference Include="..\..\Integrations\Kysect.AssignmentReporter.Integration.OfficeIntegration\Kysect.AssignmentReporter.Integration.OfficeIntegration.csproj" />
+    <ProjectReference Include="..\Kysect.AssignmentReporter.Application.Abstractions\Kysect.AssignmentReporter.Application.Abstractions.csproj" />
+    <ProjectReference Include="..\Kysect.AssignmentReporter.Dto\Kysect.AssignmentReporter.Dto.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,9 +1,12 @@
-﻿using Kysect.AssignmentReporter.WebService.DAL.Entities;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using Kysect.AssignmentReporter.WebService.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kysect.AssignmentReporter.WebService.DAL.Database
 {
-    public sealed class AssignmentReporterContext : DbContext
+    
+    public sealed class AssignmentReporterContext : DbContext, IAssignmentReporterContext
     {
  #pragma warning disable CS8618
         public AssignmentReporterContext(DbContextOptions<AssignmentReporterContext> options)

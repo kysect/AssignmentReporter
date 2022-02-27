@@ -63,13 +63,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Kysect.AssignmentReporter\Kysect.AssignmentReporter.csproj">
-      <Project>{163e8146-c1f5-4959-9df1-7ef4fec2f0ad}</Project>
-      <Name>Kysect.AssignmentReporter</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\..\Domain\Kysect.AssignmentReporter.ReportGenerator\Kysect.AssignmentReporter.ReportGenerator.csproj">
+      <Project>{478c5f49-99fa-4d09-b32e-d28ea07a4548}</Project>
+      <Name>Kysect.AssignmentReporter.ReportGenerator</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

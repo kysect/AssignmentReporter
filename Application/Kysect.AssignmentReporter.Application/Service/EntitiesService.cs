@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Kysect.AssignmentReporter.WebService.DAL.Database;
+using Kysect.AssignmentReporter.Application.Abstractions;
 using Kysect.AssignmentReporter.WebService.DAL.Entities;
 using Kysect.AssignmentReporter.WebService.Shared;
 using Kysect.AssignmentReporter.WebService.Shared.CreationalDto;
@@ -15,9 +15,9 @@ namespace Kysect.AssignmentReporter.WebService.Server.Service
     public class EntitiesService
     {
         private readonly IMapper _mapper;
-        private readonly AssignmentReporterContext _context;
+        private readonly IAssignmentReporterContext _context;
 
-        public EntitiesService(AssignmentReporterContext context, IMapper mapper)
+        public EntitiesService(IAssignmentReporterContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;

@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Kysect.AssignmentReporter.Application.Abstractions;
 using Kysect.AssignmentReporter.Models;
 using Kysect.AssignmentReporter.Models.FileSearchRules;
 using Kysect.AssignmentReporter.OfficeIntegration;
 using Kysect.AssignmentReporter.SourceCodeProvider;
-using Kysect.AssignmentReporter.WebService.DAL.Database;
 using Kysect.AssignmentReporter.WebService.DAL.Entities;
 using Kysect.AssignmentReporter.WebService.Server.Repository;
 using Kysect.AssignmentReporter.WebService.Shared;
@@ -21,12 +21,12 @@ namespace Kysect.AssignmentReporter.WebService.Server.Service
 {
     public class ReportsService
     {
-        private readonly AssignmentReporterContext _context;
+        private readonly IAssignmentReporterContext _context;
         private readonly IConfiguration _configuration;
         private readonly IRepository _repository;
         private readonly IMapper _mapper;
 
-        public ReportsService(AssignmentReporterContext context, IConfiguration configuration, IRepository repository, IMapper mapper)
+        public ReportsService(IAssignmentReporterContext context, IConfiguration configuration, IRepository repository, IMapper mapper)
         {
             _context = context;
             _configuration = configuration;

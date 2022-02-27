@@ -11,4 +11,8 @@
     <PackageReference Include="Kysect.GithubUtils" Version="1.0.8" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Domain\Kysect.AssignmentReporter.ReportGenerator\Kysect.AssignmentReporter.ReportGenerator.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -12,6 +12,7 @@ namespace Kysect.AssignmentReporter.WebService.Server.Repository
 {
     public class DropboxRepository : IRepository
     {
+        //TODO: read config on startup
         private readonly IConfiguration _configuration;
 
         public DropboxRepository(IConfiguration configuration)
