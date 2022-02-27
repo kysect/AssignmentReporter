@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
-using Kysect.AssignmentReporter.Common;
+using Kysect.CommonLib.Paths;
+using Kysect.CommonLib.Reasons;
 using Serilog;
 
 namespace Kysect.AssignmentReporter.Models.FileSearchRules
@@ -14,43 +15,43 @@ namespace Kysect.AssignmentReporter.Models.FileSearchRules
 
         public SearchSettings SearchSettings { get; set; }
 
-        public Reasonable<bool> FileIsAcceptable(PartialFilePath filePath)
+        public Reason<bool> FileIsAcceptable(PartialFilePath filePath)
         {
-            Reasonable<bool> nameIsAcceptable = NameIsAcceptable(filePath.File);
+            Reason<bool> nameIsAcceptable = NameIsAcceptable(filePath.File);
             if (!nameIsAcceptable)
             {
                 Log.Verbose($"{nameIsAcceptable.Format()}");
                 return nameIsAcceptable;
             }
 
-            Reasonable<bool> formatIsAcceptable = FormatIsAcceptable(filePath.File);
+            Reason<bool> formatIsAcceptable = FormatIsAcceptable(filePath.File);
             if (!formatIsAcceptable)
             {
                 Log.Verbose($"{formatIsAcceptable.Format()}");
                 return formatIsAcceptable;
             }
 
-            Reasonable<bool> directoryIsAcceptable = DirectoryIsAcceptable(filePath.ParentDirectoryPath);
+            Reason<bool> directoryIsAcceptable = DirectoryIsAcceptable(filePath.ParentDirectoryPath);
             if (!directoryIsAcceptable)
             {
                 Log.Verbose($"{directoryIsAcceptable.Format()}");
                 return directoryIsAcceptable;
             }
 
-            return Reasonable.Create(true);
+            return Reason.Create(true);
         }
 
-        public Reasonable<bool> NameIsAcceptable(FileInfo file)
+        public Reason<bool> NameIsAcceptable(FileInfo file)
         {
             return SearchSettings.FileIsAcceptable(file.Name);
         }
 
-        public Reasonable<bool> FormatIsAcceptable(FileInfo file)
+        public Reason<bool> FormatIsAcceptable(FileInfo file)
         {
             return SearchSettings.FormatIsAcceptable(file.Extension);
         }
 
-        public Reasonable<bool> DirectoryIsAcceptable(PartialPath directoryPath)
+        public Reason<bool> DirectoryIsAcceptable(PartialPath directoryPath)
         {
             return SearchSettings.DirectoryIsAcceptable(directoryPath);
         }

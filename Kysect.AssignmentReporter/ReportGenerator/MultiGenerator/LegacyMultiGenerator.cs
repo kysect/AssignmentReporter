@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Kysect.AssignmentReporter.Common;
 using Kysect.AssignmentReporter.Models;
 using Kysect.AssignmentReporter.Models.FileSearchRules;
 using Kysect.AssignmentReporter.SourceCodeProvider;
+using Kysect.CommonLib.Paths;
 
 namespace Kysect.AssignmentReporter.ReportGenerator.MultiGenerator
 {

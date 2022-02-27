@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Kysect.AssignmentReporter.Common;
+using Kysect.CommonLib.Paths;
+using Kysect.CommonLib.Reasons;
 
 namespace Kysect.AssignmentReporter.Models.FileSearchRules
 {
@@ -14,51 +15,51 @@ namespace Kysect.AssignmentReporter.Models.FileSearchRules
         public List<string> BlackFileFormats { get; set; } = new List<string>();
         public List<Regex> BlackDirectories { get; set; } = new List<Regex>();
 
-        public Reasonable<bool> FileIsAcceptable(string fileName)
+        public Reason<bool> FileIsAcceptable(string fileName)
         {
             if (WhiteFileNames.Count != 0 && !WhiteFileNames.Contains(fileName))
             {
-                return Reasonable.Create(false, $"File {fileName} do not registered in white list");
+                return Reason.Create(false, $"File {fileName} do not registered in white list");
             }
 
             if (BlackFileNames.Contains(fileName))
             {
-                return Reasonable.Create(false, $"File {fileName} registered in black list");
+                return Reason.Create(false, $"File {fileName} registered in black list");
             }
 
-            return Reasonable.Create(true);
+            return Reason.Create(true);
         }
 
-        public Reasonable<bool> FormatIsAcceptable(string fileFormat)
+        public Reason<bool> FormatIsAcceptable(string fileFormat)
         {
             if (WhiteFileFormats.Count != 0 && !WhiteFileFormats.Contains(fileFormat))
             {
-                return Reasonable.Create(false, $"File format '{fileFormat}' do not registered in white list");
+                return Reason.Create(false, $"File format '{fileFormat}' do not registered in white list");
             }
 
             if (BlackFileFormats.Contains(fileFormat))
             {
-                return Reasonable.Create(false, $"File format '{fileFormat}' registered in black list");
+                return Reason.Create(false, $"File format '{fileFormat}' registered in black list");
             }
 
-            return Reasonable.Create(true);
+            return Reason.Create(true);
         }
 
-        public Reasonable<bool> DirectoryIsAcceptable(PartialPath directoryPath)
+        public Reason<bool> DirectoryIsAcceptable(PartialPath directoryPath)
         {
-            Regex matchedBlackMask = BlackDirectories.FirstOrDefault(mask => mask.IsMatch(directoryPath.Path));
+            Regex matchedBlackMask = BlackDirectories.FirstOrDefault(mask => mask.IsMatch(directoryPath.Value));
             if (matchedBlackMask != null)
             {
-                return Reasonable.Create(false, $"Directory {directoryPath.Path} matched with black list mask: {matchedBlackMask}");
+                return Reason.Create(false, $"Directory {directoryPath.Value} matched with black list mask: {matchedBlackMask}");
             }
 
-            Regex matchedWhiteMask = WhiteDirectories.FirstOrDefault(mask => mask.IsMatch(directoryPath.Path));
+            Regex matchedWhiteMask = WhiteDirectories.FirstOrDefault(mask => mask.IsMatch(directoryPath.Value));
             if (WhiteDirectories.Any() && matchedWhiteMask is null)
             {
-                return Reasonable.Create(false, $"Directory {directoryPath.Path} does not matched any white mask");
+                return Reason.Create(false, $"Directory {directoryPath.Value} does not matched any white mask");
             }
 
-            return Reasonable.Create(true);
+            return Reason.Create(true);
         }
     }
 }

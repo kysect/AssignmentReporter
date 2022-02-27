@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using Kysect.AssignmentReporter.Common;
 using Kysect.AssignmentReporter.Models;
 using Kysect.AssignmentReporter.Models.FileSearchRules;
+using Kysect.CommonLib.Paths;
 
 namespace Kysect.AssignmentReporter.SourceCodeProvider
 {
@@ -24,7 +24,7 @@ namespace Kysect.AssignmentReporter.SourceCodeProvider
                 if (fileSearchFilter.FileIsAcceptable(partialFilePath))
                 {
                     var fileContent = File.ReadAllText(partialFilePath.File.FullName);
-                    var fileDescriptor = new FileDescriptor(partialFilePath.File.Name, fileContent, partialFilePath.ParentDirectoryPath.Path);
+                    var fileDescriptor = new FileDescriptor(partialFilePath.File.Name, fileContent, partialFilePath.ParentDirectoryPath.Value);
                     files.Add(fileDescriptor);
                 }
             }
