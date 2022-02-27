@@ -1,11 +1,11 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using Kysect.AssignmentReporter.Application.Abstractions;
 using Kysect.AssignmentReporter.WebService.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kysect.AssignmentReporter.WebService.DAL.Database
 {
-    
     public sealed class AssignmentReporterContext : DbContext, IAssignmentReporterContext
     {
  #pragma warning disable CS8618

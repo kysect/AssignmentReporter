@@ -13,10 +13,8 @@
     <ItemGroup>
         <PackageReference Include="AutoMapper" Version="10.1.1" />
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
-        <PackageReference Include="Dropbox.Api" Version="6.22.0" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="6.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="6.0.0" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.0" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.376">
           <PrivateAssets>all</PrivateAssets>
@@ -27,6 +25,12 @@
 
   <ItemGroup>
     <None Include="..\..\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Application\Kysect.AssignmentReporter.Application\Kysect.AssignmentReporter.Application.csproj" />
+    <ProjectReference Include="..\..\Presentation\Kysect.AssignmentReporter.Api\Kysect.AssignmentReporter.Api.csproj" />
+    <ProjectReference Include="..\Kysect.AssignmentReporter.DataAccess\Kysect.AssignmentReporter.DataAccess.csproj" />
   </ItemGroup>
 
 </Project>

@@ -8,14 +8,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebService", "WebService", "{DCB4E3D4-4181-45FA-900D-13E66D1F801D}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kysect.AssignmentReporter.WebService.DAL", "WebService\Kysect.AssignmentReporter.WebService.DAL\Kysect.AssignmentReporter.WebService.DAL.csproj", "{4B3A9962-23B6-4B1A-8370-51A68373AB6A}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kysect.AssignmentReporter.WebService.Server", "WebService\Kysect.AssignmentReporter.WebService.Server\Kysect.AssignmentReporter.WebService.Server.csproj", "{8B1C47FD-114A-4036-B6C0-B5B6FCE9F042}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kysect.AssignmentReporter.WebService.Client", "WebService\Kysect.AssignmentReporter.WebService.Client\Kysect.AssignmentReporter.WebService.Client.csproj", "{61A6EB2E-344B-44D0-9959-C79F55025D6F}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{9AC0F4D8-C09F-48A8-8F2E-D44FB061F929}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kysect.AssignmentReporter.ReportGenerator", "Domain\Kysect.AssignmentReporter.ReportGenerator\Kysect.AssignmentReporter.ReportGenerator.csproj", "{478C5F49-99FA-4D09-B32E-D28EA07A4548}"
@@ -44,6 +36,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kysect.AssignmentReporter.P
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kysect.AssignmentReporter.Api", "Presentation\Kysect.AssignmentReporter.Api\Kysect.AssignmentReporter.Api.csproj", "{72B6AA82-F53F-4815-B8B6-0B6580437668}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{F92FF952-9173-4255-A4F8-409E6C297011}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kysect.AssignmentReporter.DataAccess", "Infrastructure\Kysect.AssignmentReporter.DataAccess\Kysect.AssignmentReporter.DataAccess.csproj", "{AAB875FC-976F-4AC6-8386-4B7A57A81800}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kysect.AssignmentReporter.Web.Service", "Infrastructure\Kysect.AssignmentReporter.WebService.Server\Kysect.AssignmentReporter.Web.Service.csproj", "{9A27D1FC-4945-4565-B2C4-B020DEE1B3D5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		CI|Any CPU = CI|Any CPU
@@ -51,24 +49,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4B3A9962-23B6-4B1A-8370-51A68373AB6A}.CI|Any CPU.ActiveCfg = CI|Any CPU
-		{4B3A9962-23B6-4B1A-8370-51A68373AB6A}.CI|Any CPU.Build.0 = CI|Any CPU
-		{4B3A9962-23B6-4B1A-8370-51A68373AB6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4B3A9962-23B6-4B1A-8370-51A68373AB6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4B3A9962-23B6-4B1A-8370-51A68373AB6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4B3A9962-23B6-4B1A-8370-51A68373AB6A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8B1C47FD-114A-4036-B6C0-B5B6FCE9F042}.CI|Any CPU.ActiveCfg = CI|Any CPU
-		{8B1C47FD-114A-4036-B6C0-B5B6FCE9F042}.CI|Any CPU.Build.0 = CI|Any CPU
-		{8B1C47FD-114A-4036-B6C0-B5B6FCE9F042}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8B1C47FD-114A-4036-B6C0-B5B6FCE9F042}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8B1C47FD-114A-4036-B6C0-B5B6FCE9F042}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8B1C47FD-114A-4036-B6C0-B5B6FCE9F042}.Release|Any CPU.Build.0 = Release|Any CPU
-		{61A6EB2E-344B-44D0-9959-C79F55025D6F}.CI|Any CPU.ActiveCfg = CI|Any CPU
-		{61A6EB2E-344B-44D0-9959-C79F55025D6F}.CI|Any CPU.Build.0 = CI|Any CPU
-		{61A6EB2E-344B-44D0-9959-C79F55025D6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{61A6EB2E-344B-44D0-9959-C79F55025D6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{61A6EB2E-344B-44D0-9959-C79F55025D6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{61A6EB2E-344B-44D0-9959-C79F55025D6F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{478C5F49-99FA-4D09-B32E-D28EA07A4548}.CI|Any CPU.ActiveCfg = CI|Any CPU
 		{478C5F49-99FA-4D09-B32E-D28EA07A4548}.CI|Any CPU.Build.0 = CI|Any CPU
 		{478C5F49-99FA-4D09-B32E-D28EA07A4548}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -129,14 +109,23 @@ Global
 		{72B6AA82-F53F-4815-B8B6-0B6580437668}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72B6AA82-F53F-4815-B8B6-0B6580437668}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72B6AA82-F53F-4815-B8B6-0B6580437668}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AAB875FC-976F-4AC6-8386-4B7A57A81800}.CI|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAB875FC-976F-4AC6-8386-4B7A57A81800}.CI|Any CPU.Build.0 = Debug|Any CPU
+		{AAB875FC-976F-4AC6-8386-4B7A57A81800}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAB875FC-976F-4AC6-8386-4B7A57A81800}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAB875FC-976F-4AC6-8386-4B7A57A81800}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAB875FC-976F-4AC6-8386-4B7A57A81800}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A27D1FC-4945-4565-B2C4-B020DEE1B3D5}.CI|Any CPU.ActiveCfg = CI|Any CPU
+		{9A27D1FC-4945-4565-B2C4-B020DEE1B3D5}.CI|Any CPU.Build.0 = CI|Any CPU
+		{9A27D1FC-4945-4565-B2C4-B020DEE1B3D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A27D1FC-4945-4565-B2C4-B020DEE1B3D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A27D1FC-4945-4565-B2C4-B020DEE1B3D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A27D1FC-4945-4565-B2C4-B020DEE1B3D5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{4B3A9962-23B6-4B1A-8370-51A68373AB6A} = {DCB4E3D4-4181-45FA-900D-13E66D1F801D}
-		{8B1C47FD-114A-4036-B6C0-B5B6FCE9F042} = {DCB4E3D4-4181-45FA-900D-13E66D1F801D}
-		{61A6EB2E-344B-44D0-9959-C79F55025D6F} = {DCB4E3D4-4181-45FA-900D-13E66D1F801D}
 		{478C5F49-99FA-4D09-B32E-D28EA07A4548} = {9AC0F4D8-C09F-48A8-8F2E-D44FB061F929}
 		{FF88817D-0148-4AB6-BDF5-A6BA554551D7} = {9AC0F4D8-C09F-48A8-8F2E-D44FB061F929}
 		{E6486DFE-159C-4D7C-B15A-97C3EFBAD7F0} = {34D4CDD8-2C59-4EE1-AA87-EC71FCB65206}
@@ -147,6 +136,8 @@ Global
 		{4646A54C-D469-4BA2-B89F-DFD77CB8129E} = {CC00B921-A789-4F15-96C1-FB212583FC98}
 		{4735029D-D86F-4576-BCBE-BDF5A5CDEB8D} = {CC00B921-A789-4F15-96C1-FB212583FC98}
 		{72B6AA82-F53F-4815-B8B6-0B6580437668} = {CC00B921-A789-4F15-96C1-FB212583FC98}
+		{AAB875FC-976F-4AC6-8386-4B7A57A81800} = {F92FF952-9173-4255-A4F8-409E6C297011}
+		{9A27D1FC-4945-4565-B2C4-B020DEE1B3D5} = {F92FF952-9173-4255-A4F8-409E6C297011}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {91149FF2-74CE-429E-9EE9-F5DAED9756B0}
