@@ -12,8 +12,4 @@
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0" PrivateAssets="all" />
     </ItemGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\Kysect.AssignmentReporter.WebService.Shared\Kysect.AssignmentReporter.WebService.Shared.csproj" />
-    </ItemGroup>
-
 </Project>
