@@ -15,7 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\.editorconfig" />
+    <ProjectReference Include="..\..\Domain\Kysect.AssignmentReporter.ReportGenerator\Kysect.AssignmentReporter.ReportGenerator.csproj" />
+    <ProjectReference Include="..\..\Integrations\Kysect.AssignmentReporter.Integration.GithubIntegration\Kysect.AssignmentReporter.Integration.GithubIntegration.csproj" />
+    <ProjectReference Include="..\..\Integrations\Kysect.AssignmentReporter.Integration.OfficeIntegration\Kysect.AssignmentReporter.Integration.OfficeIntegration.csproj" />
   </ItemGroup>
 
 </Project>
