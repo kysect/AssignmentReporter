@@ -1,72 +1,70 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using Kysect.AssignmentReporter.WebService.Server.Service;
-using Kysect.AssignmentReporter.WebService.Shared.CreationalDto;
+﻿using System.ComponentModel.DataAnnotations;
+using Kysect.AssignmentReporter.Application;
+using Kysect.AssignmentReporter.Dto;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Kysect.AssignmentReporter.WebService.Server.Controllers
+namespace Kysect.AssignmentReporter.Api.Controllers;
+
+[ApiController]
+public class GroupsController : Controller
 {
-    [ApiController]
-    public class GroupsController : Controller
+    private EntitiesService _service;
+
+    public GroupsController(EntitiesService service)
     {
-        private EntitiesService _service;
+        _service = service;
+    }
 
-        public GroupsController(EntitiesService service)
+    [HttpPost("Groups/Add")]
+    public IActionResult CreateGroup([Required] [FromBody] GroupCreationalDto group)
+    {
+        try
         {
-            _service = service;
+            return Ok(_service.AddGroup(group));
         }
-
-        [HttpPost("Groups/Add")]
-        public IActionResult CreateGroup([Required] [FromBody] GroupCreationalDto group)
+        catch (Exception e)
         {
-            try
-            {
-                return Ok(_service.AddGroup(group));
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            return BadRequest(e.Message);
         }
+    }
 
-        [HttpGet("Groups/Get")]
-        public IActionResult GetGroupNames()
+    [HttpGet("Groups/Get")]
+    public IActionResult GetGroupNames()
+    {
+        try
         {
-            try
-            {
-                return Ok(_service.GetGroups());
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            return Ok(_service.GetGroups());
         }
-
-        [HttpGet("Group/{groupName}/Get")]
-        public IActionResult GetGroups([Required] [FromRoute] string groupName)
+        catch (Exception e)
         {
-            try
-            {
-                return Ok(_service.GetGroup(groupName));
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            return BadRequest(e.Message);
         }
+    }
 
-        [HttpDelete("Group/{groupName}/Delete")]
-        public IActionResult DeleteGroup([Required] [FromRoute] string groupName)
+    [HttpGet("Group/{groupName}/Get")]
+    public IActionResult GetGroups([Required] [FromRoute] string groupName)
+    {
+        try
         {
-            try
-            {
-                _service.DeleteGroup(groupName);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            return Ok(_service.GetGroup(groupName));
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+
+    [HttpDelete("Group/{groupName}/Delete")]
+    public IActionResult DeleteGroup([Required] [FromRoute] string groupName)
+    {
+        try
+        {
+            _service.DeleteGroup(groupName);
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
         }
     }
 }

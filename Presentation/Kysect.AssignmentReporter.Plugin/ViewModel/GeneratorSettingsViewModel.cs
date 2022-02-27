@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Windows.Forms;
-using Kysect.AssignmentReporter.Models;
-using Kysect.AssignmentReporter.Models.FileSearchRules;
 using Kysect.AssignmentReporter.OfficeIntegration;
 using Kysect.AssignmentReporter.Plugin.ViewModel.MvvmBase;
 using Kysect.AssignmentReporter.ReportGenerator;
-using Kysect.AssignmentReporter.ReportGenerator.MultiGenerator;
-using Kysect.AssignmentReporter.SourceCodeProvider;
 
 namespace Kysect.AssignmentReporter.Plugin.ViewModel
 {

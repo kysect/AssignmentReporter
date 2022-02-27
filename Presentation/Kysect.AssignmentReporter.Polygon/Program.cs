@@ -2,12 +2,9 @@
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Kysect.AssignmentReporter.GithubIntegration;
-using Kysect.AssignmentReporter.Models;
-using Kysect.AssignmentReporter.Models.FileSearchRules;
+using Kysect.AssignmentReporter.Integration.GithubIntegration;
 using Kysect.AssignmentReporter.OfficeIntegration;
 using Kysect.AssignmentReporter.ReportGenerator;
-using Kysect.AssignmentReporter.ReportGenerator.MultiGenerator;
 using Kysect.GithubUtils;
 using Kysect.GithubUtils.OrganizationReplication;
 using Kysect.GithubUtils.RepositoryDiscovering;

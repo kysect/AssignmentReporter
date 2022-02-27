@@ -1,6 +1,6 @@
 ﻿using System.Linq;
-using Kysect.AssignmentReporter.Models.FileSearchRules;
 using Kysect.AssignmentReporter.Plugin.ViewModel.MvvmBase;
+using Kysect.AssignmentReporter.ReportGenerator;
 
 namespace Kysect.AssignmentReporter.Plugin.ViewModel
 {

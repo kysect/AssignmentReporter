@@ -1,3 +1,3 @@
-﻿namespace Kysect.AssignmentReporter.WebService.Shared;
+﻿namespace Kysect.AssignmentReporter.Dto;
 
 public record SubjectDto(string Name);

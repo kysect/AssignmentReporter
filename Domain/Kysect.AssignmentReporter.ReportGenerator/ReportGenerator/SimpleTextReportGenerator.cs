@@ -1,63 +1,61 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using Kysect.AssignmentReporter.Models;
 
-namespace Kysect.AssignmentReporter.ReportGenerator
+namespace Kysect.AssignmentReporter.ReportGenerator;
+
+public class SimpleTextReportGenerator : IReportGenerator
 {
-    public class SimpleTextReportGenerator : IReportGenerator
+    public string Extension { get; } = ".txt";
+
+    public FileDescriptor Generate(IReadOnlyList<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
     {
-        public string Extension { get; } = ".txt";
+        reportExtendedInfo.Path = reportExtendedInfo.Path.CheckExtension(Extension);
+        FileStream reportFile = File.Create(reportExtendedInfo.Path);
+        MemoryStream stream = GenerateStream(files, reportExtendedInfo);
+        stream.Position = 0;
+        stream.CopyTo(reportFile);
+        stream.Close();
+        var info = new FileInfo(reportExtendedInfo.Path);
+        var descriptor = new FileDescriptor(
+            info.Name,
+            reportFile,
+            info.DirectoryName);
+        reportFile.Close();
+        return descriptor;
+    }
 
-        public FileDescriptor Generate(IReadOnlyList<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
+    public MemoryStream GenerateStream(IReadOnlyList<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
+    {
+        var builder = new StringBuilder();
+        if (!string.IsNullOrEmpty(reportExtendedInfo.Intro))
         {
-            reportExtendedInfo.Path = reportExtendedInfo.Path.CheckExtension(Extension);
-            FileStream reportFile = File.Create(reportExtendedInfo.Path);
-            MemoryStream stream = GenerateStream(files, reportExtendedInfo);
-            stream.Position = 0;
-            stream.CopyTo(reportFile);
-            stream.Close();
-            var info = new FileInfo(reportExtendedInfo.Path);
-            var descriptor = new FileDescriptor(
-                info.Name,
-                reportFile,
-                info.DirectoryName);
-            reportFile.Close();
-            return descriptor;
+            builder.Append("Introduction:").AppendLine(reportExtendedInfo.Intro);
+
+            builder.AppendLine("\n\n");
         }
 
-        public MemoryStream GenerateStream(IReadOnlyList<FileDescriptor> files, ReportExtendedInfo reportExtendedInfo)
+        foreach (FileDescriptor file in files)
         {
-            var builder = new StringBuilder();
-            if (!string.IsNullOrEmpty(reportExtendedInfo.Intro))
-            {
-                builder.Append("Introduction:").AppendLine(reportExtendedInfo.Intro);
+            builder.Append("File name:").AppendLine(file.Name);
 
-                builder.AppendLine("\n\n");
-            }
+            builder.AppendLine("\n");
 
-            foreach (FileDescriptor file in files)
-            {
-                builder.Append("File name:").AppendLine(file.Name);
+            builder.AppendLine(new FileInfo(file.RootDirectory).Extension);
 
-                builder.AppendLine("\n");
+            builder.Append(file.Content);
 
-                builder.AppendLine(new FileInfo(file.RootDirectory).Extension);
-
-                builder.Append(file.Content);
-
-                builder.AppendLine("\n\n");
-            }
-
-            if (!string.IsNullOrEmpty(reportExtendedInfo.Conclusion))
-            {
-                builder.Append("Introduction:").AppendLine(reportExtendedInfo.Conclusion);
-            }
-
-            var stream = new MemoryStream();
-            byte[] bytes = Encoding.UTF8.GetBytes(builder.ToString());
-            stream.Write(bytes, 0, bytes.Length);
-            return stream;
+            builder.AppendLine("\n\n");
         }
+
+        if (!string.IsNullOrEmpty(reportExtendedInfo.Conclusion))
+        {
+            builder.Append("Introduction:").AppendLine(reportExtendedInfo.Conclusion);
+        }
+
+        var stream = new MemoryStream();
+        byte[] bytes = Encoding.UTF8.GetBytes(builder.ToString());
+        stream.Write(bytes, 0, bytes.Length);
+        return stream;
     }
 }

@@ -1,19 +1,18 @@
-﻿namespace Kysect.AssignmentReporter.WebService.DAL.Entities
+﻿namespace Kysect.AssignmentReporter.Domain;
+
+public class Student : User
 {
-    public class Student : User
+    public Student(string fullName, Group group)
+        : base(fullName)
     {
-        public Student(string fullName, Group group)
-            : base(fullName)
-        {
-            Group = group;
-        }
+        Group = group;
+    }
 
  #pragma warning disable CS8618
-        private Student()
-        {
-        }
+    private Student()
+    {
+    }
  #pragma warning restore CS8618
 
-        public Group Group { get; set; }
-    }
+    public Group Group { get; set; }
 }

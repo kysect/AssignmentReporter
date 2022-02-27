@@ -1,99 +1,97 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using Kysect.AssignmentReporter.WebService.Server.Service;
-using Kysect.AssignmentReporter.WebService.Shared.CreationalDto;
+﻿using System.ComponentModel.DataAnnotations;
+using Kysect.AssignmentReporter.Application;
+using Kysect.AssignmentReporter.Dto;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Kysect.AssignmentReporter.WebService.Server.Controllers
+namespace Kysect.AssignmentReporter.Api.Controllers;
+
+[ApiController]
+public class SubjectsGroupController : Controller
 {
-    [ApiController]
-    public class SubjectsGroupController : Controller
+    private readonly EntitiesService _service;
+
+    public SubjectsGroupController(EntitiesService service)
     {
-        private readonly EntitiesService _service;
+        _service = service;
+    }
 
-        public SubjectsGroupController(EntitiesService service)
+    [HttpGet("SubjectGroups/Get")]
+    public IActionResult GetAll()
+    {
+        try
         {
-            _service = service;
+            return Ok(_service.GetSubjectGroups());
         }
-
-        [HttpGet("SubjectGroups/Get")]
-        public IActionResult GetAll()
+        catch (Exception e)
         {
-            try
-            {
-                return Ok(_service.GetSubjectGroups());
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            return BadRequest(e.Message);
         }
+    }
 
-        [HttpPost("SubjectGroups/Add")]
-        public IActionResult Add([Required] [FromBody] SubjectGroupCreationalDto groupDto)
+    [HttpPost("SubjectGroups/Add")]
+    public IActionResult Add([Required] [FromBody] SubjectGroupCreationalDto groupDto)
+    {
+        try
         {
-            try
-            {
-                return Ok(_service.AddSubjectGroup(groupDto));
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            return Ok(_service.AddSubjectGroup(groupDto));
         }
-
-        [HttpDelete("SubjectGroup/{groupId}/Delete")]
-        public IActionResult Delete([Required] [FromRoute] Guid groupId)
+        catch (Exception e)
         {
-            try
-            {
-                _service.DeleteSubjectGroup(groupId);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            return BadRequest(e.Message);
         }
+    }
 
-        [HttpGet("SubjectGroup/{groupId}/Get")]
-        public IActionResult GetSubjectGroup([Required] [FromRoute] Guid groupId)
+    [HttpDelete("SubjectGroup/{groupId}/Delete")]
+    public IActionResult Delete([Required] [FromRoute] Guid groupId)
+    {
+        try
         {
-            try
-            {
-                return Ok(_service.GetSubjectGroup(groupId));
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            _service.DeleteSubjectGroup(groupId);
+            return Ok();
         }
-
-        [HttpPut("SubjectGroup/{groupId}/AddStudent/{studentId}")]
-        public IActionResult AddStudent([Required] [FromRoute] Guid studentId, [Required] [FromRoute] Guid groupId)
+        catch (Exception e)
         {
-            try
-            {
-                return Ok(_service.AddStudentToSubjectGroup(studentId, groupId));
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            return BadRequest(e.Message);
         }
+    }
 
-        [HttpPut("SubjectGroup/{groupId}/DeleteStudent/{studentId}")]
-        public IActionResult DeleteStudent([Required] [FromRoute] Guid studentId, [Required] [FromRoute] Guid groupId)
+    [HttpGet("SubjectGroup/{groupId}/Get")]
+    public IActionResult GetSubjectGroup([Required] [FromRoute] Guid groupId)
+    {
+        try
         {
-            try
-            {
-                _service.DeleteStudentFromSubjectGroup(studentId, groupId);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            return Ok(_service.GetSubjectGroup(groupId));
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+
+    [HttpPut("SubjectGroup/{groupId}/AddStudent/{studentId}")]
+    public IActionResult AddStudent([Required] [FromRoute] Guid studentId, [Required] [FromRoute] Guid groupId)
+    {
+        try
+        {
+            return Ok(_service.AddStudentToSubjectGroup(studentId, groupId));
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+
+    [HttpPut("SubjectGroup/{groupId}/DeleteStudent/{studentId}")]
+    public IActionResult DeleteStudent([Required] [FromRoute] Guid studentId, [Required] [FromRoute] Guid groupId)
+    {
+        try
+        {
+            _service.DeleteStudentFromSubjectGroup(studentId, groupId);
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
         }
     }
 }

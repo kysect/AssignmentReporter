@@ -1,31 +1,28 @@
 ﻿using System.Collections.Generic;
-using Kysect.AssignmentReporter.Models;
-using Kysect.AssignmentReporter.SourceCodeProvider;
 
-namespace Kysect.AssignmentReporter.ReportGenerator.MultiGenerator
+namespace Kysect.AssignmentReporter.ReportGenerator;
+
+public class MultiGenerator
 {
-    public class MultiGenerator
+    private readonly MultiReportItemFactory _itemFactory;
+    private readonly IReportGenerator _generator;
+
+    public MultiGenerator(MultiReportItemFactory itemFactory, IReportGenerator generator)
     {
-        private readonly MultiReportItemFactory _itemFactory;
-        private readonly IReportGenerator _generator;
+        _itemFactory = itemFactory;
+        _generator = generator;
+    }
 
-        public MultiGenerator(MultiReportItemFactory itemFactory, IReportGenerator generator)
+    public IReadOnlyCollection<FileDescriptor> Generate(ISourceCodeProvider sourceCodeProvider, string studentName)
+    {
+        var result = new List<FileDescriptor>();
+
+        foreach (MultiReportItem multiReportItem in _itemFactory.Split(sourceCodeProvider, studentName))
         {
-            _itemFactory = itemFactory;
-            _generator = generator;
+            FileDescriptor report = _generator.Generate(sourceCodeProvider.GetFiles(multiReportItem.Filter), multiReportItem.ExtendedInfo);
+            result.Add(report);
         }
 
-        public IReadOnlyCollection<FileDescriptor> Generate(ISourceCodeProvider sourceCodeProvider, string studentName)
-        {
-            var result = new List<FileDescriptor>();
-
-            foreach (MultiReportItem multiReportItem in _itemFactory.Split(sourceCodeProvider, studentName))
-            {
-                FileDescriptor report = _generator.Generate(sourceCodeProvider.GetFiles(multiReportItem.Filter), multiReportItem.ExtendedInfo);
-                result.Add(report);
-            }
-
-            return result;
-        }
+        return result;
     }
 }

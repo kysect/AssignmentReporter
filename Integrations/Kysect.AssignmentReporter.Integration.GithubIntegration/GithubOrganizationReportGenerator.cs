@@ -1,12 +1,8 @@
-﻿using Kysect.AssignmentReporter.Models;
-using Kysect.AssignmentReporter.Models.FileSearchRules;
-using Kysect.AssignmentReporter.ReportGenerator;
-using Kysect.AssignmentReporter.ReportGenerator.MultiGenerator;
-using Kysect.AssignmentReporter.SourceCodeProvider;
+﻿using Kysect.AssignmentReporter.ReportGenerator;
 using Kysect.GithubUtils.RepositorySync;
 using Serilog;
 
-namespace Kysect.AssignmentReporter.GithubIntegration;
+namespace Kysect.AssignmentReporter.Integration.GithubIntegration;
 
 public class GithubOrganizationReportGenerator
 {

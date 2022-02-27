@@ -1,84 +1,80 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using Kysect.AssignmentReporter.Models;
-using Kysect.AssignmentReporter.WebService.Server.Service;
-using Kysect.AssignmentReporter.WebService.Shared;
-using Kysect.AssignmentReporter.WebService.Shared.CreationalDto;
+﻿using System.ComponentModel.DataAnnotations;
+using Kysect.AssignmentReporter.Application;
+using Kysect.AssignmentReporter.Dto;
+using Kysect.AssignmentReporter.ReportGenerator;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Kysect.AssignmentReporter.WebService.Server.Controllers
+namespace Kysect.AssignmentReporter.Api.Controllers;
+
+[ApiController]
+public class ReportsController : Controller
 {
-    [ApiController]
-    public class ReportsController : Controller
+    private ReportsService _service;
+    public ReportsController(ReportsService service)
     {
-        private ReportsService _service;
-        public ReportsController(ReportsService service)
-        {
-            _service = service;
-        }
+        _service = service;
+    }
 
-        [HttpGet("Reports/GetGitRepositories")]
-        public IActionResult GetRepositories([Required] [FromQuery] string gitHubToken)
+    [HttpGet("Reports/GetGitRepositories")]
+    public IActionResult GetRepositories([Required] [FromQuery] string gitHubToken)
+    {
+        try
         {
-            try
-            {
-                IReadOnlyList<GithubRepositoryInfo> result = _service.GetRepositories(gitHubToken);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            IReadOnlyList<GithubRepositoryInfo> result = _service.GetRepositories(gitHubToken);
+            return Ok(result);
         }
-
-        [HttpPost("Reports/CreateReports")]
-        public IActionResult CreateReport([Required] [FromBody] RepositoryCreationalInfoDto info)
+        catch (Exception ex)
         {
-            try
-            {
-                _service.CreateReports(info);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return BadRequest(ex.Message);
         }
+    }
 
-        [HttpGet("Reports/Get")]
-        public IActionResult GetReports()
+    [HttpPost("Reports/CreateReports")]
+    public IActionResult CreateReport([Required] [FromBody] RepositoryCreationalInfoDto info)
+    {
+        try
         {
-            try
-            {
-                IReadOnlyList<ReportDto> result = _service.GetReports();
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            _service.CreateReports(info);
+            return Ok();
         }
-
-        [HttpPost("Report/{id}/Download/")]
-        public FileResult DownloadReport([Required] [FromRoute] Guid id)
+        catch (Exception ex)
         {
-            FileDto file = _service.DownloadReport(id);
-            return File(file.Stream, System.Net.Mime.MediaTypeNames.Application.Octet, file.Name);
+            return BadRequest(ex.Message);
         }
+    }
 
-        [HttpDelete("Reports/{id}/Delete/")]
-        public IActionResult DeleteReport([Required] [FromRoute] Guid id)
+    [HttpGet("Reports/Get")]
+    public IActionResult GetReports()
+    {
+        try
         {
-            try
-            {
-                _service.Delete(id);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            IReadOnlyList<ReportDto> result = _service.GetReports();
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    [HttpPost("Report/{id}/Download/")]
+    public FileResult DownloadReport([Required] [FromRoute] Guid id)
+    {
+        FileDto file = _service.DownloadReport(id);
+        return File(file.Stream, System.Net.Mime.MediaTypeNames.Application.Octet, file.Name);
+    }
+
+    [HttpDelete("Reports/{id}/Delete/")]
+    public IActionResult DeleteReport([Required] [FromRoute] Guid id)
+    {
+        try
+        {
+            _service.Delete(id);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
         }
     }
 }

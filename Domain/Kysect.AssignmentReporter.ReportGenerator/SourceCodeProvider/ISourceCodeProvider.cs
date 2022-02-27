@@ -1,11 +1,8 @@
 ﻿using System.Collections.Generic;
-using Kysect.AssignmentReporter.Models;
-using Kysect.AssignmentReporter.Models.FileSearchRules;
 
-namespace Kysect.AssignmentReporter.SourceCodeProvider
+namespace Kysect.AssignmentReporter.ReportGenerator;
+
+public interface ISourceCodeProvider
 {
-    public interface ISourceCodeProvider
-    {
-        IReadOnlyList<FileDescriptor> GetFiles(FileSearchFilter fileSearchFilter);
-    }
+    IReadOnlyList<FileDescriptor> GetFiles(FileSearchFilter fileSearchFilter);
 }

@@ -5,6 +5,22 @@
     <Configurations>Debug;Release;CI</Configurations>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='CI|AnyCPU'">
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Kysect.AssignmentReporter.ReportGenerator.csproj.DotSettings" />
+  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="Kysect.CommonLib" Version="0.0.5" />
     <PackageReference Include="Octokit" Version="0.50.0" />

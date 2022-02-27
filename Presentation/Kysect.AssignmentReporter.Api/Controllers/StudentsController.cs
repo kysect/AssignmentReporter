@@ -1,72 +1,70 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using Kysect.AssignmentReporter.WebService.Server.Service;
-using Kysect.AssignmentReporter.WebService.Shared.CreationalDto;
+﻿using System.ComponentModel.DataAnnotations;
+using Kysect.AssignmentReporter.Application;
+using Kysect.AssignmentReporter.Dto;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Kysect.AssignmentReporter.WebService.Server.Controllers
+namespace Kysect.AssignmentReporter.Api.Controllers;
+
+[ApiController]
+public class StudentsController : Controller
 {
-    [ApiController]
-    public class StudentsController : Controller
+    private EntitiesService _service;
+
+    public StudentsController(EntitiesService service)
     {
-        private EntitiesService _service;
+        _service = service;
+    }
 
-        public StudentsController(EntitiesService service)
+    [HttpPost("Students/Add")]
+    public IActionResult CreateStudent([Required] [FromBody] StudentCreationalDto student)
+    {
+        try
         {
-            _service = service;
+            return Ok(_service.AddStudent(student));
         }
-
-        [HttpPost("Students/Add")]
-        public IActionResult CreateStudent([Required] [FromBody] StudentCreationalDto student)
+        catch (Exception e)
         {
-            try
-            {
-                return Ok(_service.AddStudent(student));
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            return BadRequest(e.Message);
         }
+    }
 
-        [HttpDelete("Student/{studentId}/Delete")]
-        public IActionResult DeleteStudent([Required] [FromRoute] Guid studentId)
+    [HttpDelete("Student/{studentId}/Delete")]
+    public IActionResult DeleteStudent([Required] [FromRoute] Guid studentId)
+    {
+        try
         {
-            try
-            {
-                _service.DeleteStudent(studentId);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            _service.DeleteStudent(studentId);
+            return Ok();
         }
-
-        [HttpGet("Students/Get")]
-        public IActionResult DeleteStudent()
+        catch (Exception e)
         {
-            try
-            {
-                return Ok(_service.GetStudents());
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            return BadRequest(e.Message);
         }
+    }
 
-        [HttpPut("Student/{studentId}/Move/{newGroupName}")]
-        public IActionResult Move([Required] [FromRoute] Guid studentId, [Required] [FromRoute] string newGroupName)
+    [HttpGet("Students/Get")]
+    public IActionResult DeleteStudent()
+    {
+        try
         {
-            try
-            {
-                return Ok(_service.MoveStudent(studentId, newGroupName));
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            return Ok(_service.GetStudents());
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+
+    [HttpPut("Student/{studentId}/Move/{newGroupName}")]
+    public IActionResult Move([Required] [FromRoute] Guid studentId, [Required] [FromRoute] string newGroupName)
+    {
+        try
+        {
+            return Ok(_service.MoveStudent(studentId, newGroupName));
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
         }
     }
 }

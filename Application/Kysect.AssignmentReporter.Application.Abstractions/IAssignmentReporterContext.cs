@@ -1,4 +1,4 @@
-﻿using Kysect.AssignmentReporter.WebService.DAL.Entities;
+﻿using Kysect.AssignmentReporter.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kysect.AssignmentReporter.Application.Abstractions;

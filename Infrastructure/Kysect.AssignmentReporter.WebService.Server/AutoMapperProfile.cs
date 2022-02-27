@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using Kysect.AssignmentReporter.WebService.DAL.Entities;
-using Kysect.AssignmentReporter.WebService.Shared;
+using Kysect.AssignmentReporter.Domain;
+using Kysect.AssignmentReporter.Dto;
 
-namespace Kysect.AssignmentReporter.WebService.Server;
+namespace Kysect.AssignmentReporter.Web.Service;
 
 public class AutoMapperProfile : Profile
 {

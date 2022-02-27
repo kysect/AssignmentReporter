@@ -1,72 +1,70 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using Kysect.AssignmentReporter.WebService.Server.Service;
-using Kysect.AssignmentReporter.WebService.Shared.CreationalDto;
+﻿using System.ComponentModel.DataAnnotations;
+using Kysect.AssignmentReporter.Application;
+using Kysect.AssignmentReporter.Dto;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Kysect.AssignmentReporter.WebService.Server.Controllers
+namespace Kysect.AssignmentReporter.Api.Controllers;
+
+[ApiController]
+public class TeachersController : Controller
 {
-    [ApiController]
-    public class TeachersController : Controller
+    private readonly EntitiesService _service;
+
+    public TeachersController(EntitiesService service)
     {
-        private readonly EntitiesService _service;
+        _service = service;
+    }
 
-        public TeachersController(EntitiesService service)
+    [HttpGet("Teachers/Get")]
+    public IActionResult GetAll()
+    {
+        try
         {
-            _service = service;
+            return Ok(_service.GetTeachers());
         }
-
-        [HttpGet("Teachers/Get")]
-        public IActionResult GetAll()
+        catch (Exception e)
         {
-            try
-            {
-                return Ok(_service.GetTeachers());
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            return BadRequest(e.Message);
         }
+    }
 
-        [HttpPost("Teachers/Add")]
-        public IActionResult Add([Required] [FromBody] TeacherCreationalDto teacher)
+    [HttpPost("Teachers/Add")]
+    public IActionResult Add([Required] [FromBody] TeacherCreationalDto teacher)
+    {
+        try
         {
-            try
-            {
-                return Ok(_service.AddTeacher(teacher));
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            return Ok(_service.AddTeacher(teacher));
         }
-
-        [HttpDelete("Teacher/{teacherId}/Delete")]
-        public IActionResult Delete([Required] [FromRoute] Guid teacherId)
+        catch (Exception e)
         {
-            try
-            {
-                _service.DeleteTeacher(teacherId);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            return BadRequest(e.Message);
         }
+    }
 
-        [HttpGet("Teacher/{id}/Get")]
-        public IActionResult Get([Required] [FromRoute] Guid id)
+    [HttpDelete("Teacher/{teacherId}/Delete")]
+    public IActionResult Delete([Required] [FromRoute] Guid teacherId)
+    {
+        try
         {
-            try
-            {
-                return Ok(_service.GetTeacher(id));
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            _service.DeleteTeacher(teacherId);
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+
+    [HttpGet("Teacher/{id}/Get")]
+    public IActionResult Get([Required] [FromRoute] Guid id)
+    {
+        try
+        {
+            return Ok(_service.GetTeacher(id));
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
         }
     }
 }

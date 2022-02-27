@@ -1,5 +1,3 @@
-﻿using System.Collections.Generic;
-
-namespace Kysect.AssignmentReporter.WebService.Shared;
+﻿namespace Kysect.AssignmentReporter.Dto;
 
 public record GroupDto(string Name, List<StudentDto> Students);

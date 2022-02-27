@@ -1,7 +1,6 @@
-﻿using System.IO;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
-namespace Kysect.AssignmentReporter.WebService.Shared
+namespace Kysect.AssignmentReporter.Dto
 {
     public class FileDto
     {

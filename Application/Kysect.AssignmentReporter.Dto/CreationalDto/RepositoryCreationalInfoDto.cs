@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Kysect.AssignmentReporter.WebService.Shared.CreationalDto
+﻿namespace Kysect.AssignmentReporter.Dto
 {
     public class RepositoryCreationalInfoDto
     {

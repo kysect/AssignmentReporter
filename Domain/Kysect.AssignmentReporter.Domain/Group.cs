@@ -1,24 +1,23 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Kysect.AssignmentReporter.WebService.DAL.Entities
+namespace Kysect.AssignmentReporter.Domain;
+
+public class Group
 {
-    public class Group
+    public Group(string name)
     {
-        public Group(string name)
-        {
-            Name = name;
-            Students = new List<Student>();
-        }
+        Name = name;
+        Students = new List<Student>();
+    }
 
  #pragma warning disable CS8618
-        private Group()
-        {
-        }
+    private Group()
+    {
+    }
  #pragma warning restore CS8618
 
-        [Key]
-        public string Name { get; private init; }
-        public List<Student> Students { get; private init; }
-    }
+    [Key]
+    public string Name { get; private init; }
+    public List<Student> Students { get; private init; }
 }

@@ -1,5 +1,5 @@
-﻿using Kysect.AssignmentReporter.Models;
-using Kysect.AssignmentReporter.Plugin.ViewModel.MvvmBase;
+﻿using Kysect.AssignmentReporter.Plugin.ViewModel.MvvmBase;
+using Kysect.AssignmentReporter.ReportGenerator;
 
 namespace Kysect.AssignmentReporter.Plugin.ViewModel
 {

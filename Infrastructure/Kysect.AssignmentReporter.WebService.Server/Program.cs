@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Linq;
-using Kysect.AssignmentReporter.WebService.DAL.Database;
-using Kysect.AssignmentReporter.WebService.Server.Controllers;
-using Kysect.AssignmentReporter.WebService.Server.Repository;
-using Kysect.AssignmentReporter.WebService.Server.Service;
+using Kysect.AssignmentReporter.Api.Controllers;
+using Kysect.AssignmentReporter.Application;
+using Kysect.AssignmentReporter.DataAccess;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

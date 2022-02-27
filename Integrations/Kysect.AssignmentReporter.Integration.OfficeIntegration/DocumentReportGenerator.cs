@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using Kysect.AssignmentReporter.Models;
 using Kysect.AssignmentReporter.ReportGenerator;
 using SautinSoft;
 using Xceed.Document.NET;

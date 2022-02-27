@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Kysect.AssignmentReporter.WebService.Shared;
+﻿namespace Kysect.AssignmentReporter.Dto;
 
 public record ReportDto(
     Guid Id,

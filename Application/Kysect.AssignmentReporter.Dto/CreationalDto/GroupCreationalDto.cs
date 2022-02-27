@@ -1,4 +1,4 @@
-﻿namespace Kysect.AssignmentReporter.WebService.Shared.CreationalDto;
+﻿namespace Kysect.AssignmentReporter.Dto;
 
 public class GroupCreationalDto
 {
