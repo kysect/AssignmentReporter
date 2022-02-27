@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using Kysect.AssignmentReporter.Common;
 using Kysect.AssignmentReporter.Models;
 using Kysect.AssignmentReporter.Models.FileSearchRules;
+using Kysect.CommonLib.Paths;
 using Octokit;
 using Octokit.Internal;
 
